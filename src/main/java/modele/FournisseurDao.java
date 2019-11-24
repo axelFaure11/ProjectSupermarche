@@ -13,6 +13,6 @@ import java.util.List;
 public interface FournisseurDao {
     void ajouterFournisseur (Fournisseur fournisseur);
     void supprimerFournisseur (Fournisseur fournisseur);
-    List<Fournisseur>getAllFournisseurs();
+    List<Fournisseur> list();
    
 }     

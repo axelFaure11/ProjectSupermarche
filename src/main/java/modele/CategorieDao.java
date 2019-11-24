@@ -9,7 +9,10 @@ package modele;
  *
  * @author rebecca
  */
-public class CategorieDao 
+public interface CategorieDao 
 {
+    public void ajouterCategorie (Categorie categorie);
+    public void supprimerCategorie (Categorie categorie);
+    public void modifierCategorie (Categorie categorie);
     
 }
