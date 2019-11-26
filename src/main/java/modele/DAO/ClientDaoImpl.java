@@ -3,9 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package modele;
+package modele.DAO;
 
 import java.util.List;
+import modele.Client;
 
 
 public class ClientDaoImpl implements ClientDao {

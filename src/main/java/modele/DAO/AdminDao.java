@@ -3,15 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package modele;
+package modele.DAO;
 
 /**
  *
  * @author rebecca
  */
-public interface PanierDao 
+public class AdminDao 
 {
-    void modifierPanier (Panier panier);
-    void validerPanier (Panier panier);
-    void supprimerPanier (Panier panier);
+    
 }

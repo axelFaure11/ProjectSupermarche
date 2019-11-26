@@ -3,16 +3,17 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package modele;
+package modele.DAO;
 import java.util.List;
+import modele.Produit;
 /**
  *
  * @author rebecca
  */
-public interface ClientDao 
+public interface ProduitDao        
 {
-    void ajouterClient (Client client);
-    void supprimerClient (Client client);
-    List<Client> getAllClients();
-    
+    public List<Produit> getAll();
+    void ajouterProduit (Produit produit);
+    void supprimerProduit (int ref);
+    void modifierProduit (Produit produit);
 }

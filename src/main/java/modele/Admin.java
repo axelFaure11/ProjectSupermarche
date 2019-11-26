@@ -32,7 +32,7 @@ public class Admin {
         
     //setters
         
-    public void setAdminId(String adminID)
+    public void setAdminId(String adminId)
     {
         this.adminId=adminId;
     }

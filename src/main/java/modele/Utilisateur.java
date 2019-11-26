@@ -4,15 +4,11 @@
  * and open the template in the editor.
  */
 package modele;
-import java.util.List;
+
 /**
  *
  * @author rebecca
  */
-public interface ProduitDao        
-{
-    public List<Produit> getAll();
-    void ajouterProduit (Produit produit);
-    void supprimerProduit (int ref);
-    void modifierProduit (Produit produit);
+public class Utilisateur {
+ 
 }

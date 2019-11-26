@@ -3,13 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package modele;
+package modele.DAO;
 
 /**
  *
  * @author rebecca
  */
-public class AdminDao 
-{
+public class ElementPanierDao {
     
 }

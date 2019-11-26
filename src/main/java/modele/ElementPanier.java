@@ -5,14 +5,10 @@
  */
 package modele;
 
-import java.util.List;
 /**
  *
  * @author rebecca
  */
-public interface FournisseurDao {
-    void ajouterFournisseur (Fournisseur fournisseur);
-    void supprimerFournisseur (Fournisseur fournisseur);
-    List<Fournisseur> list();
-   
-}     
+public class ElementPanier {
+    
+}
