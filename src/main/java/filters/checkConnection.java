@@ -17,6 +17,9 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebFilter;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -101,35 +104,17 @@ public class checkConnection implements Filter {
             FilterChain chain)
             throws IOException, ServletException {
         
-        if (debug) {
-            log("checkConnection:doFilter()");
-        }
-        
-        doBeforeProcessing(request, response);
-        
-        Throwable problem = null;
         try {
-            chain.doFilter(request, response);
-        } catch (Throwable t) {
-            // If an exception is thrown somewhere down the filter chain,
-            // we still want to execute our after processing, and then
-            // rethrow the problem after that.
-            problem = t;
-            t.printStackTrace();
-        }
-        
-        doAfterProcessing(request, response);
-
-        // If there was a problem, we want to rethrow it if it is
-        // a known type, otherwise log it.
-        if (problem != null) {
-            if (problem instanceof ServletException) {
-                throw (ServletException) problem;
+            HttpSession session = ((HttpServletRequest) request).getSession(false);
+            if (session != null && session.getAttribute("userName") != null) {
+            // connecté, on traite la requête			
+		chain.doFilter(request, response);
+            } else {
+            // Pas connecté, on va vers la page de login (racine)
+		((HttpServletResponse) response).sendRedirect(((HttpServletRequest) request).getContextPath() + "/");
             }
-            if (problem instanceof IOException) {
-                throw (IOException) problem;
-            }
-            sendProcessingError(problem, response);
+	} catch (IOException | ServletException t) {
+            
         }
     }
 
@@ -158,14 +143,8 @@ public class checkConnection implements Filter {
     /**
      * Init method for this filter
      */
-    public void init(FilterConfig filterConfig) {        
-        this.filterConfig = filterConfig;
-        if (filterConfig != null) {
-            if (debug) {                
-                log("checkConnection:Initializing filter");
-            }
-        }
-    }
+    @Override
+    public void init(FilterConfig filterConfig) {}
 
     /**
      * Return a String representation of this object.
