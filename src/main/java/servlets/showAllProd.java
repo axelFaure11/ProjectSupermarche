@@ -5,8 +5,14 @@
  */
 package servlets;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
+import java.util.Collections;
+import java.util.List;
+import java.util.Properties;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -35,27 +41,20 @@ public class showAllProd extends HttpServlet {
         response.setContentType("application/json;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             
-            /*TEMPORARY CODE
             tempDAO dao = new tempDAO();
-            
-            List<Object> prods = dao.getAllProds();
-            
-             Properties resultat = new Properties();
+
+            Properties resultat = new Properties();
             try {
-			resultat.put("records", daodc.getDiscountCodeList());
+			resultat.put("records", dao.getAllProds());
 		} catch (SQLException ex) {
-			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-			resultat.put("records", Collections.EMPTY_LIST);
-			resultat.put("message", ex.getMessage());
+                    response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                    resultat.put("records", Collections.EMPTY_LIST);
+                    resultat.put("message", ex.getMessage());
 		}
-            Gson gson = new GsonBuilder().setPrettyPrinting().create();
+            Gson gson = new Gson();
             String gsonData = gson.toJson(resultat);
             
             out.println(gsonData);
-            */
-            
-           
-            
         }
     }
 

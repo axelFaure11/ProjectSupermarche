@@ -7,11 +7,15 @@ package servlets;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
+import java.util.Collections;
+import java.util.Properties;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import modele.tempDAO;
 
 /**
  *
@@ -31,18 +35,22 @@ public class showProdInCat extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
+        response.setContentType("application/json;charset=UTF-8");
+        String cat = request.getParameter("cat");
         try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet showProdInCat</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet showProdInCat at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
+            
+            tempDAO dao = new tempDAO();
+            
+            Properties prods = new Properties();
+            
+            try {
+                prods.put("produits", dao.getProdsInCat(cat));
+            } catch (SQLException e) {
+                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                prods.put("records", Collections.EMPTY_LIST);
+                prods.put("message", e.getMessage());
+            }
+            
         }
     }
 
