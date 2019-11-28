@@ -2,7 +2,6 @@ package modele;
 
 import javax.sql.DataSource;
 
-import java.sql.Connection;
 
 /**
  *
