@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 package modele.DAO;
-
+import java.util.List;
 import modele.Categorie;
 
 /**
@@ -13,8 +13,11 @@ import modele.Categorie;
  */
 public interface CategorieDao 
 {
-    public void ajouterCategorie (Categorie categorie);
-    public void supprimerCategorie (Categorie categorie);
-    public void modifierCategorie (Categorie categorie);
+    public int addCategorie (Categorie categorie);
+    public int deleteCategorie (int code);
+    public int updateCategorie (Categorie categorie);
+    public Categorie get(int code);
+    public List<Categorie> liste();
+    
     
 }

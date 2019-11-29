@@ -12,8 +12,9 @@ import modele.Client;
  */
 public interface ClientDao 
 {
-    void ajouterClient (Client client);
-    void supprimerClient (Client client);
-    List<Client> getAllClients();
+    public int addClient (Client client);
+    public int updateClient(Client client);
+    public int deleteClient(String code);
+    public List<Client> liste();
     
 }

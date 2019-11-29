@@ -18,8 +18,15 @@ public class Client
     private String contact;
     private String fonction;
     private String adresse;
+    private String ville;
+    private String region;
+    private String codePostal;
+    private String pays;
     private String tel;
-    private String fax;          
+    private String fax;    
+    private String nom;
+    private String prenom;
+    private String email;
     private String password;
     
     //getters
@@ -48,25 +55,66 @@ public class Client
         return adresse;
     }
     
-        public String getTel()
+    
+    public String getVille()
+    {
+        return ville;
+    }    
+         
+    public String getRegion()
+    {
+        return region;
+    }
+    
+    public String getCodePostal()
+    {
+        return codePostal;
+    }
+    
+    public String getPays()
+    {
+        return pays;
+    }
+    
+    public String getTel()
     {
         return tel;
     }
         
-        public String getFax()
+    public String getFax()
     {
         return fax;
     }
-        public String getPassword()
+    
+    public String getNom()
+    {
+        return nom;
+    }
+     
+    public String getPrenom()
+    {
+        return prenom;
+    }
+      
+    public String getEmail()
+    {
+        return prenom;
+    }
+    
+    
+    public String getPassword()
     { 
         return password;
     }
+ 
+    
+    
     
     //setters
     
     public void setCode(String Code)
     {
-        this.code= code;
+        this.code=code;
     }
 
     public void setSociete(String societe)
@@ -89,6 +137,25 @@ public class Client
         this.adresse=adresse;
     }
     
+    public void setVille(String ville)
+    {
+        this.ville=ville;
+    }
+    
+    public void setRegion(String region)
+    {
+        this.region=region;
+    }
+    
+    public void setCodePostal(String codePostal)
+    {
+        this.codePostal=codePostal;
+    }
+    
+    public void setPays(String pays)
+    {
+        this.pays=pays;
+    }
      public void setTel(String tel)
     {
         this.tel=tel;
@@ -98,12 +165,28 @@ public class Client
     {
         this.fax=fax;
     }
+    
+      public void setNom(String nom)
+    {
+        this.nom=nom;
+    }
+      
+    public void setPrenom(String prenom)
+    {
+        this.prenom=prenom;
+    }
+    
+     public void setEmail(String email)
+    {
+        this.email=email;
+    }
         
     public void setPassword(String password)
     {
         this.password=password;
     }
-    
+
+   
     
 }
   

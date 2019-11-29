@@ -15,6 +15,7 @@ public class Categorie {
     private String description;
     
     
+    
     //getters
     public int getCode()
     {
