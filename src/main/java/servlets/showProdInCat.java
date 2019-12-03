@@ -15,7 +15,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import modele.tempDAO;
+import modele.DAO.DAO;
+import modele.DataSourceFactory;
 
 /**
  *
@@ -39,7 +40,7 @@ public class showProdInCat extends HttpServlet {
         String cat = request.getParameter("cat");
         try (PrintWriter out = response.getWriter()) {
             
-            tempDAO dao = new tempDAO();
+            DAO dao = new DAO(DataSourceFactory.getDataSource());
             
             Properties prods = new Properties();
             

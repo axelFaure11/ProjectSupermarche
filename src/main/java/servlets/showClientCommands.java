@@ -16,7 +16,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import modele.tempDAO;
+import modele.DAO.DAO;
+import modele.DataSourceFactory;
 
 /**
  *
@@ -40,7 +41,7 @@ public class showClientCommands extends HttpServlet {
         String clientID = request.getParameter("client_id");
         try (PrintWriter out = response.getWriter()) {
             
-            tempDAO dao = new tempDAO();
+            DAO dao = new DAO(DataSourceFactory.getDataSource());
             
             Properties commandes = new Properties();
             try {
