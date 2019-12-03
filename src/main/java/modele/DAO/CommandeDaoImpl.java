@@ -5,16 +5,10 @@
  */
 package modele.DAO;
 
-import modele.ElementPanier;
 /**
  *
  * @author rebecca
  */
-public class ElementPanierDao {
-    
-    public int addElementPanier(ElementPanier elementPanier);
-    public int deleteElementPanier;
-    public int deleteAll; 
-    
+public class CommandeDaoImpl {
     
 }

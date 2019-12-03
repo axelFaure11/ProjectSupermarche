@@ -5,6 +5,9 @@
  */
 package modele.DAO;
 
+import java.util.List;
+import modele.Client;
+import modele.ElementPanier;
 import modele.Panier;
 
 /**
@@ -13,7 +16,13 @@ import modele.Panier;
  */
 public interface PanierDao 
 {
-    void modifierPanier (Panier panier);
-    void validerPanier (Panier panier);
-    void supprimerPanier (Panier panier);
+    public int createPanier (Panier panier);
+    public int updatePanier (Panier panier);
+    public int validaterPanier (Panier panier);
+    public int deletePanier (Panier panier);
+    public Panier get(String panierId);
+    public List<Panier> liste();
+    public List<ElementPanier> liste(ElementPanier elementPanier, Client client );
+    public boolean statePanier(String panierId);
+    
 }

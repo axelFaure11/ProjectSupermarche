@@ -82,12 +82,43 @@ public class CategorieDaoImpl {
     }
     
     public Categorie get(int code){
-     
-    String sql= "SELECT * FROM categorie WHERE code= ?";
-    
-    
-    
-    
+        Categorie categorie = null;  
+        String sql= "SELECT * FROM categorie WHERE code= ?";
+        try
+        {
+            db.initPrepare(sql);
+            db.getPstm().setInt(1, code);
+            ok = db.executeMaj();
+        
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+        return categorie;  
     
     }
+    
+    public List<Categorie> liste() {
+		List<Categorie> categories = new ArrayList<>();
+		String sql = "SELECT * FROM categorie";
+		try
+		{
+			db.initPrepare(sql);
+			rs = db.executeSelect();
+			while(rs.next())
+			{
+				Categorie categorie = new Categorie();
+				categorie.setCode(rs.getInt(1));
+				categorie.setLibelle(rs.getString(2));
+				categorie.setDescription (rs.getString(3));
+				categories.add(categorie);
+			}
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		return categories;
+	}
 }

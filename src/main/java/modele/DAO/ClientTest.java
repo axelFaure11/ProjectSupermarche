@@ -37,6 +37,8 @@ public class ClientTest {
 
         ClientDaoImpl clientDaoImpl= new ClientDaoImpl();
         clientDaoImpl.addClient(client);
+        
+        
     }
     
     

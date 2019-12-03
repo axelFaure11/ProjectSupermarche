@@ -5,6 +5,7 @@
 /Users/rebecca/projetjava/ProjectSupermarche/src/main/java/modele/Admin.java
 /Users/rebecca/projetjava/ProjectSupermarche/src/main/java/modele/Utilisateur.java
 /Users/rebecca/projetjava/ProjectSupermarche/src/main/java/servlets/showProdInCat.java
+/Users/rebecca/projetjava/ProjectSupermarche/src/main/java/modele/DAO/ClientTest.java
 /Users/rebecca/projetjava/ProjectSupermarche/src/main/java/servlets/loginServlet.java
 /Users/rebecca/projetjava/ProjectSupermarche/src/main/java/modele/Panier.java
 /Users/rebecca/projetjava/ProjectSupermarche/src/main/java/modele/Client.java
@@ -14,11 +15,13 @@
 /Users/rebecca/projetjava/ProjectSupermarche/src/main/java/modele/DAO/FournisseurDao.java
 /Users/rebecca/projetjava/ProjectSupermarche/src/main/java/modele/DAO/DB.java
 /Users/rebecca/projetjava/ProjectSupermarche/src/main/java/servlets/showClientInfo.java
+/Users/rebecca/projetjava/ProjectSupermarche/src/main/java/modele/DAO/CategorieDaoImpl.java
 /Users/rebecca/projetjava/ProjectSupermarche/src/main/java/modele/DAO/ClientDao.java
 /Users/rebecca/projetjava/ProjectSupermarche/src/main/java/servlets/showAllProd.java
 /Users/rebecca/projetjava/ProjectSupermarche/src/main/java/modele/DAO/ClientDaoImpl.java
 /Users/rebecca/projetjava/ProjectSupermarche/src/main/java/modele/DAO/PanierDao.java
 /Users/rebecca/projetjava/ProjectSupermarche/src/main/java/modele/DAO/ProduitDao.java
+/Users/rebecca/projetjava/ProjectSupermarche/src/main/java/servlets/DatabaseInitializer.java
 /Users/rebecca/projetjava/ProjectSupermarche/src/main/java/modele/DAO/UtilisateurDao.java
 /Users/rebecca/projetjava/ProjectSupermarche/src/main/java/modele/ElementPanier.java
 /Users/rebecca/projetjava/ProjectSupermarche/src/main/java/filters/checkConnection.java
@@ -26,7 +29,6 @@
 /Users/rebecca/projetjava/ProjectSupermarche/src/main/java/modele/DAO/LigneDao.java
 /Users/rebecca/projetjava/ProjectSupermarche/src/main/java/modele/Produit.java
 /Users/rebecca/projetjava/ProjectSupermarche/src/main/java/modele/DataSourceFactory.java
-/Users/rebecca/projetjava/ProjectSupermarche/src/main/java/modele/tempDAO.java
 /Users/rebecca/projetjava/ProjectSupermarche/src/main/java/servlets/showClientCommands.java
 /Users/rebecca/projetjava/ProjectSupermarche/src/main/java/modele/DAO/ElementPanierDao.java
 /Users/rebecca/projetjava/ProjectSupermarche/src/main/java/modele/Commande.java

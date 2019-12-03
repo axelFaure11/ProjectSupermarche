@@ -31,37 +31,37 @@ public class Produit {
        return nom; 
     }
     
-    public int codeFournisseur()
+    public int getCodeFournisseur()
     {
         return codeFournisseur;
     }
     
-    public int categorie ()
+    public int getCategorie ()
     {
         return categorie;
     }
     
-    public String quantite()
+    public String getQuantite()
     {
         return quantite;
     }
     
-    public double prix()
+    public double getPrix()
     {
         return prix;
     }
     
-    public int unitesEnStock()
+    public int getUnitesEnStock()
     {
         return unitesEnStock;
     }
     
-     public int unitesCommandees()
+     public int getUnitesCommandees()
     {
         return unitesCommandees;
     }
      
-      public int niveauReapprovi()
+      public int getNiveauReapprovi()
     {
         return niveauReapprovi;
     }
@@ -88,11 +88,32 @@ public class Produit {
             this.categorie=categorie;
     }
          
-           public void setQuantite(String quantite)
+        public void setQuantite(String quantite)
     {
             this.quantite=quantite;
     }
          
+        public void setPrix(int prix)
+    {
+            this.prix=prix;
+    }
+    
+        public void setUnitesEnStock(int unitesEnStock)
+    {
+            this.unitesEnStock=unitesEnStock;
+    }
+            
+        public void setUnitesCommandees(int unitesCommandees)
+    {
+            this.unitesCommandees=unitesCommandees;
+    }
+        
+        public void setNiveauReapprovi(int niveauReapprovi)
+    {
+            this.niveauReapprovi=niveauReapprovi;
+    }
+    
+      
             
       
       

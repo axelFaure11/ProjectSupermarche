@@ -23,7 +23,7 @@ public class Panier {
         return client;
     }
     
-    public double prixTotal()
+    public double getPrixTotal()
     {
         return prixTotal;
     }
@@ -56,9 +56,6 @@ public class Panier {
     public void setElementPanier(List<ElementPanier> ElementPanier)
     {
         this.ElementPanier=ElementPanier;
-    }
+    }    
 
-    
-    
-    
 }

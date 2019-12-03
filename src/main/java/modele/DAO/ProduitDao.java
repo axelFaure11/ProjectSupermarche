@@ -5,6 +5,7 @@
  */
 package modele.DAO;
 import java.util.List;
+import modele.Categorie;
 import modele.Produit;
 /**
  *
@@ -13,7 +14,9 @@ import modele.Produit;
 public interface ProduitDao        
 {
     public List<Produit> getAll();
-    void ajouterProduit (Produit produit);
-    void supprimerProduit (int ref);
-    void modifierProduit (Produit produit);
+    void addProduit (Produit produit);
+    void deleteProduit (int ref);
+    void upadteProduit (Produit produit);
+    public Produit get(int ref);
+    public List<Produit> liste();
 }
