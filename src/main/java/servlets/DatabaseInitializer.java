@@ -10,7 +10,7 @@ import java.util.logging.Logger;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
-import modele.tempDAO;
+import modele.DAO.DAO;
 import modele.DataSourceFactory;
 import modele.Produit;
 import org.apache.derby.tools.ij;
@@ -36,7 +36,7 @@ public class DatabaseInitializer implements ServletContextListener {
 	private boolean databaseExists() {
 		boolean result = false;
 
-		tempDAO dao = new tempDAO(DataSourceFactory.getDataSource());
+		DAO dao = new DAO(DataSourceFactory.getDataSource());
 		try {
 			List<Produit> allCodes = dao.getAllProd();
 			Logger.getLogger("ComptoirEditor").log(Level.INFO, "Database already exists");

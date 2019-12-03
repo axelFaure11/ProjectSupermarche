@@ -16,7 +16,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import modele.tempDAO;
+import modele.DAO.DAO;
+import modele.DataSourceFactory;
 
 /**
  *
@@ -39,7 +40,7 @@ public class showClientInfo extends HttpServlet {
         response.setContentType("application/json;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             
-            tempDAO dao = new tempDAO();
+            DAO dao = new DAO(DataSourceFactory.getDataSource());
             
             Properties client = new Properties();
             
