@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Nom du commerce</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!-- Librairies JavaScript & Mustache -->
+         <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+         <script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/0.8.1/mustache.min.js"></script>
+         
+         <script>
+            $(document).ready(
+                function (){
+                    showAllCat();
+                    showAllProd();
+                });
+            
+            function showError(xhr, status, message) {
+                alert(JSON.parse(xhr.responseTest).message);
+            }
+            
+            function showAllProd() {
+                $.ajax({
+                    url: "showAllProd",
+                    dataType: "json",
+                    error: showError,
+                    succes:
+                            function(result) {
+                                var template = $("#prodTemplate").html();
+                                var processedTemplate = Mustache.to_html(template, result);
+                                $("#produits").html(processedTemplate);
+                            }
+                });
+            }
+            
+            function showAllCat() {
+                $.ajax({
+                    url: "showAllCat",
+                    dataType: "json",
+                    error: showError,
+                    succes:
+                            function(result) {
+                                var template = $("#catTemplate").html();
+                                var processedTemplate = Mustache.to_html(template, result);
+                                $("#categories").html(processedTemplate);
+                            }
+                });
+            }     
+            
+            function showProdInCat(cat) {
+                $.ajax({
+                    ur: "showProdInCat",
+                    data: {"cat": cat},
+                    dataType: "json",
+                    error: showError,
+                    success:
+                            function(result) {
+                                var template = $("#prodTemplate").html();
+                                var processedTemplate = Mustache.to_html(template, result);
+                                $("#produits").html(processedTemplate);
+                            }
+                });
+            }
+        </script>
+    </head>
+    
+    <body>
+        <h1>Nom du commerce</h1>
+        <div>
+            <div id="categories"></div>
+            <form id="login" onsubmit="callLogin();">
+                <fieldset><legend>Saisissez vos identifiants</legend>
+                    Identifiant : <input id="id" name="id"><br />
+                    Mot de passe : <input id="pass" name="pass"><br />
+                    <input type="submit" value="login">
+            </form>
+        </div>
+        <div id="produits"></div>
+        
+        <script id="catTemplate" type="text/template">
+                    <table><tr>
+                            {{records}}
+                            <td><button onclick="showProdInCat('{{libelle}}')">{{libelle}}</button></td>
+                            {{/records}}
+                    </tr></table>
+        </script>
+        <script id="prodTemplate" type="text/template">
+                    <table>
+                            {{records}}
+                            <tr><td><button onclick="">{{nom}}</button></td></tr>
+                            {{/records}}
+                    </table>
+        </script>
+    </body>
+</html>
