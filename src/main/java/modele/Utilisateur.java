@@ -10,5 +10,9 @@ package modele;
  * @author rebecca
  */
 public class Utilisateur {
+    
+    private String utilisateurId;
+    private String 
+    
  
 }
