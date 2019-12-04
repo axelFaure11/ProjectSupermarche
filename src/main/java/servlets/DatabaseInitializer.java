@@ -38,7 +38,7 @@ public class DatabaseInitializer implements ServletContextListener {
 
 		DAO dao = new DAO(DataSourceFactory.getDataSource());
 		try {
-			List<Produit> allCodes = dao.getAllProd();
+			List<Produit> allProds = dao.getAllProd();
 			Logger.getLogger("ComptoirEditor").log(Level.INFO, "Database already exists");
 			result = true;
 		} catch (SQLException e) {
@@ -59,13 +59,6 @@ public class DatabaseInitializer implements ServletContextListener {
 			Connection connection = DataSourceFactory.getDataSource().getConnection();
 			int result = ij.runScript(connection, this.getClass().getResourceAsStream("comptoirs_schema_derby.sql"), "UTF-8", System.out /* nowhere */ , "UTF-8");
 			if (result == 0) {
-				Logger.getLogger("ComptoirEditor").log(Level.INFO, "Database succesfully created");
-			} else {
-				Logger.getLogger("ComptoirEditor").log(Level.SEVERE, "Errors creating database");
-			}
-                        
-                        result = ij.runScript(connection, this.getClass().getResourceAsStream("comptoirs_data.sql"), "UTF-8", System.out ,"UTF-8");
-                        if (result == 0) {
 				Logger.getLogger("ComptoirEditor").log(Level.INFO, "Database succesfully created");
 			} else {
 				Logger.getLogger("ComptoirEditor").log(Level.SEVERE, "Errors creating database");

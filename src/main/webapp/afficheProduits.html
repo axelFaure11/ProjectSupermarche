@@ -49,7 +49,7 @@
             
             function showProdInCat(cat) {
                 $.ajax({
-                    ur: "showProdInCat",
+                    url: "showProdInCat",
                     data: {"cat": cat},
                     dataType: "json",
                     error: showError,
@@ -61,6 +61,18 @@
                             }
                 });
             }
+            
+            function callLogin() {
+                $.ajax({
+                    url: "loginServlet",
+                    data: {"id": id, "mdp": mdp},
+                    error: showError,
+                    success:
+                            function (result) {
+                                
+                            }
+                });
+            }
         </script>
     </head>
     
@@ -68,10 +80,10 @@
         <h1>Nom du commerce</h1>
         <div>
             <div id="categories"></div>
-            <form id="login" onsubmit="callLogin();">
+            <form id="login" onsubmit="callLogin();" method="POST">
                 <fieldset><legend>Saisissez vos identifiants</legend>
-                    Identifiant : <input id="id" name="id"><br />
-                    Mot de passe : <input id="pass" name="pass"><br />
+                    Identifiant : <input id="id" name="id" required><br />
+                    Mot de passe : <input type="password" id="pass" name="pass" required><br />
                     <input type="submit" value="login">
             </form>
         </div>

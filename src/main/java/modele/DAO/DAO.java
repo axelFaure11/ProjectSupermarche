@@ -7,7 +7,11 @@ package modele.DAO;
 
 
 
+import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 import javax.sql.DataSource;
 import modele.Client;
@@ -23,7 +27,30 @@ public class DAO {
     }
 
     public List<Produit> getAllProd() throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        List<Produit> result = new ArrayList();
+        try(Connection con = appDataSource.getConnection();
+            Statement stmt = con.createStatement()){
+            
+            String sql = "SELECT * FROM Produit";
+            ResultSet rs = stmt.executeQuery(sql);
+            Produit pr;
+            while(rs.next()){
+                pr = new Produit();
+                pr.setRef(rs.getInt("Reference"));
+                pr.setNom(rs.getString("Nom"));
+                pr.setCodeFournisseur(rs.getInt("Fournisseur"));
+                pr.setCategorie(rs.getInt("Categorie"));
+                pr.setQuantite(rs.getString("Quantite_par_unite"));
+                pr.setPrix(rs.getInt("Prix_unitaire"));
+                pr.setUnitesEnStock(rs.getInt("Unites_en_stock"));
+                pr.setUnitesCommandees(rs.getInt("Unites_commandees"));
+                pr.setNiveauReapprovi(rs.getInt("Niveau_de_reappro"));
+                result.add(pr);
+            }
+            
+            
+        }
+        return result;
     }
     
     public List<Commande> getClientCommands(String client_id) throws SQLException {

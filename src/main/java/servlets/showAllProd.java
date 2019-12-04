@@ -46,7 +46,7 @@ public class showAllProd extends HttpServlet {
 
             Properties resultat = new Properties();
             try {
-			resultat.put("records", dao.getAllProd());
+                    resultat.put("records", dao.getAllProd());
 		} catch (SQLException ex) {
                     response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                     resultat.put("records", Collections.EMPTY_LIST);
