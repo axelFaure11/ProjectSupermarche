@@ -104,14 +104,20 @@
                     error: showError,
                     success:
                             function(result){
-                                console.log(result);
-                                if($.trim(result)!=="not connected"){
-                                    $("#log").html(result);
-                                    $("#log").val("logout");
-                                } else {
-                                    $("#log").html("Se connecter");
-                                    $("#log").val("login");
-                                }
+                                setTimeout(function (){
+                                    console.log(result);
+                                    if($.trim(result)!=="not connected"){
+                                        $("#log").html(result);
+                                        $("#log").val("logout");
+                                        $("#account").html('<button id="inf" value="inf" onclick="updateClientInfo()">Compte</button>');
+                                        $("#checkout").html('<button class="sendSC" value="sendSC" onclick="">Passer commande</button>');
+                                    } else {
+                                        $("#log").html("Se connecter");
+                                        $("#log").val("login");
+                                        $("#account").html("");
+                                        $("#checkout").html("");
+                                    }
+                                }, 100);
                             }
                 });
             }
@@ -128,10 +134,13 @@
                                     window.location.assign("login.jsp");
                                 } else {
                                     isConnected();
-                                }
-                                    
+                                }  
                             }
                 });
+            }
+            
+            function updateClientInfo(){
+                window.location.assign("/logged/account_info.jsp");
             }
         </script>
     </head>
@@ -139,9 +148,10 @@
     <body>
         <h1>Nom du commerce</h1>
         <button id="log" value="log" onclick="callLogin(this)">Se connecter</button>
-        <div id="logButton"></div>
+        <div id="account"></div>
         <div id="categories"></div>
-        <div style="display: flex;">
+        
+        <div style="display: flex;position: relative; top: 50px;">
             <div id="produits"></div>
             <div id="cart" style="flex-grow: 1"></div>
             <div id="checkout" style="flex-grow: 1"></div> 
@@ -159,6 +169,10 @@
                                     </td>
                                     <td>
                                         <p>{{key.nom}}    (x{{value}}) : {{key.prix}}*{{value}}€</p>
+                                    </td>
+                                    <td>
+                                        <button class="addOne" value="add" onclick="EditCart(this, {{key.ref}})"> + </button> 
+                                        <button class="remOne" value="delOne" onclick="EditCart(this, {{key.ref}})"> - </button>
                                     </td>
                                 </tr>
                             {{/records}}

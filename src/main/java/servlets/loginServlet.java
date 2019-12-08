@@ -73,7 +73,7 @@ public class loginServlet extends HttpServlet {
                                         }
                                         System.out.println(view);
                                         if(view.equals("afficheProduits.html")){
-                                            request.getRequestDispatcher(view).forward(request, response);
+                                            response.sendRedirect("afficheProduits.html");
                                         }else {
                                             try(PrintWriter out = response.getWriter()){
                                                 out.write("login.jsp");

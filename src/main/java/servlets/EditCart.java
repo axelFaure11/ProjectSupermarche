@@ -91,6 +91,28 @@ public class EditCart extends HttpServlet {
                        panier.updatePrixTotal(-(updNbr*pr.getPrix()));
                     }
                     break;
+                    
+                case "delOne":
+                    pr = dao.getProd(Integer.parseInt(ref));
+                    
+                    lig = new Pair(pr, 1);
+                    
+                    updated = false;
+                    for(int i = 0; i<panier.size(); i++){
+                        if(panier.get(i).getKey().equals(lig.getKey())){
+                            if(panier.get(i).getValue() > 1){
+                                panier.set(i, new Pair(panier.get(i).getKey(), panier.get(i).getValue() - 1));
+                                updated = true;
+                            } else {
+                                panier.remove(i);
+                                updated = true;
+                            }
+                        }
+                    }
+                    if(updated){
+                       panier.updatePrixTotal(-pr.getPrix());
+                    }
+                    break;
                 
                 case "delAll":
                     panier.viderPanier();
