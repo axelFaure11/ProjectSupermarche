@@ -41,6 +41,7 @@ public class loginServlet extends HttpServlet {
             throws ServletException, IOException, SQLException {
         
         response.setContentType("text/plain;charset=UTF-8");
+        request.setCharacterEncoding("UTF-8");
         
         String action = request.getParameter("action");
         System.out.println("action : " + action);
@@ -72,9 +73,7 @@ public class loginServlet extends HttpServlet {
                                         }
                                         System.out.println(view);
                                         if(view.equals("afficheProduits.html")){
-                                            try(PrintWriter out = response.getWriter()){
-                                                request.getRequestDispatcher(view).forward(request, response);
-                                            }
+                                            request.getRequestDispatcher(view).forward(request, response);
                                         }else {
                                             try(PrintWriter out = response.getWriter()){
                                                 out.write("login.jsp");
