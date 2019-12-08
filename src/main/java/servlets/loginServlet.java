@@ -7,12 +7,18 @@ package servlets;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import modele.Client;
+import modele.DAO.DAO;
+import modele.DataSourceFactory;
 
 /**
  *
@@ -29,11 +35,13 @@ public class loginServlet extends HttpServlet {
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
+     * @throws java.sql.SQLException
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws ServletException, IOException, SQLException {
         
         String action = request.getParameter("action");
+        System.out.println("action : " + action);
 		if (null != action) {
 			switch (action) {
 				case "login":
@@ -42,21 +50,24 @@ public class loginServlet extends HttpServlet {
 				case "logout":
 					doLogout(request);
 					break;
+                                default:
 			}
 		}
                 String userName = findUserInSession(request);
-		String jspView;
+		String view;
 		if (null == userName) { // L'utilisateur n'est pas connecté
 			// On choisit la page de login
-			jspView = "login.jsp";
+			view = "login.jsp";
 
 		} else { // L'utilisateur est connecté
 			// On choisit la page d'affichage
-			jspView = "affiche.jsp";
+			view = "afficheProduits.html";
 		}
 		// On va vers la page choisie
-		request.getRequestDispatcher(jspView).forward(request, response);
-
+                request.getRequestDispatcher(view).forward(request, response);
+                try (PrintWriter out = response.getWriter()) {
+                    out.println(view);
+                }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -71,7 +82,11 @@ public class loginServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (SQLException ex) {
+            Logger.getLogger(loginServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -85,7 +100,11 @@ public class loginServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (SQLException ex) {
+            Logger.getLogger(loginServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -98,24 +117,35 @@ public class loginServlet extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
-    private void checkLogin(HttpServletRequest request) {
+    private void checkLogin(HttpServletRequest request) throws SQLException {
 		// Les paramètres transmis dans la requête
-		String loginParam = request.getParameter("loginParam");
-		String passwordParam = request.getParameter("passwordParam");
+		String loginParam = request.getParameter("id");
+		String passwordParam = request.getParameter("pass");
 
 		// Le login/password défini dans web.xml
 		String login = getInitParameter("login");
 		String password = getInitParameter("password");
 		String userName = getInitParameter("userName");
-
-		if ((login.equals(loginParam) && (password.equals(passwordParam)))) {
+                
+                DAO dao = new DAO(DataSourceFactory.getDataSource());
+                
+                Client cl = dao.getClientInfo(loginParam);
+                
+                System.out.println(loginParam + " " + passwordParam);
+                System.out.println(loginParam + " " + cl.getCode());
+                if(cl!=null){
+                    System.out.println("Client found!");
+                    if (((passwordParam.equals(cl.getCode())))) {
 			// On a trouvé la combinaison login / password
 			// On stocke l'information dans la session
-			HttpSession session = request.getSession(true); // démarre la session
-			session.setAttribute("userName", userName);
-		} else { // On positionne un message d'erreur pour l'afficher dans la JSP
+			HttpSession session = request.getSession(false); // démarre la session
+			session.setAttribute("userName", loginParam);
+                        System.out.println("Attributed!");
+                    }
+                } else { // On positionne un message d'erreur pour l'afficher dans la JSP
 			request.setAttribute("errorMessage", "Login/Password incorrect");
-		}
+                        System.out.println("Failed!");
+                    }
 	}
 
 	private void doLogout(HttpServletRequest request) {

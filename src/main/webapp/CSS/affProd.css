@@ -12,11 +12,31 @@ and open the template in the editor.
     border-radius: 4px;
     border: 1px solid;
 }
+
+.catb:hover {
+    background-color: gold;
+    cursor: pointer;
+}
+
+.catb:active {
+    background-color: white;
+    cursor: pointer;
+}
+
 .prodb {
     font-size: 20px;
     border-radius: 8px;
     border: 2px solid;
     padding: 10px;
+}
+.prodb:hover {
+    background-color: gold;
+    cursor: pointer;
+}
+
+.prodb:active {
+    background-color: white;
+    cursor: pointer;
 }
 
 .prodtab {
@@ -31,4 +51,14 @@ and open the template in the editor.
 
 #toptable {
     width: 100%;
+}
+
+#produits {
+    width: 100%;
+}
+
+#log {
+    position: absolute;
+    right: 10px;
+    margin-bottom: 30px;
 }

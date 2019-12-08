@@ -13,10 +13,12 @@
                 function (){
                     showAllProd();
                     showAllCat();
+                    showSCart();
+                    isConnected();
                 });
             
             function showError(xhr, status, message) {
-                alert(JSON.parse(xhr.responseTest).message);
+                alert("" + xhr.status + " " + status + " " + message);
             }
             
             function showAllProd() {
@@ -30,6 +32,37 @@
                                 var processedTemplate = Mustache.to_html(template, result);
                                 $("#produits").html(processedTemplate);
                             }
+                });
+            }
+            
+            function showSCart() {
+                $.ajax({
+                    url: "showPanier",
+                    dataType: "json",
+                    error: showError,
+                    success:
+                           function (result){
+                                setTimeout(function () {
+                                    console.log(result);
+                                    var template = $("#cartTemplate").html();
+                                    var processedTemplate = Mustache.to_html(template, result);
+                                    $("#cart").html(processedTemplate);
+                                }, 100);
+                            }
+                });
+            }
+            
+            function EditCart(op, ref) {
+                $.ajax({
+                    url: "EditCart",
+                    data: {"action": $(op).val(),
+                           "ref": ref
+                          },
+                    error: showError,
+                    success:
+                           function(){
+                               showSCart();
+                           }
                 });
             }
             
@@ -62,14 +95,23 @@
                 });
             }
             
-            function callLogin() {
+            function isConnected(){
+                
+            }
+            
+            function callLogin(op) {
                 $.ajax({
-                    url: "loginServlet",
-                    data: {"id": id, "mdp": mdp},
+                    url: "login",
+                    data: {"action": $(op).val()},
                     error: showError,
                     success:
                             function (result) {
-                                
+                                if(result = "login.jsp"){
+                                    window.location.href = "login.jsp";
+                                } else {
+                                    isConnected();
+                                }
+                                    
                             }
                 });
             }
@@ -78,30 +120,47 @@
     
     <body>
         <h1>Nom du commerce</h1>
-        <table id="toptable">
-            <td><div id="categories"></div></td>
-            <td><form id="login" onsubmit="callLogin();" method="POST">
-                <fieldset><legend>Saisissez vos identifiants</legend>
-                    Identifiant : <input id="id" name="id" required><br />
-                    Mot de passe : <input type="password" id="pass" name="pass" required><br />
-                    <input type="submit" value="login">
-                </form></td>
-        </table>
-        <div id="produits"></div>
+        <button id="log" value="log" onclick="callLogin(this)">Se connecter</button>
+        <div id="categories"></div>
+        <div style="display: flex;">
+            <div id="produits"></div>
+            <div id="cart" style="flex-grow: 1"></div>
+            <div id="checkout" style="flex-grow: 1"></div> 
+        </div>
         
+        <script id="cartTemplate" type="text/template">
+                    <h2>Votre panier</h2>
+                    <table class="carttab">
+                            <tr><td>Total: {{total}}€</td>
+                                <td><button class="removeAll" value="delAll" onclick="EditCart(this, 'null')">Vider le panier</button></td>
+                            </tr>
+                            {{#records}}
+                                <tr>
+                                    <td><button class="remove" value="del" onclick="EditCart(this, {{key.ref}})">X</button>
+                                    </td>
+                                    <td>
+                                        <p>{{key.nom}}    (x{{value}}) : {{key.prix}}*{{value}}€</p>
+                                    </td>
+                                </tr>
+                            {{/records}}
+                    </table>
+        </script>
         <script id="catTemplate" type="text/template">
-                    <table class=cattab><tr>
+                    <table class="cattab"><tr>
                             <td><button class="catb" onclick="showAllProd()">Tout</button></td>
                             {{#records}}
-                            <td><button class="catb" onclick="showProdInCat('{{code}}')">{{libelle}}</button></td>
+                                <td><button class="catb" onclick="showProdInCat('{{code}}')">{{libelle}}</button></td>
                             {{/records}}
                     </tr></table>
         </script>
         <script id="prodTemplate" type="text/template">
-                    <table class=prodtab>
+                    <table class="prodtab">
                             {{#records}}
                             <tr>
-                                <td class="prodl"><button class="prodb" onclick="">{{nom}}</button></td>
+                                <td class="prodl">
+                                    <button class="prodb" value="add" onclick="EditCart(this, {{ref}})">{{nom}}</button>
+                                    <span>({{unitesEnStock}} Disponible(s))</span> 
+                                </td>
                                 <td>{{prix}}€</td>
                             </tr>
                             {{/records}}

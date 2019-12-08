@@ -8,7 +8,6 @@ package servlets;
 import com.google.gson.Gson;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.SQLException;
 import java.util.Collections;
 import java.util.Properties;
 import javax.servlet.ServletException;
@@ -17,15 +16,17 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import modele.DAO.DAO;
-import modele.DataSourceFactory;
+import modele.ElementPanier;
+import modele.Panier;
+import modele.Produit;
+import modele.tempPanier;
 
 /**
  *
- * @author pedago
+ * @author Axel
  */
-@WebServlet(name = "showClientInfo", urlPatterns = {"/showClientInfo"})
-public class showClientInfo extends HttpServlet {
+@WebServlet(name = "showPanier", urlPatterns = {"/showPanier"})
+public class showPanier extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -39,23 +40,31 @@ public class showClientInfo extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("application/json;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
+        
+        HttpSession session = request.getSession(true);
+        tempPanier panier = (tempPanier) session.getAttribute("panier");
+        Properties resultat = new Properties();
+        
+        if(panier == null){
+            panier = new tempPanier();
+            session.setAttribute("panier", panier);
+            resultat.put("records", Collections.EMPTY_LIST);
+            resultat.put("total", 0);
             
-            HttpSession session = request.getSession(false);
-            DAO dao = new DAO(DataSourceFactory.getDataSource());
-            
-            Properties client = new Properties();
-            
+        } else {
             try {
-                client.put("info_client", dao.getClientInfo((String) session.getAttribute("contact")));
-            } catch (SQLException e) {
-                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-		client.put("records", Collections.EMPTY_LIST);
-		client.put("message", e.getMessage());
+                resultat.put("records", panier);
+                resultat.put("total", panier.prixTotal);
+            } catch (NullPointerException e) {
+                resultat.put("records", Collections.EMPTY_LIST);
+                resultat.put("total", 0);
             }
-            
+        }
+        try(PrintWriter out = response.getWriter()) {
             Gson gson = new Gson();
-            out.println(gson.toJson(client));
+            String gsonData = gson.toJson(resultat);
+
+            out.println(gsonData);
         }
     }
 

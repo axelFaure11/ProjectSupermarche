@@ -27,7 +27,31 @@ public class DAO {
     public DAO(DataSource dataSource){
         this.appDataSource = dataSource;
     }
-
+    
+    public Produit getProd(int ref) throws SQLException{
+        Produit pr = new Produit();
+        String sql = "SELECT * FROM PRODUIT "
+                   + "WHERE reference = ?";
+        try(Connection con = appDataSource.getConnection();
+            PreparedStatement pStmt = con.prepareStatement(sql)){
+            
+            pStmt.setInt(1, ref);
+            
+            ResultSet rs = pStmt.executeQuery();
+            if(rs.next()){
+                pr.setRef(rs.getInt("Reference"));
+                pr.setNom(rs.getString("Nom"));
+                pr.setCodeFournisseur(rs.getInt("Fournisseur"));
+                pr.setCategorie(rs.getInt("Categorie"));
+                pr.setQuantite(rs.getString("Quantite_par_unite"));
+                pr.setPrix(rs.getInt("Prix_unitaire"));
+                pr.setUnitesEnStock(rs.getInt("Unites_en_stock"));
+                pr.setUnitesCommandees(rs.getInt("Unites_commandees"));
+                pr.setNiveauReapprovi(rs.getInt("Niveau_de_reappro"));
+            }
+        }
+        return pr;
+    }
     public List<Produit> getAllProd() throws SQLException {
         List<Produit> result = new ArrayList();
         try(Connection con = appDataSource.getConnection();
@@ -76,8 +100,25 @@ public class DAO {
         throw new UnsupportedOperationException("Not supported yet.");
     }
     
-    public Client getClientInfo() throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public Client getClientInfo(String contact) throws SQLException {
+        Client result = new Client();
+        String sql = "SELECT * FROM CLIENT "
+                   + "WHERE CONTACT = ?";
+        try(Connection con = appDataSource.getConnection();
+            PreparedStatement pStmt = con.prepareStatement(sql)){
+            
+            pStmt.setString(1, contact);
+            
+            ResultSet rs = pStmt.executeQuery();
+            
+            if(rs.next()){
+                result.setContact(contact);
+                result.setCode(rs.getString("CODE"));
+            } else {
+                result = null;
+            }
+        }
+        return result;
     }
     
     public List<Produit> getProdsInCat(String cat) throws SQLException {

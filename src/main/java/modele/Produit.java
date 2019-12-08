@@ -112,8 +112,18 @@ public class Produit {
     {
             this.niveauReapprovi=niveauReapprovi;
     }
-    
-      
+        @Override
+        public boolean equals(Object o){
+            if(o instanceof Produit){
+                return ((Produit) o).getCategorie() == (this.getCategorie())
+                        && ((Produit) o).getCodeFournisseur() == (this.getCodeFournisseur())
+                        && ((Produit) o).getNiveauReapprovi() == (this.getNiveauReapprovi())
+                        && ((Produit) o).getNom().equals(this.getNom())
+                        && ((Produit) o).getRef() == (this.getRef());
+            } else {
+                return false;
+            }
+        }
             
       
       

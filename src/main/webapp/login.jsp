@@ -4,6 +4,7 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -11,6 +12,14 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <h1>Hello World!</h1>
+        <<table id="toptable">
+            <td><div id="categories"></div></td>
+            <td><form action="<c:url value="/login" />" method="POST">
+                <fieldset><legend>Saisissez vos identifiants</legend>
+                    Identifiant : <input id="id" name="id" required><br />
+                    Mot de passe : <input type="password" id="pass" name="pass" required><br />
+                    <input id="action" name="action" type="submit" value="login">
+                </form></td>
+        </table>
     </body>
 </html>
