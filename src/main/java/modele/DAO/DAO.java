@@ -114,6 +114,14 @@ public class DAO {
             if(rs.next()){
                 result.setContact(contact);
                 result.setCode(rs.getString("CODE"));
+                result.setAdresse(rs.getString("ADRESSE"));
+                result.setVille(rs.getString("VILLE"));
+                result.setPays(rs.getString("PAYS"));
+                result.setCodePostal("CODE_POSTAL");
+                result.setFonction(rs.getString("FONCTION"));
+                result.setSociete(rs.getString("SOCIETE"));
+                result.setTel(rs.getString("TELEPHONE"));
+                result.setFax(rs.getString("FAX"));
             } else {
                 result = null;
             }

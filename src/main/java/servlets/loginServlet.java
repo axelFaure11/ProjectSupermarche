@@ -66,17 +66,25 @@ public class loginServlet extends HttpServlet {
                                         if (null == userName) { // L'utilisateur n'est pas connecté
                                                 // On choisit la page de login
                                                 view = "login.jsp";
+                                                request.setAttribute("log", "unlog");
 
                                         } else { // L'utilisateur est connecté
                                                 // On choisit la page d'affichage
                                                 view = "afficheProduits.html";
+                                                request.setAttribute("log", "log");
                                         }
-                                        System.out.println(view);
+                                        
                                         if(view.equals("afficheProduits.html")){
                                             response.sendRedirect("afficheProduits.html");
-                                        }else {
-                                            try(PrintWriter out = response.getWriter()){
-                                                out.write("login.jsp");
+                                        } else {
+                                            boolean ajax = "XMLHttpRequest".equals(
+                                            request.getHeader("X-Requested-With"));
+                                            if(ajax){
+                                                try(PrintWriter out = response.getWriter()){
+                                                    out.write("login.jsp");
+                                                }
+                                            } else {
+                                                request.getRequestDispatcher("login.jsp").forward(request, response);
                                             }
                                         }
 					break;
@@ -87,6 +95,7 @@ public class loginServlet extends HttpServlet {
                                         }
 					break;
                                 default:
+                                    break;
 			}
 		}
     }

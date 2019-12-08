@@ -5,6 +5,7 @@
  */
 package servlets;
 
+import com.google.gson.Gson;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
@@ -39,13 +40,19 @@ public class updateClientInfo extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, SQLException {
         
-        
+        response.setContentType("application/json;charset='UTF-8'");
         DAO dao = new DAO(DataSourceFactory.getDataSource());
         HttpSession session = request.getSession(false);
         
         Client cl = dao.getClientInfo((String) session.getAttribute("userName"));
         
-        request.getRequestDispatcher("account_info.jsp").forward(request, response);
+        try (PrintWriter out = response.getWriter()) {
+            Gson gson = new Gson();
+            String gsonData = gson.toJson(cl);
+            System.out.println(gsonData);
+
+            out.println(gsonData);
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

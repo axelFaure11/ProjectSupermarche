@@ -130,11 +130,14 @@
                     error: showError,
                     success:
                             function (result) {
-                                if(result==="login.jsp"){
-                                    window.location.assign("login.jsp");
-                                } else {
-                                    isConnected();
-                                }  
+                                setTimeout(function (){
+                                    console.log(result);
+                                    if(result==="login.jsp"){
+                                        window.location.assign("login.jsp");
+                                    } else {
+                                        isConnected();
+                                    }   
+                                }, 100);
                             }
                 });
             }

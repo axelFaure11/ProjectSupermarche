@@ -9,6 +9,7 @@ import com.google.gson.Gson;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Properties;
 import javax.servlet.ServletException;
@@ -17,6 +18,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import modele.Client;
 import modele.DAO.DAO;
 import modele.DataSourceFactory;
 
@@ -47,15 +49,18 @@ public class showClientInfo extends HttpServlet {
             Properties client = new Properties();
             
             try {
-                client.put("info_client", dao.getClientInfo((String) session.getAttribute("contact")));
+                ArrayList<Client> outp = new ArrayList();
+                outp.add(dao.getClientInfo((String) session.getAttribute("userName")));
+                client.put("info_client", outp);
             } catch (SQLException e) {
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-		client.put("records", Collections.EMPTY_LIST);
+		client.put("info_client", Collections.EMPTY_LIST);
 		client.put("message", e.getMessage());
             }
             
             Gson gson = new Gson();
-            out.println(gson.toJson(client));
+            String gsonData = gson.toJson(client);
+            out.println(gsonData);
         }
     }
 
