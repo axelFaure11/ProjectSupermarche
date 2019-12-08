@@ -163,7 +163,7 @@
         <script id="cartTemplate" type="text/template">
                     <h2>Votre panier</h2>
                     <table class="carttab">
-                            <tr><td>Total: {{total}}€</td>
+                            <tr><td>Total: {{total}}¥</td>
                                 <td><button class="removeAll" value="delAll" onclick="EditCart(this, 'null')">Vider le panier</button></td>
                             </tr>
                             {{#records}}
@@ -171,7 +171,7 @@
                                     <td><button class="remove" value="del" onclick="EditCart(this, {{key.ref}})">X</button>
                                     </td>
                                     <td>
-                                        <p>{{key.nom}}    (x{{value}}) : {{key.prix}}*{{value}}€</p>
+                                        <p>{{key.nom}}    (x{{value}}) : {{key.prix}}*{{value}}¥</p>
                                     </td>
                                     <td>
                                         <button class="addOne" value="add" onclick="EditCart(this, {{key.ref}})"> + </button> 
@@ -197,7 +197,7 @@
                                     <button class="prodb" value="add" onclick="EditCart(this, {{ref}})">{{nom}}</button>
                                     <span>({{unitesEnStock}} Disponible(s))</span> 
                                 </td>
-                                <td>{{prix}}€</td>
+                                <td>{{prix}}¥</td>
                             </tr>
                             {{/records}}
                     </table>
