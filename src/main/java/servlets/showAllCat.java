@@ -5,13 +5,19 @@
  */
 package servlets;
 
+import com.google.gson.Gson;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
+import java.util.Collections;
+import java.util.Properties;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import modele.DAO.DAO;
+import modele.DataSourceFactory;
 
 /**
  *
@@ -31,18 +37,23 @@ public class showAllCat extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
+        response.setContentType("application/json;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet showAllCat</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet showAllCat at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
+            
+            DAO dao = new DAO(DataSourceFactory.getDataSource());
+
+            Properties resultat = new Properties();
+            try {
+                    resultat.put("records", dao.getAllCat());
+		} catch (SQLException ex) {
+                    response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                    resultat.put("records", Collections.EMPTY_LIST);
+                    resultat.put("message", ex.getMessage());
+		}
+            Gson gson = new Gson();
+            String gsonData = gson.toJson(resultat);
+            
+            out.println(gsonData);
         }
     }
 

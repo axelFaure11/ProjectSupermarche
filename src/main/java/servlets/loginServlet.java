@@ -12,6 +12,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -43,6 +44,19 @@ public class loginServlet extends HttpServlet {
 					break;
 			}
 		}
+                String userName = findUserInSession(request);
+		String jspView;
+		if (null == userName) { // L'utilisateur n'est pas connecté
+			// On choisit la page de login
+			jspView = "login.jsp";
+
+		} else { // L'utilisateur est connecté
+			// On choisit la page d'affichage
+			jspView = "affiche.jsp";
+		}
+		// On va vers la page choisie
+		request.getRequestDispatcher(jspView).forward(request, response);
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -85,11 +99,36 @@ public class loginServlet extends HttpServlet {
     }// </editor-fold>
 
     private void checkLogin(HttpServletRequest request) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+		// Les paramètres transmis dans la requête
+		String loginParam = request.getParameter("loginParam");
+		String passwordParam = request.getParameter("passwordParam");
 
-    private void doLogout(HttpServletRequest request) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+		// Le login/password défini dans web.xml
+		String login = getInitParameter("login");
+		String password = getInitParameter("password");
+		String userName = getInitParameter("userName");
+
+		if ((login.equals(loginParam) && (password.equals(passwordParam)))) {
+			// On a trouvé la combinaison login / password
+			// On stocke l'information dans la session
+			HttpSession session = request.getSession(true); // démarre la session
+			session.setAttribute("userName", userName);
+		} else { // On positionne un message d'erreur pour l'afficher dans la JSP
+			request.setAttribute("errorMessage", "Login/Password incorrect");
+		}
+	}
+
+	private void doLogout(HttpServletRequest request) {
+		// On termine la session
+		HttpSession session = request.getSession(false);
+		if (session != null) {
+			session.invalidate();
+		}
+	}
+
+	private String findUserInSession(HttpServletRequest request) {
+		HttpSession session = request.getSession(false);
+		return (session == null) ? null : (String) session.getAttribute("userName");
+	}
 
 }

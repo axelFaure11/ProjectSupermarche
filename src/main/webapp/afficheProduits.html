@@ -7,12 +7,12 @@
         <!-- Librairies JavaScript & Mustache -->
          <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
          <script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/0.8.1/mustache.min.js"></script>
-         
+         <link rel="stylesheet" type="text/css" href="CSS/affProd.css"> 
          <script>
             $(document).ready(
                 function (){
-                    showAllCat();
                     showAllProd();
+                    showAllCat();
                 });
             
             function showError(xhr, status, message) {
@@ -24,7 +24,7 @@
                     url: "showAllProd",
                     dataType: "json",
                     error: showError,
-                    succes:
+                    success:
                             function(result) {
                                 var template = $("#prodTemplate").html();
                                 var processedTemplate = Mustache.to_html(template, result);
@@ -38,7 +38,7 @@
                     url: "showAllCat",
                     dataType: "json",
                     error: showError,
-                    succes:
+                    success:
                             function(result) {
                                 var template = $("#catTemplate").html();
                                 var processedTemplate = Mustache.to_html(template, result);
@@ -78,28 +78,32 @@
     
     <body>
         <h1>Nom du commerce</h1>
-        <div>
-            <div id="categories"></div>
-            <form id="login" onsubmit="callLogin();" method="POST">
+        <table id="toptable">
+            <td><div id="categories"></div></td>
+            <td><form id="login" onsubmit="callLogin();" method="POST">
                 <fieldset><legend>Saisissez vos identifiants</legend>
                     Identifiant : <input id="id" name="id" required><br />
                     Mot de passe : <input type="password" id="pass" name="pass" required><br />
                     <input type="submit" value="login">
-            </form>
-        </div>
+                </form></td>
+        </table>
         <div id="produits"></div>
         
         <script id="catTemplate" type="text/template">
-                    <table><tr>
-                            {{records}}
-                            <td><button onclick="showProdInCat('{{libelle}}')">{{libelle}}</button></td>
+                    <table class=cattab><tr>
+                            <td><button class="catb" onclick="showAllProd()">Tout</button></td>
+                            {{#records}}
+                            <td><button class="catb" onclick="showProdInCat('{{code}}')">{{libelle}}</button></td>
                             {{/records}}
                     </tr></table>
         </script>
         <script id="prodTemplate" type="text/template">
-                    <table>
-                            {{records}}
-                            <tr><td><button onclick="">{{nom}}</button></td></tr>
+                    <table class=prodtab>
+                            {{#records}}
+                            <tr>
+                                <td class="prodl"><button class="prodb" onclick="">{{nom}}</button></td>
+                                <td>{{prix}}€</td>
+                            </tr>
                             {{/records}}
                     </table>
         </script>

@@ -14,7 +14,7 @@ public class DataSourceFactory {
 	};
 	
 	// Choic du type de driver : embedded ou serveur
-	private static final DriverType TYPE = DriverType.embedded;
+	private static final DriverType TYPE = DriverType.server;
 	/**
 	 * Renvoie la source de données (server ou embbeded)
 	 * @return  la source de données
@@ -26,9 +26,6 @@ public class DataSourceFactory {
 			case server: // Derby mode serveur, doit être démarré indépendamment
 				org.apache.derby.jdbc.ClientDataSource ds = new org.apache.derby.jdbc.ClientDataSource();
 				ds.setDatabaseName("supermarket");
-				ds.setUser("app");
-				ds.setPassword("app");
-				// The host on which Network Server is running
 				ds.setServerName("localhost");
 				// port on which Network Server is listening
 				ds.setPortNumber(1527);

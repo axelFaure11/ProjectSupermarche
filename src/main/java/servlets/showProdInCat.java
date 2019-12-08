@@ -5,6 +5,7 @@
  */
 package servlets;
 
+import com.google.gson.Gson;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
@@ -39,19 +40,21 @@ public class showProdInCat extends HttpServlet {
         response.setContentType("application/json;charset=UTF-8");
         String cat = request.getParameter("cat");
         try (PrintWriter out = response.getWriter()) {
-            
             DAO dao = new DAO(DataSourceFactory.getDataSource());
             
-            Properties prods = new Properties();
+            Properties resultat = new Properties();
             
             try {
-                prods.put("produits", dao.getProdsInCat(cat));
+                resultat.put("records", dao.getProdsInCat(cat));
             } catch (SQLException e) {
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-                prods.put("records", Collections.EMPTY_LIST);
-                prods.put("message", e.getMessage());
+                resultat.put("records", Collections.EMPTY_LIST);
+                resultat.put("message", e.getMessage());
             }
+            Gson gson = new Gson();
+            String gsonData = gson.toJson(resultat);
             
+            out.println(gsonData);
         }
     }
 
