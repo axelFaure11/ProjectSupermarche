@@ -112,7 +112,7 @@ public class Client
     
     //setters
     
-    public void setCode(String Code)
+    public void setCode(String code)
     {
         this.code=code;
     }

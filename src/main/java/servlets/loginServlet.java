@@ -40,34 +40,56 @@ public class loginServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, SQLException {
         
+        response.setContentType("text/plain;charset=UTF-8");
+        
         String action = request.getParameter("action");
         System.out.println("action : " + action);
 		if (null != action) {
 			switch (action) {
+                                case "check":
+                                        try(PrintWriter out = response.getWriter()){
+                                            String str = findUserInSession(request);
+                                            if(null != str){
+                                                out.write(str);
+                                            } else {
+                                                out.write("not connected");
+                                            }
+                                        }
+                                        break;
 				case "login":
 					checkLogin(request);
+                                        
+                                        String userName = findUserInSession(request);
+                                        String view;
+
+                                        if (null == userName) { // L'utilisateur n'est pas connecté
+                                                // On choisit la page de login
+                                                view = "login.jsp";
+
+                                        } else { // L'utilisateur est connecté
+                                                // On choisit la page d'affichage
+                                                view = "afficheProduits.html";
+                                        }
+                                        System.out.println(view);
+                                        if(view.equals("afficheProduits.html")){
+                                            try(PrintWriter out = response.getWriter()){
+                                                request.getRequestDispatcher(view).forward(request, response);
+                                            }
+                                        }else {
+                                            try(PrintWriter out = response.getWriter()){
+                                                out.write("login.jsp");
+                                            }
+                                        }
 					break;
 				case "logout":
 					doLogout(request);
+                                        try(PrintWriter out = response.getWriter()){
+                                            out.write("Disconnected");
+                                        }
 					break;
                                 default:
 			}
 		}
-                String userName = findUserInSession(request);
-		String view;
-		if (null == userName) { // L'utilisateur n'est pas connecté
-			// On choisit la page de login
-			view = "login.jsp";
-
-		} else { // L'utilisateur est connecté
-			// On choisit la page d'affichage
-			view = "afficheProduits.html";
-		}
-		// On va vers la page choisie
-                request.getRequestDispatcher(view).forward(request, response);
-                try (PrintWriter out = response.getWriter()) {
-                    out.println(view);
-                }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -131,8 +153,6 @@ public class loginServlet extends HttpServlet {
                 
                 Client cl = dao.getClientInfo(loginParam);
                 
-                System.out.println(loginParam + " " + passwordParam);
-                System.out.println(loginParam + " " + cl.getCode());
                 if(cl!=null){
                     System.out.println("Client found!");
                     if (((passwordParam.equals(cl.getCode())))) {
@@ -141,6 +161,9 @@ public class loginServlet extends HttpServlet {
 			HttpSession session = request.getSession(false); // démarre la session
 			session.setAttribute("userName", loginParam);
                         System.out.println("Attributed!");
+                    } else {
+                        request.setAttribute("errorMessage", "Login/Password incorrect");
+                        System.out.println("Failed!");
                     }
                 } else { // On positionne un message d'erreur pour l'afficher dans la JSP
 			request.setAttribute("errorMessage", "Login/Password incorrect");
@@ -152,7 +175,7 @@ public class loginServlet extends HttpServlet {
 		// On termine la session
 		HttpSession session = request.getSession(false);
 		if (session != null) {
-			session.invalidate();
+			session.removeAttribute("userName");
 		}
 	}
 

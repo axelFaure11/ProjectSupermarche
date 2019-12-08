@@ -96,18 +96,37 @@
             }
             
             function isConnected(){
-                
+                $.ajax({
+                    type: "get",
+                    url: "login",
+                    data: {"action": "check"},
+                    dataType: "text",
+                    error: showError,
+                    success:
+                            function(result){
+                                console.log(result);
+                                if($.trim(result)!=="not connected"){
+                                    $("#log").html(result);
+                                    $("#log").val("logout");
+                                } else {
+                                    $("#log").html("Se connecter");
+                                    $("#log").val("login");
+                                }
+                            }
+                });
             }
             
             function callLogin(op) {
                 $.ajax({
                     url: "login",
                     data: {"action": $(op).val()},
+                    dataType: "text",
                     error: showError,
                     success:
                             function (result) {
-                                if(result = "login.jsp"){
-                                    window.location.href = "login.jsp";
+                                console.log(result);
+                                if(result==="login.jsp"){
+                                    window.location.assign("login.jsp");
                                 } else {
                                     isConnected();
                                 }
@@ -121,6 +140,7 @@
     <body>
         <h1>Nom du commerce</h1>
         <button id="log" value="log" onclick="callLogin(this)">Se connecter</button>
+        <div id="logButton"></div>
         <div id="categories"></div>
         <div style="display: flex;">
             <div id="produits"></div>

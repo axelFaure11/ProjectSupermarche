@@ -12,7 +12,10 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <<table id="toptable">
+        <form action="afficheProduits.html">
+         <input type="submit" value="<" />
+        </form>
+        <table id="toptable">
             <td><div id="categories"></div></td>
             <td><form action="<c:url value="/login" />" method="POST">
                 <fieldset><legend>Saisissez vos identifiants</legend>
