@@ -11,6 +11,7 @@ package modele;
  */
 public class ElementPanier {
     private String elementPanierId;
+    private String description;
     private Panier panier;
     private Produit produit;
     private int quantite;
@@ -43,6 +44,11 @@ public class ElementPanier {
        return prix;
     }
 
+    public String getDescription()
+    {
+       return description;
+    }
+
     //setters
     
     public void setElementPanierId(String elementPanierId)
@@ -68,5 +74,10 @@ public class ElementPanier {
     public void setPrix (double prix)
     {
         this.prix=prix;
+    }   
+
+    public void setDescription (String description)
+    {
+        this.description=description;
     }   
 }

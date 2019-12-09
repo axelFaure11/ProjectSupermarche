@@ -5,7 +5,6 @@
  */
 package modele.DAO;
 import java.util.List;
-import modele.Categorie;
 import modele.Produit;
 /**
  *

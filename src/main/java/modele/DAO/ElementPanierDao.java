@@ -5,16 +5,20 @@
  */
 package modele.DAO;
 
+import java.util.List;
+import modele.Client;
 import modele.ElementPanier;
+import modele.Panier;
+
 /**
  *
  * @author rebecca
  */
-public class ElementPanierDao {
+public interface ElementPanierDao {
     
     public int addElementPanier(ElementPanier elementPanier);
-    public int deleteElementPanier;
-    public int deleteAll; 
-    
+    public int deleteElementPanier(String elementPanierId);
+    public int deleteAll(Panier panier); 
+    public List<ElementPanier> liste();
     
 }

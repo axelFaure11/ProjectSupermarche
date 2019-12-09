@@ -5,10 +5,17 @@
  */
 package modele.DAO;
 
+import java.util.List;
+import modele.Commande;
+
 /**
  *
  * @author rebecca
  */
-public class CommandeDao {
-    
+public interface CommandeDao {
+    public int addCommande (Commande commande);
+    public int deleteCommande (int numCommande);
+    public int updateCommande(Commande commande);
+    public Commande get(int numCommande);
+    public List<Commande> liste();
 }

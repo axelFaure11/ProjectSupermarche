@@ -15,17 +15,17 @@ public class Fournisseur {
     private String nom;
     
     //getters
-    public int getCodeFournisser()
+    public int getCodeFournisseur()
     {
         return codeFournisseur;
     }
     
-    public String adresse()
+    public String getAdresse()
     {
         return adresse;
     }
     
-    public String nom()
+    public String getNom()
     {
         return nom;
     }

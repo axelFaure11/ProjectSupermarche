@@ -5,8 +5,7 @@
  */
 package modele;
 import java.util.Date;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
+
 
 
 /**
@@ -16,12 +15,7 @@ import java.text.SimpleDateFormat;
 public class Commande 
 {
     private int numCommande;
-    private String getDateTime()
-    {
-    DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-    Date date = new Date();
-    return dateFormat.format(date);
-     }
+    private Date date;
     private double port;
     private String destinataire;
     private String adresseLivraison;
@@ -56,6 +50,16 @@ public class Commande
         return remise;
     }
     
+    public Client getClient()
+    {
+        return client;
+    }
+    
+     public Date getDate()
+    {
+        return date;
+    }
+    
     //setters
     
     public void setNumCommande(int numCommande)
@@ -82,4 +86,17 @@ public class Commande
     {
         this.remise=remise;
     }
+
+    public void setClient(Client client) 
+    {
+        this.client=client;
+     
+    }
+    
+     public void setDate(Date date) 
+    {
+        this.date=date;
+     
+    }
+
 }

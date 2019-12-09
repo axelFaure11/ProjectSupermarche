@@ -11,8 +11,7 @@ package modele;
  */
 public class Client 
 {
-
-     
+    
     private String code;
     private String societe;
     private String contact;

@@ -12,12 +12,11 @@ import modele.Client;
 import modele.DAO.DB;
 
 
-public class ClientDaoImpl implements ClientDao {
+    public class ClientDaoImpl {
         private DB db = new DB();
 	private int ok;
 	private ResultSet rs;
               
-    @Override
     public int addClient(Client client) {     
         String sql= "INSERT INTO Client VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
         try
@@ -86,7 +85,6 @@ public class ClientDaoImpl implements ClientDao {
     }
     
     
-    @Override
     public int deleteClient(String code) {
         String sql="DELETE FROM client WHERE code=?";
         ok=0;
@@ -106,7 +104,7 @@ public class ClientDaoImpl implements ClientDao {
     }
        
     
-    public Client getClient(String code) {
+        public Client getClient(String code) {
         Client client = null;
         String sql = "SELECT * FROM client WHERE code = ?";
         try 
@@ -143,7 +141,6 @@ public class ClientDaoImpl implements ClientDao {
         }
     
 
-    @Override
     public List<Client> liste() {
         List<Client> clients = new ArrayList<>();
         String sql= "SELECT * FROM client";
