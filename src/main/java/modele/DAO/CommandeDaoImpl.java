@@ -30,7 +30,7 @@ public class CommandeDaoImpl {
               
     public int addCommande(Commande commande) 
     {     
-        String sql= "INSERT INTO Commande VALUES(?,?,?,?,?,?,?) ";
+        String sql= "INSERT INTO Commande VALUES(?,?,?,?,?,?,?,?) ";
         try
         {
             Date date = new Date();
@@ -45,7 +45,7 @@ public class CommandeDaoImpl {
             db.getPstm().setString(5, commande.getAdresseLivraison());
             db.getPstm().setDouble(6, commande.getRemise());
             db.getPstm().setString(7, commande.getClient().getCode());
-           
+           db.getPstm().setBoolean(8, commande.getState());
             // Execution de la requete
             ok=db.executeMaj();
         
@@ -60,7 +60,7 @@ public class CommandeDaoImpl {
     public int updateCommande (Commande commande)
     {
         String sql="UPDATE commande SET date=?, port=?, destinataire=?,"
-                + " adresseLivraison=?, remise=?, client=? WHERE numCommande = ?";          
+                + " adresseLivraison=?, remise=?, client=? , state=? WHERE numCommande = ?";          
         ok=0;
         try
         {
@@ -76,6 +76,7 @@ public class CommandeDaoImpl {
             db.getPstm().setString(5, commande.getAdresseLivraison());
             db.getPstm().setDouble(6, commande.getRemise());
             db.getPstm().setString(7, commande.getClient().getCode());
+            db.getPstm().setBoolean(8, commande.getState());
 
         }
         catch (Exception e)
@@ -123,8 +124,10 @@ public class CommandeDaoImpl {
                 commande.setPort(rs.getDouble(3));
                 commande.setDestinataire(rs.getString(4));
                 commande.setAdresseLivraison(rs.getString(5));
-                commande.setRemise(rs.getDouble(6));
-                commande.setClient(new ClientDaoImpl().getClient(rs.getString(7)));            
+                commande.setRemise(rs.getDouble(6));               
+                commande.setClient(new ClientDaoImpl().getClient(rs.getString(7)));  
+                commande.setState(rs.getBoolean(8)); 
+                
       
             }
         }
@@ -154,6 +157,7 @@ public class CommandeDaoImpl {
                 commande.setAdresseLivraison(rs.getString(5));
                 commande.setRemise(rs.getDouble(6));
                 commande.setClient(new ClientDaoImpl().getClient(rs.getString(7)));
+                commande.setState(rs.getBoolean(8)); 
                 commandes.add(commande);
             }
         }
@@ -163,4 +167,66 @@ public class CommandeDaoImpl {
         }
         return commandes;
     }
+    
+    
+    public List<Commande> getCommandeFromClient(Client client) 
+    {
+        List<Commande> commandes = new ArrayList<>();
+        String sql= "SELECT * FROM commande,client WHERE commande.client=client.code";
+        try 
+        {
+            db.initPrepare(sql);
+            rs= db.executeSelect();
+            while(rs.next())
+            {
+                Commande commande = new Commande();
+                commande.setNumCommande(rs.getInt(1));
+                commande.setDate(rs.getDate(2)); 
+                commande.setPort(rs.getDouble(3));
+                commande.setDestinataire(rs.getString(4));
+                commande.setAdresseLivraison(rs.getString(5));
+                commande.setRemise(rs.getDouble(6));
+                commande.setClient(new ClientDaoImpl().getClient(rs.getString(7)));
+                commande.setState(rs.getBoolean(8)); 
+                commandes.add(commande);
+            }
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace(); //
+        }
+        return commandes;
+    }
+    
+    
+    public List<Commande> getUnpaidCommandeFromClient(Client client)
+     {
+        List<Commande> commandes = new ArrayList<>();
+        String sql= "SELECT * FROM commande,client WHERE commande.client=client.code AND "
+                + "commande.state=0";
+        try 
+        {
+            db.initPrepare(sql);
+            rs= db.executeSelect();
+            while(rs.next())
+            {
+                Commande commande = new Commande();
+                commande.setNumCommande(rs.getInt(1));
+                commande.setDate(rs.getDate(2)); 
+                commande.setPort(rs.getDouble(3));
+                commande.setDestinataire(rs.getString(4));
+                commande.setAdresseLivraison(rs.getString(5));
+                commande.setRemise(rs.getDouble(6));
+                commande.setClient(new ClientDaoImpl().getClient(rs.getString(7)));
+                commande.setState(rs.getBoolean(8)); 
+                commandes.add(commande);
+            }
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace(); //
+        }
+        return commandes;
+    }
+    
 }

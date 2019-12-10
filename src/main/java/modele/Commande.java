@@ -21,6 +21,7 @@ public class Commande
     private String adresseLivraison;
     private double remise;
     private Client client;
+    private boolean state;
     
     
     
@@ -58,6 +59,11 @@ public class Commande
      public Date getDate()
     {
         return date;
+    }
+     
+    public boolean getState()
+    {
+        return state;
     }
     
     //setters
@@ -98,5 +104,10 @@ public class Commande
         this.date=date;
      
     }
+     
+     public void setState(boolean State)
+     {
+         this.state=state;
+     }
 
 }
