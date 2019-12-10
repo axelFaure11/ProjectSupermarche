@@ -34,7 +34,7 @@ public class DataSourceFactory {
 			default: // Derby mode embedded, démarré automatiquement avec l'application
 				org.apache.derby.jdbc.EmbeddedDataSource es = new org.apache.derby.jdbc.EmbeddedDataSource();
 				es.setCreateDatabase("create");
-				es.setDatabaseName("embedded_sample");
+				es.setDatabaseName("supermarket");
 				result = es;
 		}
 
