@@ -16,6 +16,6 @@ public interface ProduitDao
     void addProduit (Produit produit);
     void deleteProduit (int ref);
     void upadteProduit (Produit produit);
-    public Produit get(int ref);
+    public Produit getProduit(int ref);
     public List<Produit> liste();
 }

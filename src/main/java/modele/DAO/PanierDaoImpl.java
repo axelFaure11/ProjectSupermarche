@@ -10,6 +10,7 @@ import java.sql.ResultSet;
 import modele.Categorie;
 import modele.Panier;
 import modele.Client;
+import java.lang.Object;
 
 
 /**
@@ -32,7 +33,7 @@ public class PanierDaoImpl {
         db.getPstm().setString(1, panier.getPanierId());
         db.getPstm().setString(2, panier.getClient().getCode());
         db.getPstm().setDouble(3, panier.getPrixTotal());
-        db.getPstm().setString(4, panier.getElementPanier().getElementPanierId());
+        db.getPstm().setList(4, panier.getElementPanier());
         //Execution de la requete
         ok = db.executeMaj();
     }
@@ -86,7 +87,7 @@ public class PanierDaoImpl {
         return ok;            
     }
      
-    public Panier get(String panierId){
+    public Panier getPanier(String panierId){
         Panier panier = null;  
         String sql= "SELECT * FROM panier WHERE panierId= ?";
         try

@@ -19,7 +19,7 @@ public interface PanierDao
     public int createPanier (Panier panier);
     public int updatePanier (Panier panier);    
     public int deletePanier (Panier panier);
-    public Panier get(String panierId);
+    public Panier getPanier(String panierId);
     public int validaterPanier (Panier panier);
     public List<Panier> liste();
     public List<ElementPanier> liste(ElementPanier elementPanier, Client client );

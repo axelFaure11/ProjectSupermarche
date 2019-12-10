@@ -9,7 +9,6 @@ package modele.DAO;
 import java.util.List;
 import java.util.ArrayList;
 import java.sql.ResultSet;
-import modele.Client;
 import modele.Panier;
 import modele.ElementPanier;
 
@@ -96,9 +95,9 @@ public class ElementPanierDaoImpl {
             while(rs.next())
             {
                 ElementPanier elementPanier = new ElementPanier();
-                elementPanier.setElementPanierId(rs.getString(1));
-                elementPanier.setPanier(rs.getString(2));
-                elementPanier.setProduit(rs.getString(3));
+                elementPanier.setElementPanierId(rs.getString(1));                
+                elementPanier.setPanier(new PanierDaoImpl().getPanier(rs.getString(2)));
+                elementPanier.setProduit(new ProduitDaoImpl().getProduit(rs.getInt(3)));
                 elementPanier.setQuantite(rs.getInt(4));
                 elementPanier.setPrix(rs.getDouble(5));
                 elementPanier.setDescription(rs.getString(6));

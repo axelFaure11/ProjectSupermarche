@@ -96,7 +96,7 @@ public class ProduitDaoImpl {
         return ok;
     }
     
-    public Produit get(int ref){
+    public Produit getProduit(int ref){
         Produit produit = null;  
         String sql= "SELECT * FROM produit WHERE ref= ?";
         try
