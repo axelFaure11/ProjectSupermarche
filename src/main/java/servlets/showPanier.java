@@ -16,8 +16,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import modele.ElementPanier;
-import modele.Panier;
 import modele.Produit;
 import modele.tempPanier;
 
