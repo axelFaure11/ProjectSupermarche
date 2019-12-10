@@ -16,7 +16,7 @@ public interface CategorieDao
     public int addCategorie (Categorie categorie);
     public int deleteCategorie (int code);
     public int updateCategorie (Categorie categorie);
-    public Categorie get(int code);
+    public Categorie getCategorie(int code);
     public List<Categorie> liste();
     
     

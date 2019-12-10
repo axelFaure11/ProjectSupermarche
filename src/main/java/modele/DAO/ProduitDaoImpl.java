@@ -30,11 +30,11 @@ public class ProduitDaoImpl {
             db.getPstm().setString(2, produit.getNom());
             db.getPstm().setInt(3, produit.getCodeFournisseur());
             db.getPstm().setInt(4, produit.getCategorie());
-            db.getPstm().setString(3, produit.getQuantite());
-            db.getPstm().setDouble(5, produit.getPrix());
-            db.getPstm().setInt(6, produit.getUnitesEnStock());
-            db.getPstm().setInt(7, produit.getUnitesCommandees());
-            db.getPstm().setInt(8, produit.getNiveauReapprovi());
+            db.getPstm().setString(5, produit.getQuantite());
+            db.getPstm().setDouble(6, produit.getPrix());
+            db.getPstm().setInt(7, produit.getUnitesEnStock());
+            db.getPstm().setInt(8, produit.getUnitesCommandees());
+            db.getPstm().setInt(9, produit.getNiveauReapprovi());
 
             
 
@@ -56,7 +56,7 @@ public class ProduitDaoImpl {
            // Initialisation de la requete
            db.initPrepare(sql);
            // Passage des valeurs 
-           db.getPstm().setInt(1,ref );
+           db.getPstm().setInt(1, ref);
            // Execution  de la requete
            ok= db.executeMaj();
         }

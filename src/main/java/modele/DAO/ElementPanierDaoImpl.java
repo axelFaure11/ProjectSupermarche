@@ -65,7 +65,7 @@ public class ElementPanierDaoImpl {
         return ok;            
     }
     
-    public int deleteAll(Panier panier){
+    public int deleteAll(ElementPanier elementPanier){
         String sql= "DELETE * FROM panier WHERE elementPanierId = ?";
         ok=0;
         try
@@ -73,7 +73,7 @@ public class ElementPanierDaoImpl {
            // Initialisation de la requete
            db.initPrepare(sql);
            // Passage des valeurs
-           db.getPstm().setList(1, panier.getElementPanier());
+           db.getPstm().setString(1, elementPanier.getPanier().getPanierId());
            // Execution  de la requete
            ok= db.executeMaj();
         }
@@ -83,6 +83,26 @@ public class ElementPanierDaoImpl {
 
         }
         return ok;            
+    }
+    
+       
+    
+     public ElementPanier getElementPanier(String elementPanierId){
+        ElementPanier elementPanier = null;  
+        String sql= "SELECT * FROM elementPanier WHERE elementPanierId= ?";
+        try
+        {
+            db.initPrepare(sql);
+            db.getPstm().setString(1, elementPanierId);
+            ok = db.executeMaj();
+        
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+        return elementPanier;  
+    
     }
     
      public List<ElementPanier> liste() {

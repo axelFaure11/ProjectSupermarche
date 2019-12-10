@@ -11,6 +11,7 @@ import modele.Categorie;
 import modele.Panier;
 import modele.Client;
 import java.lang.Object;
+import modele.ElementPanier;
 
 
 /**
@@ -33,7 +34,7 @@ public class PanierDaoImpl {
         db.getPstm().setString(1, panier.getPanierId());
         db.getPstm().setString(2, panier.getClient().getCode());
         db.getPstm().setDouble(3, panier.getPrixTotal());
-        db.getPstm().setList(4, panier.getElementPanier());
+        db.getPstm().setString(4, panier.getElementPanier().getElementPanierId());
         //Execution de la requete
         ok = db.executeMaj();
     }
@@ -56,6 +57,8 @@ public class PanierDaoImpl {
            db.getPstm().setString(1, panier.getPanierId());
            db.getPstm().setString(2, panier.getClient().getCode());
            db.getPstm().setDouble(3, panier.getPrixTotal());
+                           panier.setElementPanier((List<ElementPanier>) new ElementPanierDaoImpl().getElementPanier(rs.getString(4)));
+
            db.getPstm().setString(4, panier.getElementPanier().getElementPanierId());
 
         }  
@@ -106,7 +109,7 @@ public class PanierDaoImpl {
     }
     
     public int validatePanier(Panier panier){
-        String sql= "UPDATE panier SET client = ?, prixtotal=?,"
+        String sql= "UPDATE panier SET client = ?, prixTotal=?,"
                 + " elementPanier=?,WHERE panierId=?";
         ok=0;
         try
@@ -139,9 +142,9 @@ public class PanierDaoImpl {
             {
                 Panier panier = new Panier();
                 panier.setPanierId(rs.getString(1));
-                panier.setClient(rs.getClient(2));
-                panier.setPrixTotal(rs.getDouble(3));
-                panier.setElementPanier(rs.getString(4));                
+                panier.setClient(new ClientDaoImpl().getClient(rs.getString(2)));
+                panier.setPrixTotal(rs.getDouble(3)); 
+                panier.setElementPanier((List<ElementPanier>) new ElementPanierDaoImpl().getElementPanier(rs.getString(4)));
                 paniers.add(panier);
             }
         }

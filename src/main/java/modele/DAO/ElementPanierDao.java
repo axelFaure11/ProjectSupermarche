@@ -19,6 +19,7 @@ public interface ElementPanierDao {
     public int addElementPanier(ElementPanier elementPanier);
     public int deleteElementPanier(String elementPanierId);
     public int deleteAll(Panier panier); 
+    public ElementPanier getElementPanier(String elementPanierId);
     public List<ElementPanier> liste();
     
 }

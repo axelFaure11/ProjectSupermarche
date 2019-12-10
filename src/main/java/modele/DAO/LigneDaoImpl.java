@@ -91,7 +91,7 @@ public class LigneDaoImpl
         {
             db.initPrepare(sql);
             db.getPstm().setInt(1, commande);
-            db.getPstm().setInt(1, produit);
+            db.getPstm().setInt(2, produit);
             rs=db.executeSelect();
             if (rs.next())
             {

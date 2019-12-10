@@ -81,7 +81,7 @@ public class CategorieDaoImpl {
         return ok;
     }
     
-    public Categorie get(int code){
+    public Categorie getCategorie(int code){
         Categorie categorie = null;  
         String sql= "SELECT * FROM categorie WHERE code= ?";
         try
