@@ -10,7 +10,7 @@ import java.sql.SQLException;
 import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.util.Pair;
+import modele.Pair;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -47,7 +47,7 @@ public class EditCart extends HttpServlet {
         HttpSession session = request.getSession();
         tempPanier panier = (tempPanier) session.getAttribute("panier");
         DAO dao = new DAO(DataSourceFactory.getDataSource());
-        Pair<Produit, Integer> lig;
+        Pair lig;
         Iterator it;
         boolean updated;
         
@@ -61,7 +61,7 @@ public class EditCart extends HttpServlet {
                     updated = false;
                     for(int i = 0; i<panier.size(); i++){
                         if(panier.get(i).getKey().equals(lig.getKey())){
-                            panier.set(i, new Pair(panier.get(i).getKey(), panier.get(i).getValue() + 1));
+                            panier.set(i, new Pair(panier.get(i).getKey(), panier.get(i).getQuantity() + 1));
                             updated = true;
                         }
                     }
@@ -80,9 +80,9 @@ public class EditCart extends HttpServlet {
                     updated = false;
                     int updNbr = 0;
                     while(it.hasNext()){
-                        Pair<Produit, Integer> currLig = (Pair<Produit, Integer>) it.next();
+                        Pair currLig = (Pair) it.next();
                         if(currLig.getKey().equals(lig.getKey())){
-                            updNbr = currLig.getValue();
+                            updNbr = currLig.getQuantity();
                             it.remove();
                             updated = true;
                         }
@@ -100,8 +100,8 @@ public class EditCart extends HttpServlet {
                     updated = false;
                     for(int i = 0; i<panier.size(); i++){
                         if(panier.get(i).getKey().equals(lig.getKey())){
-                            if(panier.get(i).getValue() > 1){
-                                panier.set(i, new Pair(panier.get(i).getKey(), panier.get(i).getValue() - 1));
+                            if(panier.get(i).getQuantity() > 1){
+                                panier.set(i, new Pair(panier.get(i).getKey(), panier.get(i).getQuantity() - 1));
                                 updated = true;
                             } else {
                                 panier.remove(i);

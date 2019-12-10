@@ -6,13 +6,12 @@
 package modele;
 
 import java.util.ArrayList;
-import javafx.util.Pair;
 
 /**
  *
  * @author Axel
  */
-public class tempPanier extends ArrayList<Pair<Produit, Integer>> {
+public class tempPanier extends ArrayList<Pair> {
     
     public double prixTotal;
     

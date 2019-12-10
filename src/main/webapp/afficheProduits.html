@@ -168,14 +168,14 @@
                             </tr>
                             {{#records}}
                                 <tr>
-                                    <td><button class="remove" value="del" onclick="EditCart(this, {{key.ref}})">X</button>
+                                    <td><button class="remove" value="del" onclick="EditCart(this, {{pr.ref}})">X</button>
                                     </td>
                                     <td>
-                                        <p>{{key.nom}}    (x{{value}}) : {{key.prix}}*{{value}}¥</p>
+                                        <p>{{pr.nom}}    (x{{quantity}}) : {{pr.prix}}*{{quantity}}¥</p>
                                     </td>
                                     <td>
-                                        <button class="addOne" value="add" onclick="EditCart(this, {{key.ref}})"> + </button> 
-                                        <button class="remOne" value="delOne" onclick="EditCart(this, {{key.ref}})"> - </button>
+                                        <button class="addOne" value="add" onclick="EditCart(this, {{pr.ref}})"> + </button> 
+                                        <button class="remOne" value="delOne" onclick="EditCart(this, {{pr.ref}})"> - </button>
                                     </td>
                                 </tr>
                             {{/records}}
