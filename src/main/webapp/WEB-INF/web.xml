@@ -13,4 +13,9 @@
         <filter-name>checkConnection</filter-name>
         <url-pattern>/logged/*</url-pattern>
     </filter-mapping>
+    <listener>
+        <listener-class>
+            servlets.DatabaseInitializer
+        </listener-class>
+    </listener>
 </web-app>

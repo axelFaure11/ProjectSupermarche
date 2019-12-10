@@ -28,6 +28,11 @@
             <scope>test</scope>
         </dependency>
         <dependency>
+            <groupId>org.apache.derby</groupId>
+            <artifactId>derby</artifactId>
+            <version>10.14.1.0</version>
+        </dependency>
+        <dependency>
             <groupId>javax</groupId>
             <artifactId>javaee-web-api</artifactId>
             <version>7.0</version>
@@ -40,11 +45,6 @@
             <version>1.2</version>
         </dependency>		
         <!-- Derby embedded database and JDBC Driver -->
-        <dependency>
-            <groupId>org.apache.derby</groupId>
-            <artifactId>derby</artifactId>
-            <version>10.14.1.0</version>
-        </dependency>
         <!-- Derby network client JDBC driver -->
         <dependency>
             <groupId>org.apache.derby</groupId>

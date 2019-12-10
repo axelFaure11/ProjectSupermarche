@@ -1,6 +1,9 @@
 package modele;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.sql.DataSource;
+import servlets.DatabaseInitializer;
 
 
 /**
