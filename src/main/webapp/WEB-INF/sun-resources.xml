@@ -30,7 +30,7 @@
 		steady-pool-size="8" 
 		validate-atmost-once-period-in-seconds="0" 
 		wrap-jdbc-objects="false">
-    <property name="DRIVER" value="org.apache.derby.jdbc.EmbeddedDriver"/>
+    <property name="driverClassName" value="org.apache.derby.jdbc.EmbeddedDriver"/>
     <property name="URL" value="jdbc:derby:supermarket"/>
     <property name="DatabaseName" value="supermarket"/>
   </jdbc-connection-pool>

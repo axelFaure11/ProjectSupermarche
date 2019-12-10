@@ -4,7 +4,6 @@ import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.sql.DriverManager;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -57,7 +56,8 @@ public class DatabaseInitializer implements ServletContextListener {
 		
 		Logger.getLogger("ComptoirEditor").log(Level.INFO, "Creating databse from SQL script");
 		try {
-			Connection connection = DriverManager.getConnection("jdbc:derby:supermarket");
+                        Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
+			Connection connection = DataSourceFactory.getDataSource().getConnection();
 			int result = ij.runScript(connection, this.getClass().getResourceAsStream("comptoirs_schema_derby.sql"), "UTF-8", System.out /* nowhere */ , "UTF-8");
 			if (result == 0) {
 				Logger.getLogger("ComptoirEditor").log(Level.INFO, "Database succesfully created");
@@ -65,7 +65,7 @@ public class DatabaseInitializer implements ServletContextListener {
 				Logger.getLogger("ComptoirEditor").log(Level.SEVERE, "Errors creating database");
 			}
 
-		} catch (UnsupportedEncodingException | SQLException  e) {
+		} catch (UnsupportedEncodingException | SQLException | ClassNotFoundException e) {
 			Logger.getLogger("ComptoirEditor").log(Level.SEVERE, null, e);
 		}
 
