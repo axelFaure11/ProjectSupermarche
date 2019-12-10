@@ -111,6 +111,7 @@
                                     <groupId>com.github.jsimone</groupId>
                                     <artifactId>webapp-runner</artifactId>
                                     <version>8.5.23.0</version>
+                                    <destFileName>webapp-runner.jar</destFileName>
                                     <type>jar</type>
                                 </artifactItem>								
                             </artifactItems>
