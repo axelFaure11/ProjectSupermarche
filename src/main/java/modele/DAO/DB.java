@@ -36,20 +36,23 @@ public class DB {
 
 	private void getConnection()
 	{
-		String url = "jdbc:mysql://localhost:3306/tpjdbcConcours";
-		String user = "root";
-		String password = "root";
+		String url = "jdbc:derby:supermarket";
 		
 		try
 		{
-			Class.forName("com.mysql.jdbc.Driver");
-			this.cnx = DriverManager.getConnection(url, user, password);
+			Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
+			this.cnx = DriverManager.getConnection(url);
 		}
 		catch(Exception e)
 		{
 			e.printStackTrace();
 		}
 	}
+        
+        public Connection getCnx()
+        {
+        return this.cnx;      
+        }
 	
 	public void initPrepare(String sql)
 	{
