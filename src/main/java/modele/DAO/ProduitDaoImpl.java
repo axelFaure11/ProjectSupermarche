@@ -6,6 +6,7 @@
 package modele.DAO;
 
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import modele.Produit;
@@ -114,12 +115,13 @@ public class ProduitDaoImpl {
     
     }
     
-    public List<Produit> liste() {
+    public List<Produit> liste() throws SQLException {
 		List<Produit> produits = new ArrayList<>();
 		String sql = "SELECT * FROM produit";
 		try
 		{
 			db.initPrepare(sql);
+                        System.out.println(db);
 			rs = db.executeSelect();
 			while(rs.next())
 			{
@@ -139,7 +141,7 @@ public class ProduitDaoImpl {
 		}
 		catch(Exception e)
 		{
-			e.printStackTrace();
+			throw new SQLException();
 		}
 		return produits;
 	}

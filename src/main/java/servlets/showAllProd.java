@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import modele.DAO.DAO;
+import modele.DAO.ProduitDaoImpl;
 import modele.DataSourceFactory;
 
 /**
@@ -42,11 +43,12 @@ public class showAllProd extends HttpServlet {
         response.setContentType("application/json;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             
-            DAO dao = new DAO(DataSourceFactory.getDataSource());
-
+            //DAO dao = new DAO(DataSourceFactory.getDataSource());
+            ProduitDaoImpl dao = new ProduitDaoImpl();
+            
             Properties resultat = new Properties();
             try {
-                    resultat.put("records", dao.getAllProd());
+                    resultat.put("records", dao.liste());
 		} catch (SQLException ex) {
                     response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                     resultat.put("records", Collections.EMPTY_LIST);
