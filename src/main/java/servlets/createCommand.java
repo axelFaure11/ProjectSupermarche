@@ -7,11 +7,25 @@ package servlets;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import modele.Client;
+import modele.Commande;
+import modele.DAO.ClientDaoImpl;
+import modele.DAO.CommandeDaoImpl;
+import modele.DAO.LigneDaoImpl;
+import modele.Ligne;
+import modele.Pair;
+import modele.tempPanier;
 
 /**
  *
@@ -32,19 +46,54 @@ public class createCommand extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet createCommand</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet createCommand at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
+        /*
+        //On récupère le panier stocké dans la session
+        HttpSession session = request.getSession();
+        tempPanier panier = (tempPanier) session.getAttribute("panier");
+        String codeCli = (String) session.getAttribute("code");
+        
+        //Si le panier n'est pas vide
+        if(!panier.isEmpty()){
+            CommandeDaoImpl comdao = new CommandeDaoImpl();
+            ClientDaoImpl clidao = new ClientDaoImpl();
+            LigneDaoImpl lidao = new LigneDaoImpl();
+            
+            try {
+                Client client = clidao.getClient(codeCli);
+                Commande commande = new Commande();
+                int num;
+                try {
+                    num = comdao.getNextCommandeNum();
+                    Iterator<Pair> it = panier.iterator();
+                    ArrayList<Ligne> lignes = new ArrayList();
+                    Pair paire; 
+                    Ligne ligne;
+                    while(it.hasNext()){
+                        ligne = new Ligne();
+                        paire = it.next();
+                        ligne.setCommande(num);
+                        ligne.setProduit(paire.getKey().getRef());
+                        ligne.setQuantite(paire.getQuantity());
+                        lignes.add(ligne);
+                    }
+                    commande.setNumCommande(num);
+                    commande.setClient(client);
+                    commande.setAdresseLivraison(client.getAdresse());
+                    commande.setDestinataire(client.getContact());
+                    commande.setPort(50.0);
+                    commande.setRemise(0.00);
+                    
+                    comdao.addCommande(commande);
+                    lidao.addLignes(lignes);
+                } catch (Exception e){
+                    throw e;
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(createCommand.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
-    }
+    } */
+}
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**

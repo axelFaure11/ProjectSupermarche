@@ -17,8 +17,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import modele.DAO.DAO;
-import modele.DataSourceFactory;
+import modele.DAO.ProduitDaoImpl;
 import modele.Produit;
 import modele.tempPanier;
 
@@ -46,18 +45,16 @@ public class EditCart extends HttpServlet {
         
         HttpSession session = request.getSession();
         tempPanier panier = (tempPanier) session.getAttribute("panier");
-        DAO dao = new DAO(DataSourceFactory.getDataSource());
+        ProduitDaoImpl dao = new ProduitDaoImpl();
         Pair lig;
         Iterator it;
         boolean updated;
         
         switch(act){
                 case "add":
-                    Produit pr;
-                    pr = dao.getProd(Integer.parseInt(ref));
+                    Produit pr = dao.getProduit(Integer.parseInt(ref));
                     
                     lig = new Pair(pr, 1);
-                    
                     updated = false;
                     for(int i = 0; i<panier.size(); i++){
                         if(panier.get(i).getKey().equals(lig.getKey())){
@@ -72,7 +69,7 @@ public class EditCart extends HttpServlet {
                     break;
                     
                 case "del":
-                    pr = dao.getProd(Integer.parseInt(ref));
+                    pr = dao.getProduit(Integer.parseInt(ref));
                     //
                     lig = new Pair(pr, 1);
                     
@@ -93,7 +90,7 @@ public class EditCart extends HttpServlet {
                     break;
                     
                 case "delOne":
-                    pr = dao.getProd(Integer.parseInt(ref));
+                    pr = dao.getProduit(Integer.parseInt(ref));
                     
                     lig = new Pair(pr, 1);
                     

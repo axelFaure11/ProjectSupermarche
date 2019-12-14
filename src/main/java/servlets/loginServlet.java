@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import modele.Client;
-import modele.DAO.DAO;
+import modele.DAO.ClientDaoImpl;
 import modele.DataSourceFactory;
 
 /**
@@ -157,17 +157,23 @@ public class loginServlet extends HttpServlet {
 		String password = getInitParameter("password");
 		String userName = getInitParameter("userName");
                 
-                DAO dao = new DAO(DataSourceFactory.getDataSource());
+                ClientDaoImpl dao = new ClientDaoImpl();
                 
-                Client cl = dao.getClientInfo(loginParam);
+                Client cl = dao.getClient(passwordParam);
                 
                 if(cl!=null){
                     System.out.println("Client found!");
                     if (((passwordParam.equals(cl.getCode())))) {
 			// On a trouvé la combinaison login / password
 			// On stocke l'information dans la session
-			HttpSession session = request.getSession(false); // démarre la session
+			HttpSession session = request.getSession(false); // récupération de la session
 			session.setAttribute("userName", loginParam);
+                        /*Exceptionnellement, on stocke le code qui sert de mot de passe
+                        * puisque il s'agit de la clé primaire utilisée dans la base
+                        * de données donnée dans la table client.
+                        * Sinon, ne jamais stocker un mot de passe dans la session semble évident.
+                        */
+                        session.setAttribute("code", passwordParam);
                         System.out.println("Attributed!");
                     } else {
                         request.setAttribute("errorMessage", "Login/Password incorrect");

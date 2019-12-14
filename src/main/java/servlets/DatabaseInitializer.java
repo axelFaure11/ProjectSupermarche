@@ -10,7 +10,7 @@ import java.util.logging.Logger;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
-import modele.DAO.DAO;
+import modele.DAO.ProduitDaoImpl;
 import modele.DataSourceFactory;
 import modele.Produit;
 import org.apache.derby.tools.ij;
@@ -36,9 +36,9 @@ public class DatabaseInitializer implements ServletContextListener {
 	private boolean databaseExists() {
 		boolean result = false;
 
-		DAO dao = new DAO(DataSourceFactory.getDataSource());
+		ProduitDaoImpl dao = new ProduitDaoImpl();
 		try {
-			List<Produit> allProds = dao.getAllProd();
+			List<Produit> allProds = dao.liste();
 			Logger.getLogger("ComptoirEditor").log(Level.INFO, "Database already exists");
 			result = true;
 		} catch (SQLException e) {
@@ -61,8 +61,12 @@ public class DatabaseInitializer implements ServletContextListener {
 			int result = ij.runScript(connection, this.getClass().getResourceAsStream("comptoirs_schema_derby.sql"), "UTF-8", System.out /* nowhere */ , "UTF-8");
 			if (result == 0) {
 				Logger.getLogger("ComptoirEditor").log(Level.INFO, "Database succesfully created");
+                                connection.commit();
+                                connection.close();
 			} else {
 				Logger.getLogger("ComptoirEditor").log(Level.SEVERE, "Errors creating database");
+                                connection.rollback();
+                                connection.close();
 			}
 
 		} catch (UnsupportedEncodingException | SQLException | ClassNotFoundException e) {

@@ -19,8 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import modele.Client;
-import modele.DAO.DAO;
-import modele.DataSourceFactory;
+import modele.DAO.ClientDaoImpl;
 
 /**
  *
@@ -44,13 +43,13 @@ public class showClientInfo extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             
             HttpSession session = request.getSession(false);
-            DAO dao = new DAO(DataSourceFactory.getDataSource());
+            ClientDaoImpl dao = new ClientDaoImpl();
             
             Properties client = new Properties();
             
             try {
                 ArrayList<Client> outp = new ArrayList();
-                outp.add(dao.getClientInfo((String) session.getAttribute("userName")));
+                outp.add(dao.getClient((String) session.getAttribute("code")));
                 client.put("info_client", outp);
             } catch (SQLException e) {
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);

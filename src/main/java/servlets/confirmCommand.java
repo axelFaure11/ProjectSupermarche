@@ -5,25 +5,20 @@
  */
 package servlets;
 
-import com.google.gson.Gson;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.SQLException;
-import java.util.Collections;
-import java.util.Properties;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import modele.DAO.ProduitDaoImpl;
 
 /**
  *
- * @author pedago
+ * @author Axel
  */
-@WebServlet(name = "showAllProd", urlPatterns = {"/showAllProd"})
-public class showAllProd extends HttpServlet {
+@WebServlet(name = "confirmCommand", urlPatterns = {"/confirmCommand"})
+public class confirmCommand extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -36,25 +31,9 @@ public class showAllProd extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("application/json;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            
-            //DAO dao = new DAO(DataSourceFactory.getDataSource());
-            ProduitDaoImpl dao = new ProduitDaoImpl();
-            
-            Properties resultat = new Properties();
-            try {
-                    resultat.put("records", dao.liste());
-		} catch (SQLException ex) {
-                    response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-                    resultat.put("records", Collections.EMPTY_LIST);
-                    resultat.put("message", ex.getMessage());
-		}
-            Gson gson = new Gson();
-            String gsonData = gson.toJson(resultat);
-            
-            out.println(gsonData);
-        }
+        response.setContentType("text/html;charset=UTF-8");
+        
+        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

@@ -11,6 +11,7 @@ import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -18,9 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import modele.Client;
-import modele.DAO.DAO;
-import modele.DataSourceFactory;
-
+import modele.DAO.ClientDaoImpl;
 /**
  *
  * @author pedago
@@ -41,19 +40,37 @@ public class updateClientInfo extends HttpServlet {
             throws ServletException, IOException, SQLException {
         
         response.setContentType("application/json;charset='UTF-8'");
-        DAO dao = new DAO(DataSourceFactory.getDataSource());
+        ClientDaoImpl dao = new ClientDaoImpl();
         HttpSession session = request.getSession(false);
         
-        Client cl = dao.getClientInfo((String) session.getAttribute("userName"));
+        Client cl = dao.getClient((String) session.getAttribute("code"));
+        String contact = request.getParameter("id");
+        String societe = request.getParameter("societe");
+        String fonction = request.getParameter("fonction");
+        String tel = request.getParameter("tel");
+        String fax = request.getParameter("fax");
+        String adresse = request.getParameter("adress");
+        String ville = request.getParameter("ville");
+        String cp = request.getParameter("codePostal");
+        String region = request.getParameter("region");
+        String pays = request.getParameter("pays");
         
-        try (PrintWriter out = response.getWriter()) {
-            Gson gson = new Gson();
-            String gsonData = gson.toJson(cl);
-            System.out.println(gsonData);
-
-            out.println(gsonData);
+        if(contact!=null){cl.setContact(contact);}
+        if(societe!=null){cl.setSociete(societe);}
+        if(fonction!=null){cl.setFonction(fonction);}
+        if(tel!=null){cl.setTel(tel);}
+        if(fax!=null){cl.setFax(fax);}
+        if(adresse!=null){cl.setAdresse(adresse);}
+        if(ville!=null){cl.setVille(ville);}
+        if(cp!=null){cl.setCodePostal(cp);}
+        if(region!=null){cl.setRegion(region);}
+        if(pays!=null){cl.setPays(pays);}
+        int r = dao.updateClient(cl);
+        
+        
+        response.setHeader("Refresh", "0.1; URL=logged/account_info.jsp");
         }
-    }
+
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**

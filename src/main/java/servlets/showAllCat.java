@@ -16,8 +16,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import modele.DAO.DAO;
-import modele.DataSourceFactory;
+import modele.DAO.CategorieDaoImpl;
 
 /**
  *
@@ -40,11 +39,11 @@ public class showAllCat extends HttpServlet {
         response.setContentType("application/json;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             
-            DAO dao = new DAO(DataSourceFactory.getDataSource());
+            CategorieDaoImpl dao = new CategorieDaoImpl();
 
             Properties resultat = new Properties();
             try {
-                    resultat.put("records", dao.getAllCat());
+                    resultat.put("records", dao.liste());
 		} catch (SQLException ex) {
                     response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                     resultat.put("records", Collections.EMPTY_LIST);
