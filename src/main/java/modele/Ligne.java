@@ -11,8 +11,17 @@ package modele;
  */
 public class Ligne {
     private int commande;
-    private int produit;
+    private Produit produit;
     private int quantite;
+
+    public Ligne() {
+    }
+
+    public Ligne(int commande, Produit produit, int quantite) {
+        this.commande = commande;
+        this.produit = produit;
+        this.quantite = quantite;
+    }
     
     //getters
     public int getCommande()
@@ -20,7 +29,7 @@ public class Ligne {
         return commande;
     }
     
-    public int getProduit()
+    public Produit getProduit()
     {
         return produit;
     }
@@ -37,7 +46,7 @@ public class Ligne {
         this.commande=commande;
     }
     
-    public void setProduit(int Produit)
+    public void setProduit(Produit produit)
     {
         this.produit=produit;
     } 

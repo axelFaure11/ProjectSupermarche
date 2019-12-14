@@ -19,6 +19,23 @@ public class Produit {
     private int unitesEnStock;
     private int unitesCommandees;
     private int niveauReapprovi;
+    private int indisponible;
+
+    public Produit() {
+    }
+
+    public Produit(int ref, String nom, int codeFournisseur, int categorie, String quantite, double prix, int unitesEnStock, int unitesCommandees, int niveauReapprovi, int indisponible) {
+        this.ref = ref;
+        this.nom = nom;
+        this.codeFournisseur = codeFournisseur;
+        this.categorie = categorie;
+        this.quantite = quantite;
+        this.prix = prix;
+        this.unitesEnStock = unitesEnStock;
+        this.unitesCommandees = unitesCommandees;
+        this.niveauReapprovi = niveauReapprovi;
+        this.indisponible = indisponible;
+    }
     
    //getters
     public int getRef()
@@ -64,6 +81,11 @@ public class Produit {
       public int getNiveauReapprovi()
     {
         return niveauReapprovi;
+    }
+      
+        public int getIndisponible()
+    {
+        return indisponible;
     }
       
     //setters
@@ -112,6 +134,11 @@ public class Produit {
     {
             this.niveauReapprovi=niveauReapprovi;
     }
+        
+         public void setIndisponible(int indisponile)
+    {
+            this.indisponible=indisponible;
+    }   
         @Override
         public boolean equals(Object o){
             if(o instanceof Produit){

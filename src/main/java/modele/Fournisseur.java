@@ -13,6 +13,16 @@ public class Fournisseur {
     private int codeFournisseur;
     private String adresse;
     private String nom;
+
+    public Fournisseur() {
+    }
+
+    public Fournisseur(int codeFournisseur, String adresse, String nom) {
+        this.codeFournisseur = codeFournisseur;
+        this.adresse = adresse;
+        this.nom = nom;
+    }
+    
     
     //getters
     public int getCodeFournisseur()

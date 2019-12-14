@@ -14,8 +14,8 @@ public class Utilisateur {
     private String userId;
     private String password;
     private String email;
-
-    
+    private String role;
+ 
     //getters
      public String getUserId()
     {
@@ -31,7 +31,10 @@ public class Utilisateur {
     {
         return email;
     }
-    
+     public String getRole()
+    {
+        return role;
+    }
 
     
     
@@ -52,8 +55,17 @@ public class Utilisateur {
     {
         this.email=email;
     } 
+        public void setRole(String role)
+    {
+        this.role=role;
+    } 
     
     
-  
+     
+    public boolean isAdmin()
+    {
+        return this.role == "administrateur";
+    }
+    
     
 }

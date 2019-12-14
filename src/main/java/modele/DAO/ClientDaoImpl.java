@@ -8,6 +8,7 @@ package modele.DAO;
 import java.util.List;
 import java.util.ArrayList;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import modele.Client;
 import modele.DAO.DB;
 
@@ -17,7 +18,7 @@ import modele.DAO.DB;
 	private int ok;
 	private ResultSet rs;
               
-    public int addClient(Client client) {     
+    public int addClient(Client client) throws SQLException {     
         String sql= "INSERT INTO Client VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
         try
         {
@@ -35,57 +36,51 @@ import modele.DAO.DB;
             db.getPstm().setString(9, client.getPays());
             db.getPstm().setString(10, client.getTel());
             db.getPstm().setString(11, client.getFax());
-            db.getPstm().setString(12, client.getNom());
-            db.getPstm().setString(13, client.getPrenom());
-            db.getPstm().setString(14, client.getEmail());
-            db.getPstm().setString(15, client.getPassword());
             // Execution de la requete
             ok=db.executeMaj();
         
         }
         catch(Exception e)
         {
-            e.printStackTrace();
+            throw new SQLException(e);
         }
         return ok;
     }
     
-    public int updateClient (Client client){
-        String sql="UPDATE client SET societe=?, contact=?, fonction=?, adresse=?, ville=?, region=?"
-            + "codePostal=?, pays=?, tel=?, fax=?, nom=?, prenom=?, email=?, password=? "
-            + "WHERE code=?";
+    public int updateClient (Client client) throws SQLException{
+        String sql="UPDATE client SET societe = ?, contact = ?, fonction = ?, adresse = ?, ville = ?, region= ?, "
+            + "code_postal = ?, pays = ?, telephone = ?, fax = ? "
+            + "WHERE code = ?";
         ok=0;
         try
         {
             //Initialisation de la requete
             db.initPrepare(sql);
             // Passage des valeurs
-            db.getPstm().setString(1, client.getCode());
-            db.getPstm().setString(2, client.getSociete());
-            db.getPstm().setString(3, client.getContact());
-            db.getPstm().setString(4, client.getFonction());
-            db.getPstm().setString(5, client.getAdresse());
-            db.getPstm().setString(6, client.getVille());
-            db.getPstm().setString(7, client.getRegion());
-            db.getPstm().setString(8, client.getCodePostal());
-            db.getPstm().setString(9, client.getPays());
-            db.getPstm().setString(10, client.getTel());
-            db.getPstm().setString(11, client.getFax());
-            db.getPstm().setString(12, client.getNom());
-            db.getPstm().setString(13, client.getPrenom());
-            db.getPstm().setString(14, client.getEmail());
-            db.getPstm().setString(15, client.getPassword());
+            db.getPstm().setString(1, client.getSociete());
+            db.getPstm().setString(2, client.getContact());
+            db.getPstm().setString(3, client.getFonction());
+            db.getPstm().setString(4, client.getAdresse());
+            db.getPstm().setString(5, client.getVille());
+            db.getPstm().setString(6, client.getRegion());
+            db.getPstm().setString(7, client.getCodePostal());
+            db.getPstm().setString(8, client.getPays());
+            db.getPstm().setString(9, client.getTel());
+            db.getPstm().setString(10, client.getFax());
+            db.getPstm().setString(11, client.getCode());
+            
+            ok=db.executeMaj();
 
         }
         catch (Exception e)
         {
-            e.printStackTrace();
+            throw new SQLException(e);
         }
         return ok;
     }
     
     
-    public int deleteClient(String code) {
+    public int deleteClient(String code) throws SQLException {
         String sql="DELETE FROM client WHERE code=?";
         ok=0;
         try
@@ -98,13 +93,13 @@ import modele.DAO.DB;
         }
         catch(Exception e)
         {
-            e.printStackTrace();
+            throw new SQLException(e);
         }
         return ok;     
     }
        
     
-        public Client getClient(String code) {
+        public Client getClient(String code) throws SQLException {
         Client client = null;
         String sql = "SELECT * FROM client WHERE code = ?";
         try 
@@ -126,22 +121,18 @@ import modele.DAO.DB;
                 client.setPays(rs.getString(9));
                 client.setTel(rs.getString(10));
                 client.setFax(rs.getString(11));
-                client.setNom(rs.getString(12));
-                client.setPrenom(rs.getString(13));
-                client.setEmail(rs.getString(14));
-                client.setPassword(rs.getString(15));
       
             }
         }
             catch(Exception e)
         {
-            e.printStackTrace();
+            throw new SQLException(e);
         }
         return client;
         }
     
 
-    public List<Client> liste() {
+    public List<Client> liste() throws SQLException {
         List<Client> clients = new ArrayList<>();
         String sql= "SELECT * FROM client";
         try 
@@ -162,16 +153,12 @@ import modele.DAO.DB;
                 client.setPays(rs.getString(9));
                 client.setTel(rs.getString(10));
                 client.setFax(rs.getString(11));
-                client.setNom(rs.getString(12));
-                client.setPrenom(rs.getString(13));
-                client.setEmail(rs.getString(14));
-                client.setPassword(rs.getString(15));
                 clients.add(client);
             }
         }
         catch (Exception e)
         {
-            e.printStackTrace(); //
+            throw new SQLException(e);
         }
         return clients;
     }

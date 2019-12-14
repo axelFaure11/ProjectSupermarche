@@ -6,9 +6,12 @@
 package modele.DAO;
 
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import modele.Commande;
 import modele.Ligne;
+import modele.Produit;
 
 /**
  *
@@ -21,7 +24,7 @@ public class LigneDaoImpl
 	private int ok;
 	private ResultSet rs;
               
-    public int addLigne(Ligne ligne) {     
+    public int addLigne(Ligne ligne) throws SQLException {     
         String sql= "INSERT INTO Ligne VALUES(?,?,?) ";
         try
         {
@@ -29,7 +32,7 @@ public class LigneDaoImpl
             db.initPrepare(sql);
             // Passage de valeurs
             db.getPstm().setInt(1, ligne.getCommande());
-            db.getPstm().setInt(2, ligne.getProduit());
+            db.getPstm().setInt(2, ligne.getProduit().getRef());
             db.getPstm().setInt(3, ligne.getQuantite());
          
             // Execution de la requete
@@ -38,33 +41,34 @@ public class LigneDaoImpl
         }
         catch(Exception e)
         {
-            e.printStackTrace();
+            throw new SQLException(e);
         }
         return ok;
     }
     
-    public int updateLigne (Ligne ligne ){
-        String sql="UPDATE ligne SET commande=?, produit=?, quantite=? ";
+    public int updateLigne (Ligne ligne ) throws SQLException{
+        String sql="UPDATE ligne SET quantite=? WHERE commande=? AND produit=? ";
         ok=0;
         try
         {
             //Initialisation de la requete
             db.initPrepare(sql);
             // Passage des valeurs
-            db.getPstm().setInt(1, ligne.getCommande());
-            db.getPstm().setInt(2, ligne.getProduit());
-            db.getPstm().setInt(3, ligne.getQuantite());
+            db.getPstm().setInt(1, ligne.getQuantite());
+            db.getPstm().setInt(2, ligne.getCommande());
+            db.getPstm().setInt(3, ligne.getProduit().getRef());
+            
 
         }
         catch (Exception e)
         {
-            e.printStackTrace();
+            throw new SQLException(e);
         }
         return ok;
     }
     
     
-    public int deleteLigne(int commande, int produit) {
+    public int deleteLigne(Commande commande,Produit produit) throws Exception {
         String sql="DELETE FROM ligne WHERE commande=? AND produit = ?";
         ok=0;
         try
@@ -72,44 +76,69 @@ public class LigneDaoImpl
             // Initialisation de la requete
             db.initPrepare(sql);
             // Passage de valeurs
-            db.getPstm().setInt(1, commande);
-            db.getPstm().setInt(2, produit);
+            db.getPstm().setInt(1, commande.getNumCommande());
+            db.getPstm().setInt(2, produit.getRef());
             ok=db.executeMaj();
         }
         catch(Exception e)
         {
-            e.printStackTrace();
+            throw new SQLException(e);
         }
         return ok;     
     }
        
     
-        public Ligne getLigne(int commande, int produit) {
+        public Ligne getLigne(Commande commande,Produit produit) throws SQLException {
         Ligne ligne = null;
         String sql = "SELECT * FROM ligne WHERE commande = ? AND produit = ?";
         try 
         {
             db.initPrepare(sql);
-            db.getPstm().setInt(1, commande);
-            db.getPstm().setInt(2, produit);
+            db.getPstm().setInt(1, commande.getNumCommande());
+            db.getPstm().setInt(2, produit.getRef());
             rs=db.executeSelect();
             if (rs.next())
             {
                 ligne=new Ligne();
-                ligne.setCommande(rs.getInt(1));
-                ligne.setProduit(rs.getInt(2));
-                ligne.setQuantite(rs.getInt(3));               
+                  ligne.setCommande(new CommandeDaoImpl().getCommande(rs.getInt(1)).getNumCommande());
+                  ligne.setProduit(new ProduitDaoImpl().getProduit(rs.getInt(1)));
+             ligne.setQuantite(rs.getInt(3));             
             }
         }
             catch(Exception e)
         {
-            e.printStackTrace();
+            throw new SQLException(e);
         }
         return ligne;
         }
+        
+        public List<Ligne> getLignes(Commande commande) throws SQLException {
+        List<Ligne> lignes = new ArrayList<>();
+        String sql = "SELECT * FROM ligne WHERE commande = ?";
+        try 
+        {
+            db.initPrepare(sql);
+            db.getPstm().setInt(1, commande.getNumCommande());
+            rs=db.executeSelect();
+            Ligne ligne;
+            while (rs.next())
+            {
+                ligne=new Ligne();
+                ligne.setCommande(commande.getNumCommande());
+                ligne.setProduit(new ProduitDaoImpl().getProduit(rs.getInt(2)));
+                ligne.setQuantite(rs.getInt(3));  
+                lignes.add(ligne);
+            }
+        }
+            catch(Exception e)
+        {
+            throw new SQLException(e);
+        }
+        return lignes;
+        }
     
 
-    public List<Ligne> liste() {
+    public List<Ligne> liste() throws SQLException {
         List<Ligne> lignes = new ArrayList<>();
         String sql= "SELECT * FROM ligne";
         try 
@@ -119,15 +148,15 @@ public class LigneDaoImpl
             while(rs.next())
             {
                 Ligne ligne = new Ligne();
-                ligne.setCommande(rs.getInt(1));
-                ligne.setProduit(rs.getInt(2));
-                ligne.setQuantite(rs.getInt(3));               
+                ligne.setCommande(new CommandeDaoImpl().getCommande(rs.getInt(1)).getNumCommande());
+                ligne.setProduit(new ProduitDaoImpl().getProduit(rs.getInt(1)));
+                ligne.setQuantite(rs.getInt(3));
                 lignes.add(ligne);
             }
         }
         catch (Exception e)
         {
-            e.printStackTrace(); //
+            throw new SQLException(e);
         }
         return lignes;
     }

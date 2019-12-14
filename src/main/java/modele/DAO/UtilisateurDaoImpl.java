@@ -21,7 +21,7 @@ public class UtilisateurDaoImpl {
 	private ResultSet rs;
               
     public int addUser(Utilisateur utilisateur) {     
-        String sql= "INSERT INTO Utilisateur VALUES(?,?,?) ";
+        String sql= "INSERT INTO Utilisateur VALUES(?,?,?,?) ";
         try
         {
             // Initialisation de la requete
@@ -30,6 +30,7 @@ public class UtilisateurDaoImpl {
             db.getPstm().setString(1, utilisateur.getUserId());
             db.getPstm().setString(2, utilisateur.getPassword());
             db.getPstm().setString(3, utilisateur.getEmail());
+            db.getPstm().setString(4, utilisateur.getRole());
 
             // Execution de la requete
             ok=db.executeMaj();
@@ -43,7 +44,7 @@ public class UtilisateurDaoImpl {
     }
     
     public int updateUtilisateur (Utilisateur utilisateur){
-        String sql="UPDATE utilisateur SET email = ?, password=? "
+        String sql="UPDATE utilisateur SET email = ?, password=?, role=? "
                 +"WHERE userId =? ";
         
         ok=0;
@@ -52,9 +53,10 @@ public class UtilisateurDaoImpl {
             //Initialisation de la requete
             db.initPrepare(sql);
             // Passage des valeurs
-            db.getPstm().setString(1, utilisateur.getUserId());
+            db.getPstm().setString(1, utilisateur.getEmail());            
             db.getPstm().setString(2, utilisateur.getPassword());
-            db.getPstm().setString(3, utilisateur.getEmail());
+            db.getPstm().setString(3, utilisateur.getRole());
+            db.getPstm().setString(4, utilisateur.getUserId());
 
         }
         catch (Exception e)
@@ -98,6 +100,7 @@ public class UtilisateurDaoImpl {
                 utilisateur.setUserId(rs.getString(1));
                 utilisateur.setPassword(rs.getString(2));
                 utilisateur.setEmail(rs.getString(3));
+                utilisateur.setRole(rs.getString(4));
       
             }
         }
@@ -122,6 +125,7 @@ public class UtilisateurDaoImpl {
                 utilisateur.setUserId(rs.getString(1));
                 utilisateur.setPassword(rs.getString(2));
                 utilisateur.setEmail(rs.getString(3));
+                utilisateur.setRole(rs.getString(4));
                 utilisateurs.add(utilisateur);
             }
         }
@@ -132,4 +136,5 @@ public class UtilisateurDaoImpl {
         return utilisateurs;
     }
     
+   
 }

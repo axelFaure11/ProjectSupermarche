@@ -8,6 +8,7 @@ package modele.DAO;
 import java.util.List;
 import java.util.ArrayList;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import modele.Categorie;
 
 /**
@@ -20,7 +21,7 @@ public class CategorieDaoImpl {
     private int ok;
     private ResultSet rs;
     
-    public int addCategorie (Categorie categorie){
+    public int addCategorie (Categorie categorie) throws SQLException{
         String sql= "INSERT INTO categorie VALUES (?,?,?)";
         try 
         {
@@ -35,12 +36,12 @@ public class CategorieDaoImpl {
         }
         catch (Exception e)
         {
-            e.printStackTrace();
+            throw new SQLException(e);
         }
         return ok;  
     }
     
-    public int deleteCategorie(int code){
+    public int deleteCategorie(int code) throws SQLException{
         String sql= "DELETE FROM categorie WHERE code = ?";
         ok=0;
         try
@@ -54,13 +55,13 @@ public class CategorieDaoImpl {
         }
         catch(Exception e)
         {
-           e.printStackTrace(); 
+            throw new SQLException(e);
 
         }
         return ok;            
     }
     
-    public int updateCategorie(Categorie categorie){
+    public int updateCategorie(Categorie categorie) throws SQLException{
         String sql= "UPDATE categorie SET libelle = ?, description =?, WHERE code=?";
         ok=0;
         try
@@ -75,13 +76,13 @@ public class CategorieDaoImpl {
         }  
         catch(Exception e)
         {
-           e.printStackTrace(); 
+           throw new SQLException(e);
 
         }
         return ok;
     }
     
-    public Categorie getCategorie(int code){
+    public Categorie getCategorie(int code) throws SQLException{
         Categorie categorie = null;  
         String sql= "SELECT * FROM categorie WHERE code= ?";
         try
@@ -93,13 +94,13 @@ public class CategorieDaoImpl {
         }
         catch(Exception e)
         {
-            e.printStackTrace();
+            throw new SQLException(e);
         }
         return categorie;  
     
     }
     
-    public List<Categorie> liste() {
+    public List<Categorie> liste() throws SQLException {
 		List<Categorie> categories = new ArrayList<>();
 		String sql = "SELECT * FROM categorie";
 		try
@@ -117,7 +118,7 @@ public class CategorieDaoImpl {
 		}
 		catch(Exception e)
 		{
-			e.printStackTrace();
+			throw new SQLException(e);
 		}
 		return categories;
 	}

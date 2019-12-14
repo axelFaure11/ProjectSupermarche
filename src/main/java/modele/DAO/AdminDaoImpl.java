@@ -6,6 +6,7 @@
 package modele.DAO;
 
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import modele.Admin;
@@ -20,7 +21,7 @@ public class AdminDaoImpl {
 	private int ok;
 	private ResultSet rs;
               
-    public int addAdmin(Admin admin) {     
+    public int addAdmin(Admin admin) throws SQLException {     
         String sql= "INSERT INTO Admin VALUES(?,?,?) ";
         try
         {
@@ -37,12 +38,12 @@ public class AdminDaoImpl {
         }
         catch(Exception e)
         {
-            e.printStackTrace();
+            throw new SQLException(e);
         }
         return ok;
     }
     
-    public int updateAdmin (Admin admin ){
+    public int updateAdmin (Admin admin ) throws SQLException{
         String sql="UPDATE admin SET adminId=?, username=?, password=? ";
         ok=0;
         try
@@ -57,13 +58,13 @@ public class AdminDaoImpl {
         }
         catch (Exception e)
         {
-            e.printStackTrace();
+            throw new SQLException(e);
         }
         return ok;
     }
     
     
-    public int deleteAdmin(String adminId) {
+    public int deleteAdmin(String adminId) throws SQLException {
         String sql="DELETE FROM admin WHERE adminId=?";
         ok=0;
         try
@@ -76,13 +77,13 @@ public class AdminDaoImpl {
         }
         catch(Exception e)
         {
-            e.printStackTrace();
+            throw new SQLException(e);
         }
         return ok;     
     }
        
     
-        public Admin getAdmin(String adminId) {
+        public Admin getAdmin(String adminId) throws SQLException {
         Admin admin = null;
         String sql = "SELECT * FROM admin WHERE adminId = ?";
         try 
@@ -100,13 +101,13 @@ public class AdminDaoImpl {
         }
             catch(Exception e)
         {
-            e.printStackTrace();
+            throw new SQLException(e);
         }
         return admin;
         }
     
 
-    public List<Admin> liste() {
+    public List<Admin> liste() throws SQLException {
         List<Admin> admins = new ArrayList<>();
         String sql= "SELECT * FROM admin";
         try 
@@ -124,7 +125,7 @@ public class AdminDaoImpl {
         }
         catch (Exception e)
         {
-            e.printStackTrace(); //
+            throw new SQLException(e);
         }
         return admins;
     }

@@ -13,7 +13,15 @@ public class Categorie {
     private int code;
     private String libelle;
     private String description;
-    
+
+    public Categorie(int code, String libelle, String description) {
+        this.code = code;
+        this.libelle = libelle;
+        this.description = description;
+    }
+
+    public Categorie() {
+    }
     
     
     //getters

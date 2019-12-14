@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 package modele;
-import java.util.Date;
+import java.sql.Date;
 
 
 
@@ -15,13 +15,86 @@ import java.util.Date;
 public class Commande 
 {
     private int numCommande;
-    private Date date;
+    private Client client;
+    private Date saisieLe;
+    private Date envoyeeLe;
     private double port;
     private String destinataire;
     private String adresseLivraison;
+    private String villeLivraison;
+    private String regionLivraison;
+    private String codePostal;
+    private String paysLivraison;
     private double remise;
-    private Client client;
-    private boolean state;
+
+    public Commande() {
+    }
+
+    public Commande(int numCommande, Client client, Date saisieLe, Date envoyeeLe, double port, String destinataire, String adresseLivraison, String villeLivraison, String regionLivraison, String codePostal, String paysLivraison, double remise) {
+        this.numCommande = numCommande;
+        this.client = client;
+        this.saisieLe = saisieLe;
+        this.envoyeeLe = envoyeeLe;
+        this.port = port;
+        this.destinataire = destinataire;
+        this.adresseLivraison = adresseLivraison;
+        this.villeLivraison = villeLivraison;
+        this.regionLivraison = regionLivraison;
+        this.codePostal = codePostal;
+        this.paysLivraison = paysLivraison;
+        this.remise = remise;
+    }
+    
+    
+
+    public String getPaysLivraison() {
+        return paysLivraison;
+    }
+
+    public void setPaysLivraison(String paysLivraison) {
+        this.paysLivraison = paysLivraison;
+    }
+
+    public Date getSaisieLe() {
+        return saisieLe;
+    }
+
+    public void setSaisieLe(Date saisieLe) {
+        this.saisieLe = saisieLe;
+    }
+
+    public Date getEnvoyeeLe() {
+        return envoyeeLe;
+    }
+
+    public void setEnvoyeeLe(Date envoyeeLe) {
+        this.envoyeeLe = envoyeeLe;
+    }
+
+
+    public String getVilleLivraison() {
+        return villeLivraison;
+    }
+
+    public void setVilleLivraison(String villeLivraison) {
+        this.villeLivraison = villeLivraison;
+    }
+
+    public String getRegionLivraison() {
+        return regionLivraison;
+    }
+
+    public void setRegionLivraison(String regionLivraison) {
+        this.regionLivraison = regionLivraison;
+    }
+
+    public String getCodePostal() {
+        return codePostal;
+    }
+
+    public void setCodePostal(String codePostal) {
+        this.codePostal = codePostal;
+    }
     
     
     
@@ -56,16 +129,6 @@ public class Commande
         return client;
     }
     
-     public Date getDate()
-    {
-        return date;
-    }
-     
-    public boolean getState()
-    {
-        return state;
-    }
-    
     //setters
     
     public void setNumCommande(int numCommande)
@@ -98,16 +161,5 @@ public class Commande
         this.client=client;
      
     }
-    
-     public void setDate(Date date) 
-    {
-        this.date=date;
-     
-    }
-     
-     public void setState(boolean State)
-     {
-         this.state=state;
-     }
 
 }

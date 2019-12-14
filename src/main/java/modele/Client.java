@@ -22,11 +22,26 @@ public class Client
     private String codePostal;
     private String pays;
     private String tel;
-    private String fax;    
-    private String nom;
-    private String prenom;
-    private String email;
-    private String password;
+    private String fax;
+
+    public Client() {
+    }
+
+    public Client(String code, String societe, String contact, String fonction, String adresse, String ville, String region, String codePostal, String pays, String tel, String fax) {
+        this.code = code;
+        this.societe = societe;
+        this.contact = contact;
+        this.fonction = fonction;
+        this.adresse = adresse;
+        this.ville = ville;
+        this.region = region;
+        this.codePostal = codePostal;
+        this.pays = pays;
+        this.tel = tel;
+        this.fax = fax;
+    }
+    
+    
     
     //getters
      public String getCode()
@@ -84,30 +99,7 @@ public class Client
     {
         return fax;
     }
-    
-    public String getNom()
-    {
-        return nom;
-    }
-     
-    public String getPrenom()
-    {
-        return prenom;
-    }
-      
-    public String getEmail()
-    {
-        return prenom;
-    }
-    
-    
-    public String getPassword()
-    { 
-        return password;
-    }
- 
-    
-    
+
     
     //setters
     
@@ -164,29 +156,7 @@ public class Client
     {
         this.fax=fax;
     }
-    
-      public void setNom(String nom)
-    {
-        this.nom=nom;
-    }
-      
-    public void setPrenom(String prenom)
-    {
-        this.prenom=prenom;
-    }
-    
-     public void setEmail(String email)
-    {
-        this.email=email;
-    }
-        
-    public void setPassword(String password)
-    {
-        this.password=password;
-    }
 
-   
-    
 }
   
     
