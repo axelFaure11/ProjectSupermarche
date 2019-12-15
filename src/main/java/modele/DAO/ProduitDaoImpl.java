@@ -132,7 +132,6 @@ public class ProduitDaoImpl {
            db.getPstm().setInt(1, produit.getUnitesEnStock() - quantity);
              db.getPstm().setInt(2, produit.getRef());
             ok=db.executeMaj();
-            db.getCnx().commit();
          
         }  
         catch(Exception e)
