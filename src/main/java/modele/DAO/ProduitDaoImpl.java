@@ -122,7 +122,7 @@ public class ProduitDaoImpl {
     }
       
       public int updateStockProduit(Produit produit, int quantity) throws SQLException{
-        String sql= "UPDATE produit SET unites_en_stock =? WHERE reference=?";
+        String sql= "UPDATE produit SET unites_en_stock =?, unites_commandees = ? WHERE reference=?";
         ok=0;
         try
         {
@@ -134,7 +134,8 @@ public class ProduitDaoImpl {
             }
            //  Passage des valeurs        
            db.getPstm().setInt(1, produit.getUnitesEnStock() - quantity);
-             db.getPstm().setInt(2, produit.getRef());
+           db.getPstm().setInt(2, produit.getUnitesCommandees() + quantity);
+             db.getPstm().setInt(3, produit.getRef());
             ok=db.executeMaj();
          
         }  

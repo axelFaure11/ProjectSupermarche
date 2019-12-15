@@ -13,10 +13,37 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/0.8.1/mustache.min.js"></script>
         <title>Page d'administration</title>
+        <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+        <script type="text/javascript">
+            google.charts.load("current", {packages:['corechart']});
+            //google.charts.setOnLoadCallback(drawChart);
+            function drawChart(){
+                var jsonData =null;
+                $.ajax({
+                    url: "/dataVisualisation",
+                    data: {"opt": opt,
+                           "datedeb": datedeb,
+                           "datefin": datefin},
+                    dataType: "json",
+                    async: false,
+                    success:
+                            function (data){
+                                jsonData = JSON.parse(data);
+                            }
+                });
+                console.log(jsonData);
+                var data = new google.visualization.DataTable(jsonData);
+                var chart = new google.visualization.ColumnChart(document.getElementById('graph'));
+                chart.draw(data, {width: 400, height: 240});
+            }
+        </script>
         <script>
             $(document).ready(
                 function (){
-                    
+                    $("#selectVisu").submit(function(e){
+                        e.preventDefault();
+                        drawChart();
+                    })
                 });
         
             function showError(xhr, status, message) {
@@ -38,18 +65,6 @@
                 });
             }
             
-            function dataVisualisation(){
-                $.ajax({
-                    url: "/dataVisualisation",
-                    data: {},
-                    dataType: "json",
-                    error: showError,
-                    success:
-                            function (result){
-                                
-                            }
-                });
-            }
         </script>
     </head>
     <body>
@@ -57,12 +72,12 @@
         <div style="display: flex;">
             <div id="editProd"></div>
             <div id="dataVisual">
-                <form id="selectVisu" action="dataVisualisation()" method="GET">
+                <form id="selectVisu" method="GET">
                     <span>Chiffre d'affaire par : </span>
                     <select id="opt" name="opt">
-                        <option value="cat">Catégorie</option>
-                        <option value="pays">Pays</option>
-                        <option value="client">Client</option>
+                        <option type="text" value="cat">Catégorie</option>
+                        <option type="text" value="pays">Pays</option>
+                        <option type="text" value="client">Client</option>
                     </select>
                     <span>entre </span>
                     <input type="date" id="datedeb" name="datedeb" min="1990-01-01" max="2021-01-01">

@@ -92,8 +92,12 @@ public class CategorieDaoImpl {
         {
             db.initPrepare(sql);
             db.getPstm().setInt(1, code);
-            ok = db.executeMaj();
+            rs = db.executeSelect();
+            if(rs.next()){
+                categorie = new Categorie(rs.getInt("code"), rs.getString("libelle"), rs.getString("description"));
+            }
             db.getCnx().close();
+            rs.close();
         
         }
         catch(Exception e)

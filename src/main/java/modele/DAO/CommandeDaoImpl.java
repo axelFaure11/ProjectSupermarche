@@ -369,15 +369,15 @@ public class CommandeDaoImpl {
     }
     
     
-   public Map<Categorie, Double> chiffreAffCategorie (Date dateDebut, Date dateFin) throws SQLException
+   public Map<String, Double> chiffreAffCategorie (Date dateDebut, Date dateFin) throws SQLException
     {
          
-        Map<Categorie, Double> tabChifCat = new HashMap<>();
-        String sql="SELECT p.categorie, SUM(p.prix_unitaire * l.quantite_par_unite) AS CHIFFRE_D_AFFAIRE "
+        Map<String, Double> tabChifCat = new HashMap<>();
+        String sql="SELECT p.categorie, SUM(p.prix_unitaire * l.quantite) AS CHIFFRE_D_AFFAIRE "
                         + "FROM Commande c "
-                        + "JOIN ligne l ON c.numero=l.commande "
-                        + "JOIN produit p ON p.reference=l.produit "
-                        + "WHERE saisieLe BETWEEN ? AND ? "
+                        + "INNER JOIN ligne l ON c.numero=l.commande "
+                        + "INNER JOIN produit p ON p.reference=l.produit "
+                        + "WHERE saisie_le BETWEEN ? AND ? "
                         + "GROUP BY p.categorie";                    
         try
         {
@@ -387,14 +387,15 @@ public class CommandeDaoImpl {
             db.initPrepare(sql);
             // Passage de valeurs
             
-            db.getPstm().setString(1, sdf.format(dateDebut)); 
-            db.getPstm().setString(2, sdf.format(dateFin));
+            db.getPstm().setDate(1, (java.sql.Date) dateDebut); 
+            db.getPstm().setDate(2, (java.sql.Date) dateFin);
             rs = db.executeSelect();
 
             while (rs.next())
             {
                 Categorie categorie = new CategorieDaoImpl().getCategorie(rs.getInt(1));
-                tabChifCat.put(categorie, rs.getDouble(1));
+                tabChifCat.put(categorie.getLibelle(), rs.getDouble("chiffre_d_affaire"));
+                System.out.println("categorie " + rs.getDouble("chiffre_d_affaire"));
                 
             }
             rs.close();
