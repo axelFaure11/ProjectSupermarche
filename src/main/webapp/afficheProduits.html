@@ -131,7 +131,6 @@
                     success:
                             function (result) {
                                 setTimeout(function (){
-                                    console.log(result);
                                     if(result==="login.jsp"){
                                         window.location.assign("login.jsp");
                                     } else {
@@ -166,7 +165,7 @@
         <script id="cartTemplate" type="text/template">
                     <h2>Votre panier</h2>
                     <table class="carttab">
-                            <tr><td>Total: {{total}}¥</td>
+                            <tr><td>Total: {{total}}€</td>
                                 <td><button class="removeAll" value="delAll" onclick="EditCart(this, 'null')">Vider le panier</button></td>
                             </tr>
                             {{#records}}
@@ -174,7 +173,7 @@
                                     <td><button class="remove" value="del" onclick="EditCart(this, {{pr.ref}})">X</button>
                                     </td>
                                     <td>
-                                        <p>{{pr.nom}}    (x{{quantity}}) : {{pr.prix}}*{{quantity}}¥</p>
+                                        <p>{{pr.nom}}    (x{{quantity}}) : {{pr.prix}}*{{quantity}}€</p>
                                     </td>
                                     <td>
                                         <button class="addOne" value="add" onclick="EditCart(this, {{pr.ref}})"> + </button> 
@@ -198,9 +197,10 @@
                             <tr>
                                 <td class="prodl">
                                     <button class="prodb" value="add" onclick="EditCart(this, {{ref}})">{{nom}}</button>
-                                    <span>({{unitesEnStock}} Disponible(s))</span> 
+                                    <span style="border: 1px solid black;">Lot de {{quantite}}</span>
+                                    <span><font color="red"><i>({{unitesEnStock}} Lot(s) disponible(s))</i></font></span> 
                                 </td>
-                                <td>{{prix}}¥</td>
+                                <td>{{prix}}€</td>
                             </tr>
                             {{/records}}
                     </table>

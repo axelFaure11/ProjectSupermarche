@@ -81,7 +81,7 @@
         <button id="valid" onclick="confirmingCommand()">Valider votre commande</button>
         <script id="cartTemplate" type="text/template">
             <table class="carttab">
-                    <tr><td>Total: {{total}}¥</td>
+                    <tr><td>Total: {{total}}€</td>
                         <td><button class="removeAll" value="delAll" onclick="EditCart(this, 'null')">Vider le panier</button></td>
                     </tr>
                     {{#records}}
@@ -89,7 +89,7 @@
                             <td><button class="remove" value="del" onclick="EditCart(this, {{pr.ref}})">X</button>
                             </td>
                             <td>
-                                <p>{{pr.nom}}    (x{{quantity}}) : {{pr.prix}}*{{quantity}}¥</p>
+                                <p>{{pr.nom}}    (x{{quantity}}) : {{pr.prix}}*{{quantity}}€</p>
                             </td>
                             <td>
                                 <button class="addOne" value="add" onclick="EditCart(this, {{pr.ref}})"> + </button> 

@@ -28,16 +28,21 @@ public class LigneDaoImpl
         String sql= "INSERT INTO Ligne VALUES(?,?,?) ";
         try
         {
+            Produit pr = ligne.getProduit();
             // Initialisation de la requete
             db.initPrepare(sql);
             // Passage de valeurs
             db.getPstm().setInt(1, ligne.getCommande());
-            db.getPstm().setInt(2, ligne.getProduit().getRef());
+            db.getPstm().setInt(2, pr.getRef());
             db.getPstm().setInt(3, ligne.getQuantite());
          
             // Execution de la requete
             ok=db.executeMaj();
-            db.getCnx().close();
+            db.getCnx().commit();
+            
+            if(ok!=0){
+                new ProduitDaoImpl().updateStockProduit(pr, ligne.getQuantite());
+            }
         
         }
         catch(Exception e)

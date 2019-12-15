@@ -10,6 +10,7 @@ import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -147,6 +148,11 @@ public class loginServlet extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
+    @Override
+    public void init(ServletConfig config )throws ServletException {
+        super.init(config);
+    }
+    
     private void checkLogin(HttpServletRequest request) throws SQLException {
 		// Les paramètres transmis dans la requête
 		String loginParam = request.getParameter("id");
@@ -155,19 +161,25 @@ public class loginServlet extends HttpServlet {
 		// Le login/password défini dans web.xml
 		String login = getInitParameter("login");
 		String password = getInitParameter("password");
-		String userName = getInitParameter("userName");
+		String userName = "Mr. Super-User";
                 
                 ClientDaoImpl dao = new ClientDaoImpl();
+                if(login.equals(loginParam) && password.equals(passwordParam)){
+                    HttpSession session = request.getSession(false);
+                    session.setAttribute("userName", login);
+                    session.setAttribute("superUser", true);
+                } else {
                 
                 Client cl = dao.getClient(passwordParam);
                 
                 if(cl!=null){
                     System.out.println("Client found!");
-                    if (((passwordParam.equals(cl.getCode())))) {
+                    if (((passwordParam.equals(cl.getCode())))&&loginParam.equals(cl.getContact())) {
 			// On a trouvé la combinaison login / password
 			// On stocke l'information dans la session
 			HttpSession session = request.getSession(false); // récupération de la session
 			session.setAttribute("userName", loginParam);
+                        session.setAttribute("superUser", false);
                         /*Exceptionnellement, on stocke le code qui sert de mot de passe
                         * puisque il s'agit de la clé primaire utilisée dans la base
                         * de données donnée dans la table client.
@@ -183,6 +195,7 @@ public class loginServlet extends HttpServlet {
 			request.setAttribute("errorMessage", "Login/Password incorrect");
                         System.out.println("Failed!");
                     }
+                }
 	}
 
 	private void doLogout(HttpServletRequest request) {
@@ -190,6 +203,8 @@ public class loginServlet extends HttpServlet {
 		HttpSession session = request.getSession(false);
 		if (session != null) {
 			session.removeAttribute("userName");
+                        session.removeAttribute("code");
+                        session.setAttribute("superUser", false);
 		}
 	}
 

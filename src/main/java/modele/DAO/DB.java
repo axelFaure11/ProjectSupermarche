@@ -37,7 +37,7 @@ public class DB {
 
 	private void getConnection()
 	{
-		String url = "jdbc:derby:supermarket3";
+		String url = "jdbc:derby:Supermarche";
 		
 		try
 		{

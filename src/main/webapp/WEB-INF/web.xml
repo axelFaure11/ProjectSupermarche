@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <web-app version="3.0" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
     <session-config>
         <session-timeout>
@@ -9,6 +8,39 @@
     <welcome-file-list>
         <welcome-file>afficheProduits.html</welcome-file>
     </welcome-file-list>
+    <servlet>
+        <servlet-name>loginServlet</servlet-name>
+        <servlet-class>servlets.loginServlet</servlet-class>
+        <!-- Les identifiants pour se connecter -->
+        <init-param>
+            <param-name>login</param-name>
+            <param-value>admin</param-value>
+        </init-param>
+        <init-param>
+            <param-name>password</param-name>
+            <param-value>admin</param-value>
+        </init-param>
+        <init-param>
+            <param-name>userName</param-name>
+            <param-value>Mr. Super-User</param-value>
+        </init-param>
+    </servlet>
+    <filter>
+        <filter-name>isAdmin</filter-name>
+        <filter-class>filters.isAdmin</filter-class>
+    </filter>
+    <filter>
+        <filter-name>accessRestriction</filter-name>
+        <filter-class>filters.accessRestriction</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>accessRestriction</filter-name>
+        <url-pattern>/restricted/*</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>isAdmin</filter-name>
+        <url-pattern>/afficheProduits.html</url-pattern>
+    </filter-mapping>
     <filter-mapping>
         <filter-name>checkConnection</filter-name>
         <url-pattern>/logged/*</url-pattern>

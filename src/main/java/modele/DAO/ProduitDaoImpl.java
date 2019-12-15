@@ -120,6 +120,29 @@ public class ProduitDaoImpl {
         }
         return ok;
     }
+      
+      public int updateStockProduit(Produit produit, int quantity) throws SQLException{
+        String sql= "UPDATE produit SET unites_en_stock =? WHERE reference=?";
+        ok=0;
+        try
+        {
+           // Initalisation de la requete 
+            db.initPrepare(sql);
+           //  Passage des valeurs        
+           db.getPstm().setInt(1, produit.getUnitesEnStock() - quantity);
+             db.getPstm().setInt(2, produit.getRef());
+            ok=db.executeMaj();
+            db.getCnx().commit();
+            db.getCnx().close();
+         
+        }  
+        catch(Exception e)
+        {
+           throw new SQLException(e);
+
+        }
+        return ok;
+    }
 
     
     public Produit getProduit(int ref) throws SQLException{
