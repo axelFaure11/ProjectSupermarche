@@ -30,7 +30,11 @@ public class LigneDaoImpl
         {
             Produit pr = ligne.getProduit();
             // Initialisation de la requete
-            db.initPrepare(sql);
+            if(db.getCnx()!=null){
+                db.initPrepareWOco(sql);
+            } else {
+                db.initPrepare(sql);
+            }
             // Passage de valeurs
             db.getPstm().setInt(1, ligne.getCommande());
             db.getPstm().setInt(2, pr.getRef());

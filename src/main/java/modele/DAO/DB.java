@@ -67,6 +67,18 @@ public class DB {
 			ex.printStackTrace();
 		}
 	}
+        
+        public void initPrepareWOco(String sql)
+	{
+		try
+		{
+			this.pstm = this.cnx.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
+		}
+		catch(Exception ex)
+		{
+			ex.printStackTrace();
+		}
+	}
 	
 	public int executeMaj()
 	{

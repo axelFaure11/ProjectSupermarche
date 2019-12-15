@@ -127,7 +127,11 @@ public class ProduitDaoImpl {
         try
         {
            // Initalisation de la requete 
-            db.initPrepare(sql);
+            if(db.getCnx()!=null){
+                db.initPrepareWOco(sql);
+            } else {
+                db.initPrepare(sql);
+            }
            //  Passage des valeurs        
            db.getPstm().setInt(1, produit.getUnitesEnStock() - quantity);
              db.getPstm().setInt(2, produit.getRef());
