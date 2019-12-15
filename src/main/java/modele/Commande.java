@@ -5,6 +5,8 @@
  */
 package modele;
 import java.sql.Date;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 
 
@@ -30,11 +32,11 @@ public class Commande
     public Commande() {
     }
 
-    public Commande(int numCommande, Client client, Date saisieLe, Date envoyeeLe, double port, String destinataire, String adresseLivraison, String villeLivraison, String regionLivraison, String codePostal, String paysLivraison, double remise) {
+    public Commande(int numCommande, Client client, double port, String destinataire, String adresseLivraison, String villeLivraison, String regionLivraison, String codePostal, String paysLivraison, double remise) {
         this.numCommande = numCommande;
         this.client = client;
-        this.saisieLe = saisieLe;
-        this.envoyeeLe = envoyeeLe;
+        this.saisieLe = getDate();
+        this.envoyeeLe = null;
         this.port = port;
         this.destinataire = destinataire;
         this.adresseLivraison = adresseLivraison;
@@ -45,8 +47,10 @@ public class Commande
         this.remise = remise;
     }
     
+    private java.sql.Date getDate(){
+        return new Date(System.currentTimeMillis());
+    }
     
-
     public String getPaysLivraison() {
         return paysLivraison;
     }

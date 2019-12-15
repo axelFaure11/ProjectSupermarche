@@ -38,6 +38,7 @@ import modele.DAO.DB;
             db.getPstm().setString(11, client.getFax());
             // Execution de la requete
             ok=db.executeMaj();
+            db.getCnx().close();
         
         }
         catch(Exception e)
@@ -70,6 +71,7 @@ import modele.DAO.DB;
             db.getPstm().setString(11, client.getCode());
             
             ok=db.executeMaj();
+            db.getCnx().close();
 
         }
         catch (Exception e)
@@ -90,6 +92,7 @@ import modele.DAO.DB;
             // Passage de valeurs
             db.getPstm().setString(1, code);
             ok=db.executeMaj();
+            db.getCnx().close();
         }
         catch(Exception e)
         {
@@ -123,6 +126,8 @@ import modele.DAO.DB;
                 client.setFax(rs.getString(11));
       
             }
+            rs.close();
+            db.getCnx().close();
         }
             catch(Exception e)
         {
@@ -155,6 +160,8 @@ import modele.DAO.DB;
                 client.setFax(rs.getString(11));
                 clients.add(client);
             }
+            rs.close();
+            db.getCnx().close();
         }
         catch (Exception e)
         {

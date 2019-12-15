@@ -110,7 +110,7 @@
                                         $("#log").html(result);
                                         $("#log").val("logout");
                                         $("#account").html('<button id="inf" value="inf" onclick="updateClientInfo()">Compte</button>');
-                                        $("#checkout").html('<button class="sendSC" value="sendSC" onclick="">Passer commande</button>');
+                                        $("#checkout").html('<button class="sendSC" value="sendSC" onclick="confirmCommand()">Passer commande</button>');
                                     } else {
                                         $("#log").html("Se connecter");
                                         $("#log").val("login");
@@ -144,6 +144,9 @@
             
             function updateClientInfo(){
                 window.location.assign("/logged/account_info.jsp");
+            }
+            function confirmCommand(){
+                window.location.assign("/logged/confirmCommand.jsp")
             }
         </script>
     </head>

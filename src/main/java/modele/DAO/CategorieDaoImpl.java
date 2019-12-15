@@ -33,6 +33,7 @@ public class CategorieDaoImpl {
             db.getPstm().setString(3, categorie.getDescription());
             //Execution de la requete
             ok = db.executeMaj();
+            db.getCnx().close();
         }
         catch (Exception e)
         {
@@ -52,6 +53,7 @@ public class CategorieDaoImpl {
            db.getPstm().setInt(1, code);
            // Execution  de la requete
            ok= db.executeMaj();
+           db.getCnx().close();
         }
         catch(Exception e)
         {
@@ -72,6 +74,7 @@ public class CategorieDaoImpl {
            db.getPstm().setString(1, categorie.getLibelle());
            db.getPstm().setString(2, categorie.getDescription());
            db.getPstm().setInt(3, categorie.getCode());
+            db.getCnx().close();
 
         }  
         catch(Exception e)
@@ -90,6 +93,7 @@ public class CategorieDaoImpl {
             db.initPrepare(sql);
             db.getPstm().setInt(1, code);
             ok = db.executeMaj();
+            db.getCnx().close();
         
         }
         catch(Exception e)
@@ -101,25 +105,28 @@ public class CategorieDaoImpl {
     }
     
     public List<Categorie> liste() throws SQLException {
-		List<Categorie> categories = new ArrayList<>();
-		String sql = "SELECT * FROM categorie";
-		try
-		{
-			db.initPrepare(sql);
-			rs = db.executeSelect();
-			while(rs.next())
-			{
-				Categorie categorie = new Categorie();
-				categorie.setCode(rs.getInt(1));
-				categorie.setLibelle(rs.getString(2));
-				categorie.setDescription (rs.getString(3));
-				categories.add(categorie);
-			}
-		}
-		catch(Exception e)
-		{
-			throw new SQLException(e);
-		}
-		return categories;
+        List<Categorie> categories = new ArrayList<>();
+        String sql = "SELECT * FROM categorie";
+        try
+        {
+                db.initPrepare(sql);
+                rs = db.executeSelect();
+                while(rs.next())
+                {
+                        Categorie categorie = new Categorie();
+                        categorie.setCode(rs.getInt(1));
+                        categorie.setLibelle(rs.getString(2));
+                        categorie.setDescription (rs.getString(3));
+                        categories.add(categorie);
+                }
+                rs.close();
+                db.getCnx().close();
+        }
+        catch(Exception e)
+        {
+                throw new SQLException(e);
+        }
+        return categories;
 	}
+
 }

@@ -55,21 +55,17 @@ public class DatabaseInitializer implements ServletContextListener {
 		};
 		
 		Logger.getLogger("ComptoirEditor").log(Level.INFO, "Creating databse from SQL script");
-		try {
-                        Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
-			Connection connection = DataSourceFactory.getDataSource().getConnection();
+		try (Connection connection = DataSourceFactory.getDataSource().getConnection()){
+			connection.setAutoCommit(false);
 			int result = ij.runScript(connection, this.getClass().getResourceAsStream("comptoirs_schema_derby.sql"), "UTF-8", System.out /* nowhere */ , "UTF-8");
 			if (result == 0) {
 				Logger.getLogger("ComptoirEditor").log(Level.INFO, "Database succesfully created");
-                                connection.commit();
-                                connection.close();
 			} else {
 				Logger.getLogger("ComptoirEditor").log(Level.SEVERE, "Errors creating database");
-                                connection.rollback();
-                                connection.close();
 			}
+                        connection.commit();
 
-		} catch (UnsupportedEncodingException | SQLException | ClassNotFoundException e) {
+		} catch (UnsupportedEncodingException | SQLException e) {
 			Logger.getLogger("ComptoirEditor").log(Level.SEVERE, null, e);
 		}
 

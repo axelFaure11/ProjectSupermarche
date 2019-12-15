@@ -7,11 +7,20 @@ package servlets;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import modele.Client;
+import modele.Commande;
+import modele.DAO.ClientDaoImpl;
+import modele.DAO.CommandeDaoImpl;
+import modele.tempPanier;
 
 /**
  *
@@ -32,6 +41,27 @@ public class confirmCommand extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        
+        HttpSession session = request.getSession();
+        tempPanier panier = (tempPanier) session.getAttribute("panier");
+        CommandeDaoImpl cmdao = new CommandeDaoImpl();
+        ClientDaoImpl cldao = new ClientDaoImpl();
+        try(PrintWriter out = response.getWriter()){
+            try {
+                System.out.println("1");
+                Client cl = cldao.getClient((String) session.getAttribute("code"));
+                System.out.println("2");
+                Commande commande = new Commande(0, cl, 100.0, cl.getContact(), cl.getAdresse(), cl.getVille(), cl.getRegion(), cl.getCodePostal(), cl.getPays(), 0.0);
+                System.out.println("3");
+                cmdao.addCommande(commande, panier);
+                System.out.println("4");
+                panier.viderPanier();
+                out.println("Votre commande a bien été prise en compte.");
+            } catch (SQLException ex) {
+                Logger.getLogger(confirmCommand.class.getName()).log(Level.SEVERE, null, ex);
+                out.println("An error occured.");
+            }
+        }
         
         
     }

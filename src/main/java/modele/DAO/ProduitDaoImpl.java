@@ -41,6 +41,7 @@ public class ProduitDaoImpl {
 
             //Execution de la requete
             ok = db.executeMaj();
+            db.getCnx().close();
         }
         catch (Exception e)
         {
@@ -60,6 +61,7 @@ public class ProduitDaoImpl {
            db.getPstm().setInt(1, ref);
            // Execution  de la requete
            ok= db.executeMaj();
+           db.getCnx().close();
         }
         catch(Exception e)
         {
@@ -88,6 +90,7 @@ public class ProduitDaoImpl {
            db.getPstm().setInt(8, produit.getUnitesCommandees());
            db.getPstm().setInt(9, produit.getNiveauReapprovi());
            db.getPstm().setInt(10, produit.getIndisponible());
+           db.getCnx().close();
         }  
         catch(Exception e)
         {
@@ -107,6 +110,7 @@ public class ProduitDaoImpl {
            //  Passage des valeurs        
            db.getPstm().setInt(5, Integer.parseInt(produit.getQuantite()));
              db.getPstm().setInt(1, produit.getRef());
+            db.getCnx().close();
          
         }  
         catch(Exception e)
@@ -139,6 +143,8 @@ public class ProduitDaoImpl {
                 produit.setNiveauReapprovi(rs.getInt(9));
                 produit.setIndisponible(rs.getInt(9));
             }
+            rs.close();
+            db.getCnx().close();
         
         }
         catch(Exception e)
@@ -172,6 +178,8 @@ public class ProduitDaoImpl {
                                 produit.setIndisponible(rs.getInt(9));
 				produits.add(produit);
 			}
+            rs.close();
+            db.getCnx().close();
         
         }
         catch(Exception e)
@@ -206,6 +214,8 @@ public class ProduitDaoImpl {
                                 
 				produits.add(produit);
 			}
+            rs.close();
+            db.getCnx().close();
 		}
 		catch(Exception e)
 		{

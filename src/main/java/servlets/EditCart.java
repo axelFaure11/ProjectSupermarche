@@ -116,7 +116,7 @@ public class EditCart extends HttpServlet {
                     break;
                     
                 default:
-                    
+                    break;
         }
     }
 

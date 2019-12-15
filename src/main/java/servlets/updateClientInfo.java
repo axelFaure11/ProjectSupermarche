@@ -40,6 +40,7 @@ public class updateClientInfo extends HttpServlet {
             throws ServletException, IOException, SQLException {
         
         response.setContentType("application/json;charset='UTF-8'");
+        request.setCharacterEncoding("UTF-8");
         ClientDaoImpl dao = new ClientDaoImpl();
         HttpSession session = request.getSession(false);
         

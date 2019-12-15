@@ -37,6 +37,7 @@ public class LigneDaoImpl
          
             // Execution de la requete
             ok=db.executeMaj();
+            db.getCnx().close();
         
         }
         catch(Exception e)
@@ -57,6 +58,7 @@ public class LigneDaoImpl
             db.getPstm().setInt(1, ligne.getQuantite());
             db.getPstm().setInt(2, ligne.getCommande());
             db.getPstm().setInt(3, ligne.getProduit().getRef());
+            db.getCnx().close();
             
 
         }
@@ -79,6 +81,7 @@ public class LigneDaoImpl
             db.getPstm().setInt(1, commande.getNumCommande());
             db.getPstm().setInt(2, produit.getRef());
             ok=db.executeMaj();
+            db.getCnx().close();
         }
         catch(Exception e)
         {
@@ -104,6 +107,8 @@ public class LigneDaoImpl
                   ligne.setProduit(new ProduitDaoImpl().getProduit(rs.getInt(1)));
              ligne.setQuantite(rs.getInt(3));             
             }
+            rs.close();
+            db.getCnx().close();
         }
             catch(Exception e)
         {
@@ -129,6 +134,8 @@ public class LigneDaoImpl
                 ligne.setQuantite(rs.getInt(3));  
                 lignes.add(ligne);
             }
+            rs.close();
+            db.getCnx().close();
         }
             catch(Exception e)
         {
@@ -153,6 +160,8 @@ public class LigneDaoImpl
                 ligne.setQuantite(rs.getInt(3));
                 lignes.add(ligne);
             }
+            rs.close();
+            db.getCnx().close();
         }
         catch (Exception e)
         {

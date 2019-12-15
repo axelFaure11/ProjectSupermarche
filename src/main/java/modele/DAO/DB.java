@@ -3,6 +3,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.PreparedStatement;
 import java.sql.DriverManager;
+import java.sql.Statement;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -36,7 +37,7 @@ public class DB {
 
 	private void getConnection()
 	{
-		String url = "jdbc:derby:supermarket";
+		String url = "jdbc:derby:supermarket3";
 		
 		try
 		{
@@ -59,7 +60,7 @@ public class DB {
 		try
 		{
 			getConnection();
-			this.pstm = this.cnx.prepareStatement(sql);
+			this.pstm = this.cnx.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
 		}
 		catch(Exception ex)
 		{
