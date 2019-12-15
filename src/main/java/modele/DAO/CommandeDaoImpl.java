@@ -40,6 +40,7 @@ public class CommandeDaoImpl {
                 key = k.getInt(1);
             }
         } catch (SQLException e) {throw e;}
+        k.close();
         return key;
     }
    //ajout d'une commande          
