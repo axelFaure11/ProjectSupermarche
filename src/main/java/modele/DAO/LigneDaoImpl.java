@@ -42,10 +42,10 @@ public class LigneDaoImpl
          
             // Execution de la requete
             ok=db.executeMaj();
-            db.getCnx().commit();
             
             if(ok!=0){
                 new ProduitDaoImpl().updateStockProduit(pr, ligne.getQuantite());
+                db.getCnx().commit();
             }
         
         }
