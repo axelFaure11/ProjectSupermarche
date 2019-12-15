@@ -133,7 +133,6 @@ public class ProduitDaoImpl {
              db.getPstm().setInt(2, produit.getRef());
             ok=db.executeMaj();
             db.getCnx().commit();
-            db.getCnx().close();
          
         }  
         catch(Exception e)

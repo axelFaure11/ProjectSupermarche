@@ -75,7 +75,6 @@ public class CommandeDaoImpl {
             int cleCommande = nextKey();
             db.getCnx().commit();
             db.getCnx().setAutoCommit(true);
-            db.getCnx().close();
             if(ok!=-1)
             {
             // On récupère l'id de la commande qui vient d'etre temporairement créée
@@ -99,7 +98,8 @@ public class CommandeDaoImpl {
               }
             //}
           }
-          // On desactive le mode transaction
+            db.closeConnection();
+            
         }        
         catch(Exception e)
         {
