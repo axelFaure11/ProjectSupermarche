@@ -11,7 +11,7 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/0.8.1/mustache.min.js"></script>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <link rel="stylesheet" type="text/css" href=".../CSS/account.css"> 
+        <link rel="stylesheet" type="text/css" href="${pageContext.servletContext.contextPath}/CSS/account.css"> 
         <title>Info client</title>
         <script>
                 $(document).ready(

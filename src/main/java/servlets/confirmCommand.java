@@ -49,13 +49,9 @@ public class confirmCommand extends HttpServlet {
         try(PrintWriter out = response.getWriter()){
             if(!panier.isEmpty()){
                 try {
-                    System.out.println("1");
                     Client cl = cldao.getClient((String) session.getAttribute("code"));
-                    System.out.println("2");
                     Commande commande = new Commande(0, cl, 100.0, cl.getContact(), cl.getAdresse(), cl.getVille(), cl.getRegion(), cl.getCodePostal(), cl.getPays(), 0.0);
-                    System.out.println("3");
                     cmdao.addCommande(commande, panier);
-                    System.out.println("4");
                     panier.viderPanier();
                     out.println("Votre commande a bien été prise en compte.");
                 } catch (SQLException ex) {
