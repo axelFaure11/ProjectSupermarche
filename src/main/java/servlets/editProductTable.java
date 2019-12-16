@@ -36,9 +36,12 @@ public class editProductTable extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+        request.setCharacterEncoding("UTF-8");
         String action = request.getParameter("action");
-        int ref = Integer.parseInt(request.getParameter("ref"));
+        int ref = 0;
+        if(!request.getParameter("ref").equals("")){
+            ref = Integer.parseInt(request.getParameter("ref"));
+        }
         String nom = request.getParameter("nom");
         int four = Integer.parseInt(request.getParameter("four"));
         int cat = Integer.parseInt(request.getParameter("cat"));
@@ -52,12 +55,33 @@ public class editProductTable extends HttpServlet {
         System.out.println(action);
         System.out.println(ref);
         System.out.println(nom);
+        System.out.println(four);
+        System.out.println(cat);
+        System.out.println(qtu);
+        System.out.println(prix);
+        System.out.println(ues);
+        System.out.println(uc);
+        System.out.println(ndr);
+        System.out.println(ind);
         
         ProduitDaoImpl dao = new ProduitDaoImpl();
         
         switch (action){
             
             case "Ajouter":
+                
+        {
+            try {
+                Produit pr = dao.getProduit(ref);
+                if(pr==null){
+                    dao.addProduit(new Produit(0, nom, four, cat, qtu, prix, ues, uc, ndr, ind));
+                }
+                
+            } catch (SQLException ex) {
+                Logger.getLogger(editProductTable.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+                
                 break;
                 
             case "Update":
@@ -70,7 +94,14 @@ public class editProductTable extends HttpServlet {
         }
                 break;
                 
-            case "Supprimer":
+            case "Supprimer":  
+        {
+            try {
+                dao.deleteProduit(ref);
+            } catch (SQLException ex) {
+                Logger.getLogger(editProductTable.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
                 break;
             
             default:

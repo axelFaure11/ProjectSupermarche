@@ -33,7 +33,6 @@
                             function(result){
                                 $("#graph").html("");
                                 var vdata = new google.visualization.DataTable(result);
-
                                 var chart = new google.visualization.ColumnChart(document.getElementById('graph'));
                                 setTimeout(chart.draw(vdata, {width: 1000, height: 1000}), 100);
                             }
@@ -44,15 +43,6 @@
                     $("#selectVisu").submit(function(e){
                         e.preventDefault();
                         drawChart();
-                    });
-                    $("#input").submit(function() { 
-                        var val = $("input[type=submit][clicked=true]").val();
-                        e.preventDefault();
-                        editProductTable(val);
-                    });
-                    $("#input input[type=submit]").click(function() {
-                        $("input[type=submit]", $(this).parents("form")).removeAttr("clicked");
-                        $(this).attr("clicked", "true");
                     });
                     showAllProd();
                     showAllCat();
@@ -77,6 +67,19 @@
                 });
             }
             
+            function emptyForm(){
+                $("#ref").val("");
+                $("#nom").val("");
+                $("#four").val("");
+                $("#cate").val("");
+                $("#qtu").val("");
+                $("#prix").val("");
+                $("#ues").val("");
+                $("#uc").val("");
+                $("#ndr").val("");
+                $("#ind").val("");
+            }
+            
             function fillForm(ref){
                 $.ajax({
                    url: "/showProductDetails",
@@ -85,10 +88,19 @@
                    error: showError,
                    success:
                            function (result){
-                               var template = $("#formTemplate").html();
-                               var processedTemplate = Mustache.to_html(template, result);
-                               $("#form").html(processedTemplate);
-                           }
+                                var template = $("#formTemplate").html();
+                                var processedTemplate = Mustache.to_html(template, result);
+                                $("#form_placeholder").html(processedTemplate);
+                                $("#input").submit(function(e) { 
+                                    e.preventDefault();
+                                    var val = $("input[type=submit][clicked=true]").val();
+                                    editProductTable(val);
+                                });
+                                $("#input input[type=submit]").click(function() {
+                                    $("input[type=submit]", $(this).parents("form")).removeAttr("clicked");
+                                    $(this).attr("clicked", "true");
+                                });
+                                       }
                 });
             }
             
@@ -141,7 +153,7 @@
                           "nom": $("#nom").val(),
                           "four": $("#four").val(),
                           "cat": $("#cate").val(),
-                          "qte": $("#qte").val(),
+                          "qtu": $("#qtu").val(),
                           "prix": $("#prix").val(),
                           "ues": $("#ues").val(),
                           "uc": $("#uc").val(),
@@ -164,22 +176,23 @@
                 <br />
                     <div id="cats" ></div>
                     <div id="prods" style="overflow-y: scroll; height: 500px;"></div>
-                </div>
-                <div id="form"><br />
+                </div><br /><br />
+                <button id="empty_form" onclick="emptyForm()">Vider le formulaire</button><br />
+                <div id="form_placeholder">
                     <form id="input" method="POST">
-                        Reference : <input type="text" id="ref" name="ref" value="" readOnly><br />
+                        Reference : <input type="number" id="ref" name="ref" value="" readOnly><br />
                         Nom : <input type="text" id="nom" name="nom" value="" required><br />
-                        Fournisseur : <input type="number" id="four" name="four" value="" required><br />
-                        Catégorie : <input type="number" id="cate" name="cate" value="" required><br />
+                        Fournisseur : <input type="number" id="four" name="four" value="" min="0" required><br />
+                        Catégorie : <input type="number" id="cate" name="cate" value="" min="0" required><br />
                         Quantite par unité : <input type="text" id="qtu" name="qtu" value="" required><br />
-                        Prix unitaire : <input type="number" id="prix" name="prix" value="" required><br />
-                        Unites en stock : <input type="number" id="ues" name="ues" value="" required><br />
-                        Unites commandes :  <input type="number" id="uc" name="uc" value="" required><br />
-                        Niveau de reapprovisionnement : <input type="number" id="ndr" name="ndr" value="" required><br />
-                        Indisponible : <input type="number" id="ind" name="ind" value=""><br />
-                        <input type="submit" id="insert" name="insert" value="Ajouter">
-                        <input type="submit" id="update" name="update" value="Update">
-                        <input type="submit" id="remove" name="remove" value="Supprimer">
+                        Prix unitaire : <input type="number" id="prix" name="prix" value="" min="0" required><br />
+                        Unites en stock : <input type="number" id="ues" name="ues" value="" min="0" required><br />
+                        Unites commandes :  <input type="number" id="uc" name="uc" value="" min="0" required><br />
+                        Niveau de reapprovisionnement : <input type="number" id="ndr" name="ndr" value="" min="0" required><br />
+                        Indisponible : <input type="number" id="ind" name="ind" value="" min="0" max="1" required><br />
+                        <input type="submit" value="Ajouter">
+                        <input type="submit" value="Update">
+                        <input type="submit" value="Supprimer">
                     </form>
                 </div>
             </div>
@@ -222,19 +235,19 @@
         <script id="formTemplate" type="text/template"><br />
             {{#records}}
                 <form id="input" method="POST">
-                    Reference : <input type="text" id="ref" name="ref" value="{{ref}}" readOnly><br />
+                    Reference : <input type="number" id="ref" name="ref" value="{{ref}}" readOnly><br />
                     Nom : <input type="text" id="nom" name="nom" value="{{nom}}" required><br />
-                    Fournisseur : <input type="number" id="four" name="four" value="{{codeFournisseur}}" required><br />
-                    Catégorie : <input type="number" id="cate" name="cate" value="{{categorie}}" required><br />
+                    Fournisseur : <input type="number" id="four" name="four" value="{{codeFournisseur}}" min="0" required><br />
+                    Catégorie : <input type="number" id="cate" name="cate" value="{{categorie}}" min="0" required><br />
                     Quantite par unité : <input type="text" id="qtu" name="qtu" value="{{quantite}}"><br />
-                    Prix unitaire : <input type="number" id="prix" name="prix" value="{{prix}}" required><br />
-                    Unites en stock : <input type="number" id="ues" name="ues" value="{{unitesEnStock}}" required><br />
-                    Unites commandes :  <input type="number" id="uc" name="uc" value="{{unitesCommandees}}" required><br />
-                    Niveau de reapprovisionnement : <input type="number" id="ndr" name="ndr" value="{{niveauReapprovi}}" required><br />
-                    Indisponible : <input type="number" id="ind" name="ind" value="{{indisponible}}" required><br />
-                    <input type="submit" id="insert" name="insert" value="Ajouter">
-                    <input type="submit" id="update" name="update" value="Update">
-                    <input type="submit" id="remove" name="remove" value="Supprimer">
+                    Prix unitaire : <input type="number" id="prix" name="prix" value="{{prix}}" min="0" required><br />
+                    Unites en stock : <input type="number" id="ues" name="ues" value="{{unitesEnStock}}" min="0" required><br />
+                    Unites commandes :  <input type="number" id="uc" name="uc" value="{{unitesCommandees}}" min="0" required><br />
+                    Niveau de reapprovisionnement : <input type="number" id="ndr" name="ndr" value="{{niveauReapprovi}}" min="0" required><br />
+                    Indisponible : <input type="number" id="ind" name="ind" value="{{indisponible}}" min="0" max="1" required><br />
+                    <input type="submit" value="Ajouter">
+                    <input type="submit" value="Update">
+                    <input type="submit" value="Supprimer">
                 </form>
             {{/records}}
         </script>
