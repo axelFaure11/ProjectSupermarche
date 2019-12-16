@@ -14,18 +14,16 @@ import modele.Ligne;
 import modele.Pair;
 import modele.Produit;
 import modele.Value;
+
 /**
  *
  * @author rebecca
  */
 
-
-
 public class CommandeDaoImpl {
     private DB db = new DB();
     private int ok;
     private ResultSet rs;
-    
     
     public int nextKey() throws SQLException{
         ResultSet k = db.getPstm().getGeneratedKeys();
@@ -46,15 +44,11 @@ public class CommandeDaoImpl {
                 + " VALUES(?,?,?,?,?,?,?,?,?,?,?) ";
         try
         {
-            Date saisieLe = new Date();
-            //Date envoyeeLe = new Date();             
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-            //s
             // Initialisation de la requete
             db.initPrepare(sql);
             db.getCnx().setAutoCommit(false);
             // Passage de valeurs
-            //db.getPstm().setInt(1, cleCommande);
+            db.getPstm().setString(1, commande.getClient().getCode());
             db.getPstm().setDate(2, commande.getSaisieLe()); 
             db.getPstm().setDate(3, null);           
             db.getPstm().setDouble(4, commande.getPort());
@@ -65,7 +59,6 @@ public class CommandeDaoImpl {
             db.getPstm().setString(9, commande.getCodePostal());
             db.getPstm().setString(10, commande.getPaysLivraison());
             db.getPstm().setDouble(11, commande.getRemise());
-            db.getPstm().setString(1, commande.getClient().getCode());
             // Execution de la requete
             ok=db.executeMaj();
             
@@ -74,14 +67,14 @@ public class CommandeDaoImpl {
             db.getCnx().setAutoCommit(true);
             if(ok!=-1)
             {
-            // On récupère l'id de la commande qui vient d'etre temporairement créée
-            //ResultSet clesGenere = db.getPstm().getGeneratedKeys();
-            // on place le curseur sur le premier enregistrement pour verifier si on a au moins une valeur retourné
-            //if(clesGenere.next())
-            //{
-              // on récupère la cle généré par l'insertion c-à-d le code de la commande
-              //int cleCommande = clesGenere.getInt(1);
-              // On parcourt la map grace à entrySet
+                // On récupère l'id de la commande qui vient d'etre temporairement créée
+                //ResultSet clesGenere = db.getPstm().getGeneratedKeys();
+                // on place le curseur sur le premier enregistrement pour verifier si on a au moins une valeur retourné
+                //if(clesGenere.next())
+                //{
+                // on récupère la cle généré par l'insertion c-à-d le code de la commande
+                //int cleCommande = clesGenere.getInt(1);
+                // On parcourt la map grace à entrySet
                 Ligne ligne;
                 for(Pair pEQ: produitsEtQuantites)
                 {
@@ -103,12 +96,12 @@ public class CommandeDaoImpl {
         return ok;
     }
     
-    
     //mise à jour de la commande
     public int updateCommande (Commande commande,Map<Produit, Integer> produitsEtQuantites) throws SQLException
     {
-        String sql="UPDATE commande SET saisieLe=?, envoyeeLe=?, port=?, destinataire=?,"
-                + " adresseLivraison=?, remise=?, client=? , state=? WHERE Numero = ?";          
+        String sql="UPDATE commande SET saisie_Le=?, envoyee_Le=?, port=?, destinataire=?,"
+                + " adresse_Livraison=?, ville_livraison=?, region_livraison=?, code_postal_livrais=?,"
+                + " pays_livraison, remise=?, client=? WHERE Numero = ?";          
         ok=0;
         try
         {
@@ -132,13 +125,13 @@ public class CommandeDaoImpl {
             db.getPstm().setDouble(10, commande.getRemise());
             db.getPstm().setString(11, commande.getClient().getCode());
             db.getPstm().setInt(13, commande.getNumCommande());
-               // Execution de la requete
+            // Execution de la requete
             ok=db.executeMaj();
             if(ok!=-1)
             {
-            // On récupère l'id de la commande qui vient d'etre temporairement crée
+                // On récupère l'id de la commande qui vient d'etre temporairement crée
                 ResultSet clesGenere = db.getPstm().getGeneratedKeys();
-            // on place le curseur sur le premier enregistrement pour verifier si on a au moins une valeur retourné
+                // on place le curseur sur le premier enregistrement pour verifier si on a au moins une valeur retourné
                 if(clesGenere.next())
                 {
                     // on récupère la cle généré par l'insertion c-à-d le code de la commande
@@ -325,7 +318,8 @@ public class CommandeDaoImpl {
         return commandes;
     }
     
-    //liste des commandes impayées d'un client
+    /*liste des commandes impayées d'un client
+    *En l'état, la base de données ne permet pas d'exploiter cette méthode
     public List<Commande> getUnpaidCommandeFromClient(Client client) throws SQLException
      {
         List<Commande> commandes = new ArrayList<>();
@@ -338,7 +332,7 @@ public class CommandeDaoImpl {
             while(rs.next())
             {
                 Commande commande = new Commande();
-                 commande.setNumCommande(rs.getInt(1));
+                commande.setNumCommande(rs.getInt(1));
                 commande.setSaisieLe(rs.getDate(2));   
                 commande.setEnvoyeeLe(rs.getDate(3)); 
                 commande.setPort(rs.getDouble(4));
@@ -361,11 +355,10 @@ public class CommandeDaoImpl {
         }
         return commandes;
     }
-    
+    */
     
    public ArrayList<ChartEntry> chiffreAffCategorie (Date dateDebut, Date dateFin) throws SQLException
     {
-         
         ArrayList<ChartEntry> tabChifCat = new ArrayList<ChartEntry>();
         String sql="SELECT cat.libelle, SUM(p.prix_unitaire * l.quantite) AS CHIFFRE_D_AFFAIRE "
                         + "FROM Commande c "
@@ -375,19 +368,15 @@ public class CommandeDaoImpl {
                         + "WHERE saisie_le BETWEEN ? AND ? "
                         + "GROUP BY cat.libelle";                    
         try
-        {
-                        
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");         
+        {     
             // Initialisation de la requete
             db.initPrepare(sql);
             // Passage de valeurs
-            
             db.getPstm().setDate(1, (java.sql.Date) dateDebut); 
             db.getPstm().setDate(2, (java.sql.Date) dateFin);
             rs = db.executeSelect();
 
             ChartEntry content;
-            
             while (rs.next())
             {
                 content = new ChartEntry();
@@ -408,7 +397,6 @@ public class CommandeDaoImpl {
     
    public ArrayList<ChartEntry> chiffreAffPays (Date dateDebut, Date dateFin) throws SQLException
     {
-         
         ArrayList<ChartEntry> tabChifPays = new ArrayList<ChartEntry>();
         String sql="SELECT c.pays_livraison, SUM(p.prix_unitaire * l.quantite) AS CHIFFRE_D_AFFAIRE "
                         + "FROM Commande c "
@@ -417,19 +405,15 @@ public class CommandeDaoImpl {
                         + "WHERE saisie_Le BETWEEN ? AND ? "
                         + "GROUP BY c.pays_livraison";                    
         try
-        {
-                        
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");         
+        {      
             // Initialisation de la requete
             db.initPrepare(sql);
             // Passage de valeurs
-            
             db.getPstm().setDate(1, (java.sql.Date) dateDebut); 
             db.getPstm().setDate(2, (java.sql.Date) dateFin);
             rs = db.executeSelect();
             
             ChartEntry content;
-            
             while (rs.next())
             {
                 content = new ChartEntry();
@@ -451,7 +435,6 @@ public class CommandeDaoImpl {
       
    public ArrayList<ChartEntry> chiffreAffClient(Date dateDebut, Date dateFin) throws SQLException
     {
-         
         ArrayList<ChartEntry> tabChifClient = new ArrayList<ChartEntry>();
         String sql="SELECT cl.societe, SUM(p.prix_unitaire * l.quantite) AS CHIFFRE_D_AFFAIRE "
                         + "FROM Client cl "
@@ -461,19 +444,15 @@ public class CommandeDaoImpl {
                         + "WHERE saisie_Le BETWEEN ? AND ? "
                         + "GROUP BY cl.societe";                    
         try
-        {
-                        
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");         
+        {      
             // Initialisation de la requete
             db.initPrepare(sql);
             // Passage de valeurs
-            
             db.getPstm().setDate(1, (java.sql.Date) dateDebut); 
             db.getPstm().setDate(2, (java.sql.Date) dateFin);
             rs = db.executeSelect();
 
             ChartEntry content;
-            
             while (rs.next())
             {
                 content = new ChartEntry();

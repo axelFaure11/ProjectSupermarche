@@ -73,7 +73,7 @@ public class ProduitDaoImpl {
         try
         {
            // Initalisation de la requete 
-            db.initPrepare(sql);
+           db.initPrepare(sql);
            //  Passage des valeurs
            db.getPstm().setString(1, produit.getNom());
            db.getPstm().setInt(2, produit.getCodeFournisseur());
@@ -234,7 +234,7 @@ public class ProduitDaoImpl {
 
                         produits.add(produit);
                     }
-                     rs.close();
+                    rs.close();
                     db.getCnx().close();
 		}
 		catch(Exception e)
