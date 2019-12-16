@@ -44,12 +44,25 @@
                         e.preventDefault();
                         drawChart();
                     });
+                    formOptions();
                     showAllProd();
                     showAllCat();
                 });
         
             function showError(xhr, status, message) {
                 alert("" + xhr.status + " " + status + " " + message);
+            }
+            
+            function formOptions(){
+                $("#input").submit(function(e) { 
+                    e.preventDefault();
+                    var val = $("input[type=submit][clicked=true]").val();
+                    editProductTable(val);
+                });
+                $("#input input[type=submit]").click(function() {
+                    $("input[type=submit]", $(this).parents("form")).removeAttr("clicked");
+                    $(this).attr("clicked", "true");
+                });
             }
             
             function logOut(){
@@ -91,16 +104,8 @@
                                 var template = $("#formTemplate").html();
                                 var processedTemplate = Mustache.to_html(template, result);
                                 $("#form_placeholder").html(processedTemplate);
-                                $("#input").submit(function(e) { 
-                                    e.preventDefault();
-                                    var val = $("input[type=submit][clicked=true]").val();
-                                    editProductTable(val);
-                                });
-                                $("#input input[type=submit]").click(function() {
-                                    $("input[type=submit]", $(this).parents("form")).removeAttr("clicked");
-                                    $(this).attr("clicked", "true");
-                                });
-                                       }
+                                formOptions();
+                            }
                 });
             }
             
