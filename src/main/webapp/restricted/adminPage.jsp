@@ -12,6 +12,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/0.8.1/mustache.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="/CSS/adminPage.css"> 
         <title>Page d'administration</title>
         <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
         <script type="text/javascript">
@@ -34,7 +35,7 @@
                                 $("#graph").html("");
                                 var vdata = new google.visualization.DataTable(result);
                                 var chart = new google.visualization.ColumnChart(document.getElementById('graph'));
-                                setTimeout(chart.draw(vdata, {width: 1000, height: 1000}), 100);
+                                setTimeout(chart.draw(vdata, {width: 1000, height: 800}), 100);
                             }
                 });
             }
@@ -177,23 +178,23 @@
         <button id="logout" onclick="logOut()">Se déconnecter</button>
         <div style="display: flex;">
             <div id="editProd">
-                <div>
+                <div id="prodcatdiv">
                 <br />
-                    <div id="cats" ></div>
+                    <div id="cats" ></div><br />
                     <div id="prods" style="overflow-y: scroll; height: 500px;"></div>
                 </div><br /><br />
                 <button id="empty_form" onclick="emptyForm()">Vider le formulaire</button><br />
-                <div id="form_placeholder">
+                <div id="form_placeholder"><br />
                     <form id="input" method="POST">
-                        Reference : <input type="number" id="ref" name="ref" value="" readOnly><br />
+                        Référence : <input type="number" id="ref" name="ref" value="" readOnly><br />
                         Nom : <input type="text" id="nom" name="nom" value="" required><br />
                         Fournisseur : <input type="number" id="four" name="four" value="" min="0" required><br />
                         Catégorie : <input type="number" id="cate" name="cate" value="" min="0" required><br />
                         Quantite par unité : <input type="text" id="qtu" name="qtu" value="" required><br />
                         Prix unitaire : <input type="number" id="prix" name="prix" value="" min="0" required><br />
-                        Unites en stock : <input type="number" id="ues" name="ues" value="" min="0" required><br />
-                        Unites commandes :  <input type="number" id="uc" name="uc" value="" min="0" required><br />
-                        Niveau de reapprovisionnement : <input type="number" id="ndr" name="ndr" value="" min="0" required><br />
+                        Unités en stock : <input type="number" id="ues" name="ues" value="" min="0" required><br />
+                        Unités commandes :  <input type="number" id="uc" name="uc" value="" min="0" required><br />
+                        Niveau de réapprovisionnement : <input type="number" id="ndr" name="ndr" value="" min="0" required><br />
                         Indisponible : <input type="number" id="ind" name="ind" value="" min="0" max="1" required><br />
                         <input type="submit" value="Ajouter">
                         <input type="submit" value="Update">
@@ -240,15 +241,15 @@
         <script id="formTemplate" type="text/template"><br />
             {{#records}}
                 <form id="input" method="POST">
-                    Reference : <input type="number" id="ref" name="ref" value="{{ref}}" readOnly><br />
+                    Référence : <input type="number" id="ref" name="ref" value="{{ref}}" readOnly><br />
                     Nom : <input type="text" id="nom" name="nom" value="{{nom}}" required><br />
                     Fournisseur : <input type="number" id="four" name="four" value="{{codeFournisseur}}" min="0" required><br />
                     Catégorie : <input type="number" id="cate" name="cate" value="{{categorie}}" min="0" required><br />
                     Quantite par unité : <input type="text" id="qtu" name="qtu" value="{{quantite}}"><br />
                     Prix unitaire : <input type="number" id="prix" name="prix" value="{{prix}}" min="0" required><br />
-                    Unites en stock : <input type="number" id="ues" name="ues" value="{{unitesEnStock}}" min="0" required><br />
-                    Unites commandes :  <input type="number" id="uc" name="uc" value="{{unitesCommandees}}" min="0" required><br />
-                    Niveau de reapprovisionnement : <input type="number" id="ndr" name="ndr" value="{{niveauReapprovi}}" min="0" required><br />
+                    Unités en stock : <input type="number" id="ues" name="ues" value="{{unitesEnStock}}" min="0" required><br />
+                    Unités commandes :  <input type="number" id="uc" name="uc" value="{{unitesCommandees}}" min="0" required><br />
+                    Niveau de réapprovisionnement : <input type="number" id="ndr" name="ndr" value="{{niveauReapprovi}}" min="0" required><br />
                     Indisponible : <input type="number" id="ind" name="ind" value="{{indisponible}}" min="0" max="1" required><br />
                     <input type="submit" value="Ajouter">
                     <input type="submit" value="Update">

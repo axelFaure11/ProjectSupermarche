@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package filters;
 
 import java.io.IOException;
@@ -23,7 +18,7 @@ import javax.servlet.http.HttpSession;
 
 /**
  *
- * @author pedago
+ * @author Axel
  */
 @WebFilter(filterName = "checkConnection", urlPatterns = {"/cC"}, dispatcherTypes = {DispatcherType.REQUEST, DispatcherType.FORWARD, DispatcherType.ERROR, DispatcherType.INCLUDE})
 public class checkConnection implements Filter {

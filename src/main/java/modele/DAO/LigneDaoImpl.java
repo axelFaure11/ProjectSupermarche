@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package modele.DAO;
 
 import java.sql.ResultSet;
@@ -68,8 +63,6 @@ public class LigneDaoImpl
             db.getPstm().setInt(2, ligne.getCommande());
             db.getPstm().setInt(3, ligne.getProduit().getRef());
             db.getCnx().close();
-            
-
         }
         catch (Exception e)
         {
@@ -112,9 +105,9 @@ public class LigneDaoImpl
             if (rs.next())
             {
                 ligne=new Ligne();
-                  ligne.setCommande(new CommandeDaoImpl().getCommande(rs.getInt(1)).getNumCommande());
-                  ligne.setProduit(new ProduitDaoImpl().getProduit(rs.getInt(1)));
-             ligne.setQuantite(rs.getInt(3));             
+                ligne.setCommande(new CommandeDaoImpl().getCommande(rs.getInt(1)).getNumCommande());
+                ligne.setProduit(new ProduitDaoImpl().getProduit(rs.getInt(1)));
+                ligne.setQuantite(rs.getInt(3));             
             }
             rs.close();
             db.getCnx().close();

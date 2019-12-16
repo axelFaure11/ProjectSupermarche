@@ -1,0 +1,27 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 16 déc. 2019, 23:00:23
+    Author     : Axel
+*/
+
+#prodcatdiv {
+    margin-top: 10px;
+    margin-right: 5px;
+    border: 1px solid black;
+    border-radius: 8px;
+}
+#graph {
+    margin-top: 10px;
+    margin-right: 5px;
+    border: 1px solid black;
+    border-radius: 8px;
+}
+
+#cats {
+    
+    border-bottom: 1px solid black;
+}

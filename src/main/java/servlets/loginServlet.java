@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package servlets;
 
 import java.io.IOException;
@@ -19,11 +14,10 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import modele.Client;
 import modele.DAO.ClientDaoImpl;
-import modele.DataSourceFactory;
 
 /**
  *
- * @author pedago
+ * @author Axel
  */
 @WebServlet(name = "loginServlet", urlPatterns = {"/login"})
 public class loginServlet extends HttpServlet {
@@ -45,60 +39,64 @@ public class loginServlet extends HttpServlet {
         request.setCharacterEncoding("UTF-8");
         
         String action = request.getParameter("action");
-        System.out.println("action : " + action);
-		if (null != action) {
-			switch (action) {
-                                case "check":
-                                        try(PrintWriter out = response.getWriter()){
-                                            String str = findUserInSession(request);
-                                            if(null != str){
-                                                out.write(str);
-                                            } else {
-                                                out.write("not connected");
-                                            }
-                                        }
-                                        break;
-				case "login":
-					checkLogin(request);
-                                        
-                                        String userName = findUserInSession(request);
-                                        String view;
+        if (null != action) {
 
-                                        if (null == userName) { // L'utilisateur n'est pas connecté
-                                                // On choisit la page de login
-                                                view = "login.jsp";
-                                                request.setAttribute("log", "unlog");
+            switch (action) {
+                //On vérifie si l'user est connecté
+                case "check":
+                    try(PrintWriter out = response.getWriter()){
+                        String str = findUserInSession(request);
+                        if(null != str){
+                            out.write(str);
+                        } else {
+                            out.write("not connected");
+                        }
+                    }
+                    break;
+                //On demande une nouvelle authentification 
+                case "login":
+                    checkLogin(request);
 
-                                        } else { // L'utilisateur est connecté
-                                                // On choisit la page d'affichage
-                                                view = "afficheProduits.html";
-                                                request.setAttribute("log", "log");
-                                        }
-                                        
-                                        if(view.equals("afficheProduits.html")){
-                                            response.sendRedirect("afficheProduits.html");
-                                        } else {
-                                            boolean ajax = "XMLHttpRequest".equals(
-                                            request.getHeader("X-Requested-With"));
-                                            if(ajax){
-                                                try(PrintWriter out = response.getWriter()){
-                                                    out.write("login.jsp");
-                                                }
-                                            } else {
-                                                request.getRequestDispatcher("login.jsp").forward(request, response);
-                                            }
-                                        }
-					break;
-				case "logout":
-					doLogout(request);
-                                        try(PrintWriter out = response.getWriter()){
-                                            out.write("Disconnected");
-                                        }
-					break;
-                                default:
-                                    break;
-			}
-		}
+                    String userName = findUserInSession(request);
+                    String view;
+
+                    if (null == userName) { // L'utilisateur n'est pas connecté
+                        // On choisit la page de login
+                        view = "login.jsp";
+                        request.setAttribute("log", "unlog");
+
+                    } else { // L'utilisateur est connecté
+                        // On choisit la page d'affichage
+                        view = "afficheProduits.html";
+                        request.setAttribute("log", "log");
+                    }
+
+                    //On redirige l'utilisateur en fonction de la page d'appel
+                    if(view.equals("afficheProduits.html")){
+                        response.sendRedirect("afficheProduits.html");
+                    } else {
+                        boolean ajax = "XMLHttpRequest".equals(
+                        request.getHeader("X-Requested-With"));
+                        if(ajax){
+                            try(PrintWriter out = response.getWriter()){
+                                out.write("login.jsp");
+                            }
+                        } else {
+                            request.getRequestDispatcher("login.jsp").forward(request, response);
+                        }
+                    }
+                    break;
+                //On demande la déconnection d'une session
+                case "logout":
+                    doLogout(request);
+                    try(PrintWriter out = response.getWriter()){
+                        out.write("Disconnected");
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -170,31 +168,27 @@ public class loginServlet extends HttpServlet {
                     session.setAttribute("superUser", true);
                 } else {
                 
-                Client cl = dao.getClient(passwordParam);
-                
-                if(cl!=null){
-                    System.out.println("Client found!");
-                    if (((passwordParam.equals(cl.getCode())))&&loginParam.equals(cl.getContact())) {
-			// On a trouvé la combinaison login / password
-			// On stocke l'information dans la session
-			HttpSession session = request.getSession(false); // récupération de la session
-			session.setAttribute("userName", loginParam);
-                        session.setAttribute("superUser", false);
-                        /*Exceptionnellement, on stocke le code qui sert de mot de passe
-                        * puisque il s'agit de la clé primaire utilisée dans la base
-                        * de données donnée dans la table client.
-                        * Sinon, ne jamais stocker un mot de passe dans la session semble évident.
-                        */
-                        session.setAttribute("code", passwordParam);
-                        System.out.println("Attributed!");
-                    } else {
-                        request.setAttribute("errorMessage", "Login/Password incorrect");
-                        System.out.println("Failed!");
-                    }
-                } else { // On positionne un message d'erreur pour l'afficher dans la JSP
-			request.setAttribute("errorMessage", "Login/Password incorrect");
-                        System.out.println("Failed!");
-                    }
+                    Client cl = dao.getClient(passwordParam);
+
+                    if(cl!=null){
+                        if (((passwordParam.equals(cl.getCode())))&&loginParam.equals(cl.getContact())) {
+                            // On a trouvé la combinaison login / password
+                            // On stocke l'information dans la session
+                            HttpSession session = request.getSession(false); // récupération de la session
+                            session.setAttribute("userName", loginParam);
+                            session.setAttribute("superUser", false);
+                            /*Exceptionnellement, on stocke le code qui sert de mot de passe
+                            * puisque il s'agit de la clé primaire utilisée dans la base
+                            * de données donnée dans la table client.
+                            * Sinon, ne jamais stocker un mot de passe dans la session semble évident.
+                            */
+                            session.setAttribute("code", passwordParam);
+                        } else {
+                            request.setAttribute("errorMessage", "Login/Password incorrect");
+                        }
+                    } else { // On positionne un message d'erreur pour l'afficher dans la JSP
+                            request.setAttribute("errorMessage", "Login/Password incorrect");
+                        }
                 }
 	}
 

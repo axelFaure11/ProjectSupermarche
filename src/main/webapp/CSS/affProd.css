@@ -71,3 +71,7 @@ and open the template in the editor.
 #checkout {
     position: relative;
 }
+#cart {
+    flex-grow: 1;
+    border-left: 1px solid black;
+}

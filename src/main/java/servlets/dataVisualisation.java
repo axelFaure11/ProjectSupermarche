@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package servlets;
 
 import com.google.gson.Gson;
@@ -11,9 +6,7 @@ import java.io.PrintWriter;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Iterator;
-import java.util.Map;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -22,7 +15,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import modele.Categorie;
 import modele.ChartCols;
 import modele.ChartEntry;
 import modele.DAO.CommandeDaoImpl;
@@ -46,10 +38,6 @@ public class dataVisualisation extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("application/json;charset=UTF-8");
-        
-        System.out.println(request.getParameter("opt"));
-        System.out.println(request.getParameter("datedeb"));
-        System.out.println(request.getParameter("datefin"));
         
         String opt = request.getParameter("opt");
         Date datedeb = java.sql.Date.valueOf(request.getParameter("datedeb"));
@@ -75,7 +63,6 @@ public class dataVisualisation extends HttpServlet {
                 resultat.put("cols", coldata);
                 resultat.put("rows", data);
                 json = gson.toJson(resultat);
-                System.out.println(resultat);
                 
             } catch (SQLException ex) {
                 Logger.getLogger(dataVisualisation.class.getName()).log(Level.SEVERE, null, ex);
@@ -96,7 +83,6 @@ public class dataVisualisation extends HttpServlet {
                 resultat.put("cols", coldata);
                 resultat.put("rows", data);
                 json = gson.toJson(resultat);
-                System.out.println(resultat);
                 
             } catch (SQLException ex) {
                 Logger.getLogger(dataVisualisation.class.getName()).log(Level.SEVERE, null, ex);
@@ -117,7 +103,6 @@ public class dataVisualisation extends HttpServlet {
                 resultat.put("cols", coldata);
                 resultat.put("rows", data);
                 json = gson.toJson(resultat);
-                System.out.println(resultat);
                 
             } catch (SQLException ex) {
                 Logger.getLogger(dataVisualisation.class.getName()).log(Level.SEVERE, null, ex);

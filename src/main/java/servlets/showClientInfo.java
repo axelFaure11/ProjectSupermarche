@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package servlets;
 
 import com.google.gson.Gson;
@@ -23,7 +18,7 @@ import modele.DAO.ClientDaoImpl;
 
 /**
  *
- * @author pedago
+ * @author Axel
  */
 @WebServlet(name = "showClientInfo", urlPatterns = {"/showClientInfo"})
 public class showClientInfo extends HttpServlet {

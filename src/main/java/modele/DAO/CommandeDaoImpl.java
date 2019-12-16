@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package modele.DAO;
 
 import java.sql.ResultSet;
@@ -10,10 +5,8 @@ import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import modele.Categorie;
 import modele.ChartEntry;
 import modele.Commande;
 import modele.Client;
@@ -45,6 +38,7 @@ public class CommandeDaoImpl {
         k.close();
         return key;
     }
+    
    //ajout d'une commande          
     public int addCommande(Commande commande,ArrayList<Pair> produitsEtQuantites)  throws SQLException
     {     
@@ -88,21 +82,19 @@ public class CommandeDaoImpl {
               // on récupère la cle généré par l'insertion c-à-d le code de la commande
               //int cleCommande = clesGenere.getInt(1);
               // On parcourt la map grace à entrySet
-              Ligne ligne;
-              for(Pair pEQ: produitsEtQuantites)
-              {
-                ligne = new Ligne();
-                ligne.setCommande(cleCommande);
-                // on récupère la clé d'une set qui correspond au produit
-                ligne.setProduit(pEQ.getKey());
-                // on récupère la clé d'une set qui correspond à la quantité du produit vendu
-                ligne.setQuantite(pEQ.getQuantity());
-                new LigneDaoImpl().addLigne(ligne);
-              }
-            //}
-          }
+                Ligne ligne;
+                for(Pair pEQ: produitsEtQuantites)
+                {
+                    ligne = new Ligne();
+                    ligne.setCommande(cleCommande);
+                    // on récupère la clé d'une set qui correspond au produit
+                    ligne.setProduit(pEQ.getKey());
+                    // on récupère la clé d'une set qui correspond à la quantité du produit vendu
+                    ligne.setQuantite(pEQ.getQuantity());
+                    new LigneDaoImpl().addLigne(ligne);
+                }
+            }
             db.closeConnection();
-            
         }        
         catch(Exception e)
         {
@@ -145,30 +137,30 @@ public class CommandeDaoImpl {
             if(ok!=-1)
             {
             // On récupère l'id de la commande qui vient d'etre temporairement crée
-            ResultSet clesGenere = db.getPstm().getGeneratedKeys();
+                ResultSet clesGenere = db.getPstm().getGeneratedKeys();
             // on place le curseur sur le premier enregistrement pour verifier si on a au moins une valeur retourné
-            if(clesGenere.next())
-            {
-              // on récupère la cle généré par l'insertion c-à-d le code de la commande
-              int cleCommande = clesGenere.getInt(1);
-              // On parcourt la map grace à entrySet
-              for(Map.Entry<Produit, Integer>  pEQ: produitsEtQuantites.entrySet())
-              {
-                Ligne ligne = new Ligne();
-                ligne.setCommande(cleCommande);
-                // on récupère la clé d'une set qui correspond au produit
-                ligne.setProduit(pEQ.getKey());
-                // on récupère la clé d'une set qui correspond à la quantité du produit vendu
-                ligne.setQuantite(pEQ.getValue());
-                new LigneDaoImpl().updateLigne(ligne);
-              }
+                if(clesGenere.next())
+                {
+                    // on récupère la cle généré par l'insertion c-à-d le code de la commande
+                    int cleCommande = clesGenere.getInt(1);
+                    // On parcourt la map grace à entrySet
+                    for(Map.Entry<Produit, Integer>  pEQ: produitsEtQuantites.entrySet())
+                    {
+                        Ligne ligne = new Ligne();
+                        ligne.setCommande(cleCommande);
+                        // on récupère la clé d'une set qui correspond au produit
+                        ligne.setProduit(pEQ.getKey());
+                        // on récupère la clé d'une set qui correspond à la quantité du produit vendu
+                        ligne.setQuantite(pEQ.getValue());
+                        new LigneDaoImpl().updateLigne(ligne);
+                    }
+                }
             }
-          }
-          // On valide la transaction
-          db.getCnx().commit();
-          // On desactive le mode transaction
-          db.getCnx().setAutoCommit(true);    
-          db.getCnx().close();  
+            // On valide la transaction
+            db.getCnx().commit();
+            // On desactive le mode transaction
+            db.getCnx().setAutoCommit(true);    
+            db.getCnx().close();  
         }
         catch (Exception e)
         {
@@ -190,32 +182,32 @@ public class CommandeDaoImpl {
             db.getPstm().setInt(1, commande.getNumCommande());
             ok=db.executeMaj();
             if(ok!=-1)
-          {
-            // On récupère l'id de la commande qui vient d'etre temporairement crée
-            ResultSet clesGenere = db.getPstm().getGeneratedKeys();
-            // on place le curseur sur le premier enregistrement pour verifier si on a au moins une valeur retourné
-            if(clesGenere.next())
             {
-              // on récupère la cle généré par l'insertion c-à-d le code de la commande
-              int cleCommande = clesGenere.getInt(1);
-              // On parcourt la map grace à entrySet
-              for(Map.Entry<Produit, Integer>  pEQ: produitsEtQuantites.entrySet())
-              {
-                Ligne ligne = new Ligne();
-                ligne.setCommande(cleCommande);
-                // on récupère la clé d'une set qui correspond au produit
-                ligne.setProduit(pEQ.getKey());
-                // on récupère la clé d'une set qui correspond à la quantité du produit vendu
-                ligne.setQuantite(pEQ.getValue());
-                new LigneDaoImpl().deleteLigne(commande, produit);
-              }
+                // On récupère l'id de la commande qui vient d'etre temporairement crée
+                ResultSet clesGenere = db.getPstm().getGeneratedKeys();
+                // on place le curseur sur le premier enregistrement pour verifier si on a au moins une valeur retourné
+                if(clesGenere.next())
+                {
+                    // on récupère la cle généré par l'insertion c-à-d le code de la commande
+                    int cleCommande = clesGenere.getInt(1);
+                    // On parcourt la map grace à entrySet
+                    for(Map.Entry<Produit, Integer>  pEQ: produitsEtQuantites.entrySet())
+                    {
+                        Ligne ligne = new Ligne();
+                        ligne.setCommande(cleCommande);
+                        // on récupère la clé d'une set qui correspond au produit
+                        ligne.setProduit(pEQ.getKey());
+                        // on récupère la clé d'une set qui correspond à la quantité du produit vendu
+                        ligne.setQuantite(pEQ.getValue());
+                        new LigneDaoImpl().deleteLigne(commande, produit);
+                    }
+                }
             }
-          }
-          // On valide la transaction
-          db.getCnx().commit();
-          // On desactive le mode transaction
-          db.getCnx().setAutoCommit(true);
-          db.getCnx().close();
+            // On valide la transaction
+            db.getCnx().commit();
+            // On desactive le mode transaction
+            db.getCnx().setAutoCommit(true);
+            db.getCnx().close();
         }
         catch(Exception e)
         {
@@ -272,7 +264,7 @@ public class CommandeDaoImpl {
             while(rs.next())
             {
                 Commande commande=new Commande();
-                 commande.setNumCommande(rs.getInt(1));
+                commande.setNumCommande(rs.getInt(1));
                 commande.setSaisieLe(rs.getDate(2));   
                 commande.setEnvoyeeLe(rs.getDate(3)); 
                 commande.setPort(rs.getDouble(4));
@@ -488,7 +480,6 @@ public class CommandeDaoImpl {
                 content.getC().add(new Value<String>(rs.getString(1)));
                 content.getC().add(new Value<Double>(rs.getDouble(2)));
                 tabChifClient.add(content);
-                
             }
             rs.close();
             db.getCnx().close();

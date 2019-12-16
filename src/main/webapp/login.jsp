@@ -22,6 +22,7 @@
                     Identifiant : <input id="id" name="id" required><br />
                     Mot de passe : <input type="password" id="pass" name="pass" required><br />
                     <input id="action" name="action" type="submit" value="login">
+                    <span><font color="red"> <i>${requestScope.errorMessage}</i></font></span>
                 </form></td>
         </table>
     </body>

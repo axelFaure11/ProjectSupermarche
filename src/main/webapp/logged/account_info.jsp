@@ -45,7 +45,6 @@
                        error: showError,
                        success:
                                function (result){
-                                   console.log(result);
                                    var template = $("#comTemplate").html();
                                    var processedTemplate = Mustache.to_html(template, result);
                                    $("#commands_placeholder").html(processedTemplate);

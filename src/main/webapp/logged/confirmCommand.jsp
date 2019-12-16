@@ -30,7 +30,6 @@
                     success:
                            function (result){
                                 setTimeout(function () {
-                                    console.log(result);
                                     var template = $("#cartTemplate").html();
                                     var processedTemplate = Mustache.to_html(template, result);
                                     $("#cart_placeholder").html(processedTemplate);

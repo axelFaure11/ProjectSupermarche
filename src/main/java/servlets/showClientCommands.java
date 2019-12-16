@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package servlets;
 
 import com.google.gson.Gson;
@@ -12,7 +7,6 @@ import java.sql.SQLException;
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -32,7 +26,7 @@ import modele.Ligne;
 
 /**
  *
- * @author pedago
+ * @author Axel
  */
 @WebServlet(name = "showClientCommands", urlPatterns = {"/showClientCommands"})
 public class showClientCommands extends HttpServlet {
@@ -78,7 +72,6 @@ public class showClientCommands extends HttpServlet {
             }
             
             Gson gson = new Gson();
-            System.out.println(gson.toJson(commandes));
             out.println(gson.toJson(commandes));
         }
     }

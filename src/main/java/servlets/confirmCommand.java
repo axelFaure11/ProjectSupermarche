@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package servlets;
 
 import java.io.IOException;
@@ -42,13 +37,16 @@ public class confirmCommand extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         
+        //On récupère et instancie tout ce qui est nécessaire.
         HttpSession session = request.getSession();
         tempPanier panier = (tempPanier) session.getAttribute("panier");
         CommandeDaoImpl cmdao = new CommandeDaoImpl();
         ClientDaoImpl cldao = new ClientDaoImpl();
+        
         try(PrintWriter out = response.getWriter()){
             if(!panier.isEmpty()){
                 try {
+                    //On essaye d'insérer la nouvelle commande dans la base de données
                     Client cl = cldao.getClient((String) session.getAttribute("code"));
                     Commande commande = new Commande(0, cl, 100.0, cl.getContact(), cl.getAdresse(), cl.getVille(), cl.getRegion(), cl.getCodePostal(), cl.getPays(), 0.0);
                     cmdao.addCommande(commande, panier);

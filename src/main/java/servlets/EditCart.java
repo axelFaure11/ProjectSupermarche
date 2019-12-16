@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package servlets;
 
 import java.io.IOException;
@@ -50,16 +45,22 @@ public class EditCart extends HttpServlet {
         Iterator it;
         boolean updated;
         
+        //Cette servlet peut effectuer 3 actions différentes :
         switch(act){
+            
+                //Ajouter un produit au panier
                 case "add":
                     Produit pr = dao.getProduit(Integer.parseInt(ref));
+                    //On vérifie que ce produit est en stock
                     if(pr.getUnitesEnStock()==0){
                         break;
                     }
                     
+                    //Si il l'est en stock, on va vérifier si le produit est déjà dans le panier
                     lig = new Pair(pr, 1);
                     updated = false;
                     for(int i = 0; i<panier.size(); i++){
+                        //Si il est dans le panier, on incrémente la quantité commandée de 1
                         if(panier.get(i).getKey().equals(lig.getKey())){
                             if(pr.getUnitesEnStock()>panier.get(i).getQuantity()){
                                 panier.set(i, new Pair(panier.get(i).getKey(), panier.get(i).getQuantity() + 1));
@@ -68,20 +69,22 @@ public class EditCart extends HttpServlet {
                             updated = true;
                         }
                     }
+                    //Si le produit n'a produit aucune mise à jour, c'est qu'il n'est pas dans le panier
                     if(!updated){
                         panier.add(lig);
                         panier.updatePrixTotal(pr.getPrix());
                     }
                     break;
-                    
+                
+                //Supprimer un produit du panier
                 case "del":
                     pr = dao.getProduit(Integer.parseInt(ref));
-                    //
-                    lig = new Pair(pr, 1);
                     
+                    lig = new Pair(pr, 1);
                     it = panier.iterator();
                     updated = false;
                     int updNbr = 0;
+                    //On cherche dans le panier le produit à enlever complètement
                     while(it.hasNext()){
                         Pair currLig = (Pair) it.next();
                         if(currLig.getKey().equals(lig.getKey())){
@@ -90,17 +93,19 @@ public class EditCart extends HttpServlet {
                             updated = true;
                         }
                     }
+                    //Si un produit a été enlevé, on met à jour le prix total du panier
                     if(updated){
                        panier.updatePrixTotal(-(updNbr*pr.getPrix()));
                     }
                     break;
-                    
+                
+                //Réduire la quantité d'un certain produit dans le panier
                 case "delOne":
                     pr = dao.getProduit(Integer.parseInt(ref));
                     
                     lig = new Pair(pr, 1);
-                    
                     updated = false;
+                    //On cherche dans le panier le produit à réduire
                     for(int i = 0; i<panier.size(); i++){
                         if(panier.get(i).getKey().equals(lig.getKey())){
                             if(panier.get(i).getQuantity() > 1){
@@ -112,11 +117,13 @@ public class EditCart extends HttpServlet {
                             }
                         }
                     }
+                    //Si une unite du produit a été enlevé, on met à jour le prix total du panier
                     if(updated){
                        panier.updatePrixTotal(-pr.getPrix());
                     }
                     break;
                 
+                //Supprimer tous les produits du panier
                 case "delAll":
                     panier.viderPanier();
                     break;

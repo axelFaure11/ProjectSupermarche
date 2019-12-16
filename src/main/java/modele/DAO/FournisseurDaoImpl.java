@@ -1,14 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package modele.DAO;
 
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
-import modele.Client;
 import modele.Fournisseur;
 
 /**
@@ -33,7 +27,6 @@ public class FournisseurDaoImpl
             db.getPstm().setString(3, fournisseur.getNom());
             // Execution de la requete
             ok=db.executeMaj();
-        
         }
         catch(Exception e)
         {

@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package modele.DAO;
 
 import java.sql.ResultSet;
@@ -38,7 +33,6 @@ public class ProduitDaoImpl {
             db.getPstm().setInt(7, produit.getUnitesCommandees());
             db.getPstm().setInt(8, produit.getNiveauReapprovi());
             db.getPstm().setInt(9, produit.getIndisponible());
-            
 
             //Execution de la requete
             ok = db.executeMaj();
@@ -107,11 +101,11 @@ public class ProduitDaoImpl {
         ok=0;
         try
         {
-           // Initalisation de la requete 
+            // Initalisation de la requete 
             db.initPrepare(sql);
-           //  Passage des valeurs        
-           db.getPstm().setInt(5, Integer.parseInt(produit.getQuantite()));
-             db.getPstm().setInt(1, produit.getRef());
+            //  Passage des valeurs        
+            db.getPstm().setInt(5, Integer.parseInt(produit.getQuantite()));
+            db.getPstm().setInt(1, produit.getRef());
             db.getCnx().close();
          
         }  
@@ -144,7 +138,6 @@ public class ProduitDaoImpl {
         catch(Exception e)
         {
            throw new SQLException(e);
-
         }
         return ok;
     }
@@ -193,19 +186,19 @@ public class ProduitDaoImpl {
             rs = db.executeSelect();
             while(rs.next())
             {
-				Produit produit = new Produit();
-				produit.setRef(rs.getInt(1));
-				produit.setNom(rs.getString(2));
-				produit.setCodeFournisseur(rs.getInt(3));
-                                produit.setCategorie(rs.getInt(4));
-                                produit.setQuantite(rs.getString(5));
-                                produit.setPrix((int) rs.getDouble(6));
-                                produit.setUnitesEnStock(rs.getInt(7));
-                                produit.setUnitesCommandees(rs.getInt(8));
-                                produit.setNiveauReapprovi(rs.getInt(9));
-                                produit.setIndisponible(rs.getInt(9));
-				produits.add(produit);
-			}
+                Produit produit = new Produit();
+                produit.setRef(rs.getInt(1));
+                produit.setNom(rs.getString(2));
+                produit.setCodeFournisseur(rs.getInt(3));
+                produit.setCategorie(rs.getInt(4));
+                produit.setQuantite(rs.getString(5));
+                produit.setPrix((int) rs.getDouble(6));
+                produit.setUnitesEnStock(rs.getInt(7));
+                produit.setUnitesCommandees(rs.getInt(8));
+                produit.setNiveauReapprovi(rs.getInt(9));
+                produit.setIndisponible(rs.getInt(9));
+                produits.add(produit);
+            }
             rs.close();
             db.getCnx().close();
         
@@ -223,27 +216,26 @@ public class ProduitDaoImpl {
 		String sql = "SELECT * FROM produit";
 		try
 		{
-			db.initPrepare(sql);
-                        System.out.println(db);
-			rs = db.executeSelect();
-			while(rs.next())
-			{
-				Produit produit = new Produit();
-				produit.setRef(rs.getInt(1));
-				produit.setNom(rs.getString(2));
-				produit.setCodeFournisseur(rs.getInt(3));
-                                produit.setCategorie(rs.getInt(4));
-                                produit.setQuantite(rs.getString(5));
-                                produit.setPrix((int) rs.getDouble(6));
-                                produit.setUnitesEnStock(rs.getInt(7));
-                                produit.setUnitesCommandees(rs.getInt(8));
-                                produit.setNiveauReapprovi(rs.getInt(9));
-                                produit.setIndisponible(rs.getInt(9));
-                                
-				produits.add(produit);
-			}
-            rs.close();
-            db.getCnx().close();
+                    db.initPrepare(sql);
+                    rs = db.executeSelect();
+                    while(rs.next())
+                    {
+                        Produit produit = new Produit();
+                        produit.setRef(rs.getInt(1));
+                        produit.setNom(rs.getString(2));
+                        produit.setCodeFournisseur(rs.getInt(3));
+                        produit.setCategorie(rs.getInt(4));
+                        produit.setQuantite(rs.getString(5));
+                        produit.setPrix((int) rs.getDouble(6));
+                        produit.setUnitesEnStock(rs.getInt(7));
+                        produit.setUnitesCommandees(rs.getInt(8));
+                        produit.setNiveauReapprovi(rs.getInt(9));
+                        produit.setIndisponible(rs.getInt(9));
+
+                        produits.add(produit);
+                    }
+                     rs.close();
+                    db.getCnx().close();
 		}
 		catch(Exception e)
 		{
