@@ -5,28 +5,25 @@
  */
 package servlets;
 
-import com.google.gson.Gson;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import modele.DAO.ProduitDaoImpl;
-import modele.DataSourceFactory;
 import modele.Produit;
 
 /**
  *
- * @author pedago
+ * @author Axel
  */
-@WebServlet(name = "showProductDetails", urlPatterns = {"/showProductDetails"})
-public class showProductDetails extends HttpServlet {
+@WebServlet(name = "editProductTable", urlPatterns = {"/editProductTable"})
+public class editProductTable extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -39,26 +36,50 @@ public class showProductDetails extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("application/json;charset=UTF-8");
-        String ref = request.getParameter("ref");
-        try (PrintWriter out = response.getWriter()) {
+        
+        String action = request.getParameter("action");
+        int ref = Integer.parseInt(request.getParameter("ref"));
+        String nom = request.getParameter("nom");
+        int four = Integer.parseInt(request.getParameter("four"));
+        int cat = Integer.parseInt(request.getParameter("cat"));
+        String qtu = request.getParameter("qtu");
+        Double prix = Double.parseDouble(request.getParameter("prix"));
+        int ues = Integer.parseInt(request.getParameter("ues"));
+        int uc = Integer.parseInt(request.getParameter("uc"));
+        int ndr = Integer.parseInt(request.getParameter("ndr"));
+        int ind = Integer.parseInt(request.getParameter("ind"));
+        
+        System.out.println(action);
+        System.out.println(ref);
+        System.out.println(nom);
+        
+        ProduitDaoImpl dao = new ProduitDaoImpl();
+        
+        switch (action){
             
-            ProduitDaoImpl dao = new ProduitDaoImpl();
-            
-            Properties resultat = new Properties();
+            case "Ajouter":
+                break;
+                
+            case "Update":
+        {
             try {
-                ArrayList<Produit> records = new ArrayList<Produit>();
-                records.add(dao.getProduit(Integer.parseInt(ref)));
-                resultat.put("records", records);
-            } catch (SQLException e) {
-                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-                resultat.put("records", Collections.EMPTY_LIST);
-                resultat.put("message", e.getMessage());
+                dao.updateProduit(new Produit(ref, nom, four, cat, qtu, prix, ues, uc, ndr, ind));
+            } catch (SQLException ex) {
+                Logger.getLogger(editProductTable.class.getName()).log(Level.SEVERE, null, ex);
             }
-            Gson gson = new Gson();
-            String gsonData = gson.toJson(resultat);
+        }
+                break;
+                
+            case "Supprimer":
+                break;
             
-            out.println(gsonData);
+            default:
+                break;
+        }
+        
+        try (PrintWriter out = response.getWriter()) {
+            /* TODO output your page here. You may use following sample code. */
+            
         }
     }
 

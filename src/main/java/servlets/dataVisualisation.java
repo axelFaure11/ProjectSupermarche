@@ -10,7 +10,9 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Date;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Properties;
 import java.util.logging.Level;
@@ -21,6 +23,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import modele.Categorie;
+import modele.ChartCols;
+import modele.ChartEntry;
 import modele.DAO.CommandeDaoImpl;
 
 /**
@@ -43,24 +47,35 @@ public class dataVisualisation extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("application/json;charset=UTF-8");
         
+        System.out.println(request.getParameter("opt"));
+        System.out.println(request.getParameter("datedeb"));
+        System.out.println(request.getParameter("datefin"));
+        
         String opt = request.getParameter("opt");
-        Date datedeb = Date.valueOf(request.getParameter("datedeb"));
-        Date datefin = Date.valueOf(request.getParameter("datefin"));
+        Date datedeb = java.sql.Date.valueOf(request.getParameter("datedeb"));
+        Date datefin = java.sql.Date.valueOf(request.getParameter("datefin"));
+        
+        Properties resultat = new Properties();
         
         CommandeDaoImpl comdao = new CommandeDaoImpl();
         Gson gson = new Gson();
         String json = "";
-        
-        Properties resultat = new Properties();
            
         switch (opt) {
             case "cat":
         {
             try {
-                Map<String, Double> data = comdao.chiffreAffCategorie(datedeb, datefin);
-                resultat.put("records", data);
+                ArrayList<ChartEntry> data = comdao.chiffreAffCategorie(datedeb, datefin);
+                
+                Iterator<ChartEntry> it = data.iterator();
+                ArrayList<ChartCols> coldata = new ArrayList<ChartCols>();
+                coldata.add(new ChartCols("", "Catégorie", "", "string"));
+                coldata.add(new ChartCols("", "Chiffre d'affaire", "", "number"));
+                
+                resultat.put("cols", coldata);
+                resultat.put("rows", data);
                 json = gson.toJson(resultat);
-                System.out.println(json);
+                System.out.println(resultat);
                 
             } catch (SQLException ex) {
                 Logger.getLogger(dataVisualisation.class.getName()).log(Level.SEVERE, null, ex);
@@ -69,9 +84,45 @@ public class dataVisualisation extends HttpServlet {
                 break;
             
             case "pays":
+        {
+            try {
+                ArrayList<ChartEntry> data = comdao.chiffreAffPays(datedeb, datefin);
+                
+                Iterator<ChartEntry> it = data.iterator();
+                ArrayList<ChartCols> coldata = new ArrayList<ChartCols>();
+                coldata.add(new ChartCols("", "Pays", "", "string"));
+                coldata.add(new ChartCols("", "Chiffre d'affaire", "", "number"));
+                
+                resultat.put("cols", coldata);
+                resultat.put("rows", data);
+                json = gson.toJson(resultat);
+                System.out.println(resultat);
+                
+            } catch (SQLException ex) {
+                Logger.getLogger(dataVisualisation.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
                 break;
                 
             case "client":
+        {
+            try {
+                ArrayList<ChartEntry> data = comdao.chiffreAffClient(datedeb, datefin);
+                
+                Iterator<ChartEntry> it = data.iterator();
+                ArrayList<ChartCols> coldata = new ArrayList<ChartCols>();
+                coldata.add(new ChartCols("", "Societe", "", "string"));
+                coldata.add(new ChartCols("", "Chiffre d'affaire", "", "number"));
+                
+                resultat.put("cols", coldata);
+                resultat.put("rows", data);
+                json = gson.toJson(resultat);
+                System.out.println(resultat);
+                
+            } catch (SQLException ex) {
+                Logger.getLogger(dataVisualisation.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
                 break;
             
             default:

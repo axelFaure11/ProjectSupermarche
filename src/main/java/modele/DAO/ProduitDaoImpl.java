@@ -72,8 +72,8 @@ public class ProduitDaoImpl {
     }
     
     public int updateProduit(Produit produit) throws SQLException{
-        String sql= "UPDATE produit SET reference = ?, nom =?, fournisseur =?, categorie =?, quantite_par_unite =?, prix_unitaire =?,"
-                + "unites_en_stock =?, unites_commandees=?, niveau_de_reapprovi =?, indisponile=? WHERE ref=?";
+        String sql= "UPDATE produit SET nom =?, fournisseur =?, categorie =?, quantite_par_unite =?, prix_unitaire =?,"
+                + "unites_en_stock =?, unites_commandees=?, niveau_de_reappro =?, indisponible=? WHERE reference=?";
         ok=0;
         try
         {
@@ -90,6 +90,7 @@ public class ProduitDaoImpl {
            db.getPstm().setInt(8, produit.getUnitesCommandees());
            db.getPstm().setInt(9, produit.getNiveauReapprovi());
            db.getPstm().setInt(10, produit.getIndisponible());
+           ok=db.executeMaj();
            db.getCnx().close();
         }  
         catch(Exception e)

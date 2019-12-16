@@ -14,11 +14,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import modele.Categorie;
+import modele.ChartEntry;
 import modele.Commande;
 import modele.Client;
 import modele.Ligne;
 import modele.Pair;
 import modele.Produit;
+import modele.Value;
 /**
  *
  * @author rebecca
@@ -369,16 +371,17 @@ public class CommandeDaoImpl {
     }
     
     
-   public Map<String, Double> chiffreAffCategorie (Date dateDebut, Date dateFin) throws SQLException
+   public ArrayList<ChartEntry> chiffreAffCategorie (Date dateDebut, Date dateFin) throws SQLException
     {
          
-        Map<String, Double> tabChifCat = new HashMap<>();
-        String sql="SELECT p.categorie, SUM(p.prix_unitaire * l.quantite) AS CHIFFRE_D_AFFAIRE "
+        ArrayList<ChartEntry> tabChifCat = new ArrayList<ChartEntry>();
+        String sql="SELECT cat.libelle, SUM(p.prix_unitaire * l.quantite) AS CHIFFRE_D_AFFAIRE "
                         + "FROM Commande c "
                         + "INNER JOIN ligne l ON c.numero=l.commande "
                         + "INNER JOIN produit p ON p.reference=l.produit "
+                        + "INNER JOIN categorie cat ON p.categorie=cat.code "
                         + "WHERE saisie_le BETWEEN ? AND ? "
-                        + "GROUP BY p.categorie";                    
+                        + "GROUP BY cat.libelle";                    
         try
         {
                         
@@ -391,11 +394,14 @@ public class CommandeDaoImpl {
             db.getPstm().setDate(2, (java.sql.Date) dateFin);
             rs = db.executeSelect();
 
+            ChartEntry content;
+            
             while (rs.next())
             {
-                Categorie categorie = new CategorieDaoImpl().getCategorie(rs.getInt(1));
-                tabChifCat.put(categorie.getLibelle(), rs.getDouble("chiffre_d_affaire"));
-                System.out.println("categorie " + rs.getDouble("chiffre_d_affaire"));
+                content = new ChartEntry();
+                content.getC().add(new Value<String>(rs.getString(1)));
+                content.getC().add(new Value<Double>(rs.getDouble(2)));
+                tabChifCat.add(content);
                 
             }
             rs.close();
@@ -408,15 +414,15 @@ public class CommandeDaoImpl {
         return tabChifCat;
     }
     
-   public Map<String, Double> chiffreAffPays (Date dateDebut, Date dateFin) throws SQLException
+   public ArrayList<ChartEntry> chiffreAffPays (Date dateDebut, Date dateFin) throws SQLException
     {
          
-        Map<String, Double> tabChifPays = new HashMap<>();
-        String sql="SELECT c.pays_livraison, SUM(p.prix_unitaire * l.quantite_par_unite) AS CHIFFRE_D_AFFAIRE "
+        ArrayList<ChartEntry> tabChifPays = new ArrayList<ChartEntry>();
+        String sql="SELECT c.pays_livraison, SUM(p.prix_unitaire * l.quantite) AS CHIFFRE_D_AFFAIRE "
                         + "FROM Commande c "
-                        + "JOIN ligne l ON c.numero=l.commande "
-                        + "JOIN produit p ON p.reference=l.produit "
-                        + "WHERE saisieLe BETWEEN ? AND ? "
+                        + "INNER JOIN ligne l ON c.numero=l.commande "
+                        + "INNER JOIN produit p ON p.reference=l.produit "
+                        + "WHERE saisie_Le BETWEEN ? AND ? "
                         + "GROUP BY c.pays_livraison";                    
         try
         {
@@ -426,14 +432,18 @@ public class CommandeDaoImpl {
             db.initPrepare(sql);
             // Passage de valeurs
             
-            db.getPstm().setString(1, sdf.format(dateDebut)); 
-            db.getPstm().setString(2, sdf.format(dateFin));
+            db.getPstm().setDate(1, (java.sql.Date) dateDebut); 
+            db.getPstm().setDate(2, (java.sql.Date) dateFin);
             rs = db.executeSelect();
-
+            
+            ChartEntry content;
+            
             while (rs.next())
             {
-                
-                tabChifPays.put(rs.getString(1), rs.getDouble(2));
+                content = new ChartEntry();
+                content.getC().add(new Value<String>(rs.getString(1)));
+                content.getC().add(new Value<Double>(rs.getDouble(2)));
+                tabChifPays.add(content);
                 
             }
             rs.close();
@@ -447,17 +457,17 @@ public class CommandeDaoImpl {
     }
    
       
-   public Map<Client, Double> chiffreAffClient(Date dateDebut, Date dateFin) throws SQLException
+   public ArrayList<ChartEntry> chiffreAffClient(Date dateDebut, Date dateFin) throws SQLException
     {
          
-        Map<Client, Double> tabChifClient = new HashMap<>();
-        String sql="SELECT cl.reference, SUM(p.prix_unitaire * l.quantite_par_unite) AS CHIFFRE_D_AFFAIRE "
+        ArrayList<ChartEntry> tabChifClient = new ArrayList<ChartEntry>();
+        String sql="SELECT cl.societe, SUM(p.prix_unitaire * l.quantite) AS CHIFFRE_D_AFFAIRE "
                         + "FROM Client cl "
-                        + "JOIN commande c ON cl.code=c.client"               
-                        + "JOIN ligne l ON c.numero=l.commande "
-                        + "JOIN produit p ON p.reference=l.produit "
-                        + "WHERE saisieLe BETWEEN ? AND ? "
-                        + "GROUP BY client.code";                    
+                        + "INNER JOIN commande c ON cl.code=c.client "               
+                        + "INNER JOIN ligne l ON c.numero=l.commande "
+                        + "INNER JOIN produit p ON p.reference=l.produit "
+                        + "WHERE saisie_Le BETWEEN ? AND ? "
+                        + "GROUP BY cl.societe";                    
         try
         {
                         
@@ -466,14 +476,18 @@ public class CommandeDaoImpl {
             db.initPrepare(sql);
             // Passage de valeurs
             
-            db.getPstm().setString(1, sdf.format(dateDebut)); 
-            db.getPstm().setString(2, sdf.format(dateFin));
+            db.getPstm().setDate(1, (java.sql.Date) dateDebut); 
+            db.getPstm().setDate(2, (java.sql.Date) dateFin);
             rs = db.executeSelect();
 
+            ChartEntry content;
+            
             while (rs.next())
             {
-                Client client = new ClientDaoImpl().getClient(rs.getString(1));
-                tabChifClient.put(client, rs.getDouble(1));
+                content = new ChartEntry();
+                content.getC().add(new Value<String>(rs.getString(1)));
+                content.getC().add(new Value<Double>(rs.getDouble(2)));
+                tabChifClient.add(content);
                 
             }
             rs.close();
