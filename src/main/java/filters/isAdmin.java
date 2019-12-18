@@ -98,13 +98,19 @@ public class isAdmin implements Filter {
         
         try {
             HttpSession session = ((HttpServletRequest) request).getSession(false);
-            if (session != null && ((Boolean) session.getAttribute("superUser"))) {
-            // connecté, on traite la requête
-		((HttpServletResponse) response).sendRedirect(((HttpServletRequest) request).getContextPath() + "/restricted/adminPage.jsp");
-            } else {
-            // Pas connecté, on va vers la page de login (racine)
-		chain.doFilter(request, response);
-            }
+            if(session.getAttribute("superUser")!=null){ 
+                if (session != null && ((Boolean) session.getAttribute("superUser"))) {
+                // connecté, on traite la requête
+                    ((HttpServletResponse) response).sendRedirect(((HttpServletRequest) request).getContextPath() + "/restricted/adminPage.jsp");
+                } else {
+                // Pas connecté, on va vers la page de login (racine)
+                    chain.doFilter(request, response);
+                }
+            }else {
+                // Pas connecté, on va vers la page de login (racine)
+                    chain.doFilter(request, response);
+                }
+            
 	} catch (IOException t) {
             
         }
